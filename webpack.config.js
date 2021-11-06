@@ -6,4 +6,8 @@ module.exports = {
             '@': path.resolve('resources/js'),
         },
     },
+    // Cache Busting
+    output: {
+        chunkFilename: 'js/[name].js?id=[chunkhash]',
+    },
 };
