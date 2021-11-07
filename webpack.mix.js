@@ -28,6 +28,19 @@ mix.js('resources/js/app.js', 'public/js').vue()
     .webpackConfig(require('./webpack.config'))
     .sourceMaps()
 
+mix.options({
+  vue: {
+    compilerOptions: {
+      // isCustomElement: tag => tag === 'xml'
+      isCustomElement: tag => {
+        return ['field','block','category','xml','mutation','value','shadow','sep'].includes(tag)
+      }
+    }
+  }
+})
+
+mix.copyDirectory('./node_modules/blockly/media', './storage/app/public/media');
+
 mix.babelConfig({
     plugins: ['@babel/plugin-syntax-dynamic-import'],
 })

@@ -1,4 +1,25 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/manifest.js": "/js/manifest.js",
+    "/css/app.css": "/css/app.css",
+    "/js/vendor.js": "/js/vendor.js",
+    "/storage/app/public/media/1x1.gif": "/storage/app/public/media/1x1.gif",
+    "/storage/app/public/media/click.mp3": "/storage/app/public/media/click.mp3",
+    "/storage/app/public/media/click.ogg": "/storage/app/public/media/click.ogg",
+    "/storage/app/public/media/click.wav": "/storage/app/public/media/click.wav",
+    "/storage/app/public/media/delete.mp3": "/storage/app/public/media/delete.mp3",
+    "/storage/app/public/media/delete.ogg": "/storage/app/public/media/delete.ogg",
+    "/storage/app/public/media/delete.wav": "/storage/app/public/media/delete.wav",
+    "/storage/app/public/media/disconnect.mp3": "/storage/app/public/media/disconnect.mp3",
+    "/storage/app/public/media/disconnect.ogg": "/storage/app/public/media/disconnect.ogg",
+    "/storage/app/public/media/disconnect.wav": "/storage/app/public/media/disconnect.wav",
+    "/storage/app/public/media/dropdown-arrow.svg": "/storage/app/public/media/dropdown-arrow.svg",
+    "/storage/app/public/media/handclosed.cur": "/storage/app/public/media/handclosed.cur",
+    "/storage/app/public/media/handdelete.cur": "/storage/app/public/media/handdelete.cur",
+    "/storage/app/public/media/handopen.cur": "/storage/app/public/media/handopen.cur",
+    "/storage/app/public/media/pilcrow.png": "/storage/app/public/media/pilcrow.png",
+    "/storage/app/public/media/quote0.png": "/storage/app/public/media/quote0.png",
+    "/storage/app/public/media/quote1.png": "/storage/app/public/media/quote1.png",
+    "/storage/app/public/media/sprites.png": "/storage/app/public/media/sprites.png",
+    "/storage/app/public/media/sprites.svg": "/storage/app/public/media/sprites.svg"
 }

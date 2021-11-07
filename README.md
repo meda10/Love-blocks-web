@@ -1,65 +1,176 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Installation
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Define environment variables in .env file
 
-## About Laravel
+Create .env file for Docker database configuration.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+``` bash
+cp .env.example .env
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+There is also antoher file inside **source** folder for Laravel configuration.
 
-## Learning Laravel
+If you want to connect to remote database than use this command:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+``` bash
+cp ./source/.env-remote.example ./source/.env
+```
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+If you want to use local database than use this command:
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+``` bash
+cp ./source/.env-local.example ./source/.env
+```
 
-## Contributing
+In case that you chose local database than you should setup database according to instructions below (see secition MySQL configuration and beyond).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Create docker containers
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+This operation takes a long time to finish.
+``` bash
+docker-compose up --build -d
+```
 
-## Security Vulnerabilities
+## Init Laravel project
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Once docker containers are running, it's time to init laravel.
 
-## License
+Download composer dependencies for Laravel such as **vendor** direcotry.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+``` bash
+docker-compose run --rm composer update
+docker-compose run --rm composer require laravel/jetstream
+docker-compose run --rm composer require inertiajs/inertia-laravel
+docker-compose run --rm composer require laravel/sanctum 
+docker-compose run --rm composer require tightenco/ziggy
+
+docker-compose run --rm artisan jetstream:install inertia
+docker-compose run --rm npm install && npm run dev
+docker-compose run --rm artisan migrate:fresh
+```
+
+If Laravel shows Permission denied error for storage:
+``` bash
+sudo chmod -R 777 storage bootstrap/cache
+```
+
+After that Laravel wants to generate key for *php artisan*.
+
+``` bash
+docker-compose exec php php artisan key:generate
+docker-compose run --rm artisan key:generate
+```
+
+Storage link
+``` bash
+docker-compose exec php php artisan storage:link
+docker-compose run --rm artisan storage:link
+```
+
+To run periodical scheduling
+ ``` bash
+sudo docker-compose exec -d php crond -f
+```
+
+Than everything inside method `schedule()` in `source/App/Console/Kernel.php` will be executed. Than use for example `$schedule->call(function () {})->everyTwoMinutes();` to execute function every two minutes (see [Laravel scheduling](https://laravel.com/docs/8.x/scheduling))
+
+After install npm dependencies.
+
+``` bash
+docker-compose run --rm npm install
+```
+
+
+To compile project:
+
+``` bash
+sudo docker-compose run --rm npm run dev
+```
+
+If you cannot install anything or run watch/dev than try [this](https://github.com/JeffreyWay/laravel-mix/issues/1072). This happens because of cache.
+
+
+<!--
+Next you must install the frontend scaffolding (Bootstrap and Vue.js). ("Yes" for commands with `--auth`):
+``` bash
+php artisan ui bootstrap
+php artisan ui vue
+php artisan ui bootstrap --auth
+php artisan ui vue --auth
+```
+
+Next you must install project frontend dependencies:
+``` bash
+npm install
+```
+-->
+
+If you edit css (sass) files, run `npm run dev` command to compile sass file and it will be put into `public/css` directory (more [frontend writing](https://laravel.com/docs/7.x/frontend#writing-css)).
+
+
+Now it should work:
+
+Service | Address
+------- | -------
+Web app | localhost:8080
+phpmyadmin | localhost:8081
+
+In phpmyadmin leave **Server** field empty. Default **Name** is *root* and default **Password** is *secret* (from **.env** file).
+
+
+## MySQL configuration
+
+Open MySQL container
+``` bash
+docker-compose exec mysql bash
+```
+
+Create user
+``` bash
+mysql -u root -p
+show databases;
+CREATE USER 'username'@'%' IDENTIFIED BY 'randomPassword123!#$';
+GRANT ALL PRIVILEGES ON * . * TO 'username'@'%';
+FLUSH PRIVILEGES;
+CREATE DATABASE laravel_db;
+USE laravel_db;
+GRANT ALL ON laravel_db.* TO 'username'@'%';
+FLUSH PRIVILEGES;
+EXIT;
+exit
+```
+
+## Migrate Database
+
+To initialize tables and data in PhpMyAdmin run command:
+
+``` bash
+docker-compose exec php php artisan migrate:fresh --seed
+```
+
+
+## Delete docker containers and images
+
+In case there was any problem and you wish to delete docker containers and images.
+
+Easiest way - delete all containers and images:
+
+``` bash
+sudo docker rm -f $(sudo docker ps -a -q)
+```
+
+``` bash
+sudo docker rmi -f $(sudo docker images -a -q)
+```
+
+## CMD's
+
+Generate Models from DB schema
+``` bash
+ docker-compose run --rm artisan code:models
+```

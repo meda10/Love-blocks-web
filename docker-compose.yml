@@ -105,48 +105,6 @@ services:
     networks:
       - laravel
 
-#  redis:
-#    image: 'redis:alpine'
-#    container_name: redis
-#    restart: unless-stopped
-#    ports:
-#      - '${FORWARD_REDIS_PORT:-6379}:6379'
-#    volumes:
-#      - 'redisdata:/data'
-#    networks:
-#      - laravel
-#    healthcheck:
-#      test: ["CMD", "redis-cli", "ping"]
-#      retries: 3
-#      timeout: 5s
-#
-#  meilisearch:
-#    image: 'getmeili/meilisearch:latest'
-#    container_name: meilisearch
-#    ports:
-#      - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-#    volumes:
-#      - 'meilisearchdata:/data.ms'
-#    networks:
-#      - laravel
-#
-#  mailhog:
-#    image: 'mailhog/mailhog:latest'
-#    container_name: mailhog
-#    ports:
-#      - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-#      - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
-#    networks:
-#      - laravel
-#
-#  selenium:
-#    image: 'selenium/standalone-chrome'
-#    container_name: selenium
-#    volumes:
-#      - '/dev/shm:/dev/shm'
-#    networks:
-#      - laravel
-
 networks:
   laravel:
     driver: bridge
