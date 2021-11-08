@@ -11,7 +11,7 @@
 
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import BlocklyComponent from './BlocklyComponent.vue'
+import BlocklyComponent from '@/Pages/BlocklyComponent.vue'
 // import './blocks/stocks';
 // import './prompt';
 
@@ -19,7 +19,7 @@ import BlocklyComponent from './BlocklyComponent.vue'
 import BlocklyJS from 'blockly/javascript';
 
 export default {
-  name: 'xxx',
+  name: 'BlocklyLayout',
   components: {
     BlocklyComponent,
     Head
