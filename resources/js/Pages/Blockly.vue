@@ -16,6 +16,7 @@ import BlocklyLua from 'blockly/lua'
 import ButtonLink from '@/Shared/ButtonLink'
 import DarkTheme from '@blockly/theme-dark'
 import { ref } from 'vue'
+import BlocklyLayout from '@/Layouts/BlocklyLayout'
 // import './blocks/stocks';
 // import './prompt';
 
@@ -26,6 +27,7 @@ export default {
     Head,
     ButtonLink,
   },
+  layout: BlocklyLayout,
   setup() {
     const blockly = ref(null)
     const code = ref(null)
