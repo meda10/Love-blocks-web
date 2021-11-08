@@ -1,5 +1,5 @@
 <template>
-  <Head title="Welcome" />
+  <Head title="Home" />
   <div id="xxx">
     <BlocklyComponent id="blockly2" :options="options" ref="foo"></BlocklyComponent>
     <div id="code">

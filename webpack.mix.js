@@ -31,7 +31,6 @@ mix.js('resources/js/app.js', 'public/js').vue()
 mix.options({
   vue: {
     compilerOptions: {
-      // isCustomElement: tag => tag === 'xml'
       isCustomElement: tag => {
         return ['field','block','category','xml','mutation','value','shadow','sep'].includes(tag)
       }
