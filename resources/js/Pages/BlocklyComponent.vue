@@ -1,35 +1,43 @@
 <template>
   <div>
-    <div class="blocklyDiv" ref="blocklyDiv">
-    </div>
+    <div ref="blocklyDiv" class="blocklyDiv" />
     <xml ref="blocklyToolbox" style="display:none">
-      <slot></slot>
+      <slot />
     </xml>
   </div>
 </template>
 
 <script>
-import Blockly from 'blockly';
+import Blockly from 'blockly'
+import { onMounted, ref, reactive } from 'vue'
 
 export default {
   name: 'BlocklyComponent',
-  props: ['options'],
-  data(){
+  props: {
+    options: Object,
+  },
+  setup(props) {
+    const workspace = reactive({})
+    const blocklyDiv = ref(null)
+    const blocklyToolbox = ref(null)
+
+    onMounted(() => {
+      const opt = props.options || {}
+      if (!opt.toolbox) {
+        opt.toolbox = blocklyToolbox.value
+      }
+      workspace.value = Blockly.inject(blocklyDiv.value, opt)
+      console.log(workspace)
+    })
     return {
-      workspace: null
+      blocklyToolbox,
+      workspace,
+      blocklyDiv,
     }
   },
-  mounted() {
-    var options = this.$props.options || {};
-    if (!options.toolbox) {
-      options.toolbox = this.$refs["blocklyToolbox"];
-    }
-    this.workspace = Blockly.inject(this.$refs["blocklyDiv"], options);
-  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .blocklyDiv {
   height: 100%;

@@ -1,43 +1,45 @@
 <template>
   <Head title="Home" />
   <div id="xxx">
-    <BlocklyComponent id="blockly2" :options="options" ref="foo"></BlocklyComponent>
+    <BlocklyComponent id="blockly" ref="blockly" :options="options" />
     <div id="code">
-      <button v-on:click="showCode()">Show JavaScript</button>
-      <pre v-html="code"></pre>
+      <ButtonLink :button="true" component-style="btn btn-primary" label="Show code" @click="showCode" />
+      <pre v-html="code" />
     </div>
   </div>
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/inertia-vue3'
 import BlocklyComponent from '@/Pages/BlocklyComponent.vue'
+import BlocklyLua from 'blockly/lua'
+import ButtonLink from '@/Shared/ButtonLink'
+import DarkTheme from '@blockly/theme-dark'
+import { ref } from 'vue'
 // import './blocks/stocks';
 // import './prompt';
-
-
-import BlocklyJS from 'blockly/javascript';
 
 export default {
   name: 'BlocklyLayout',
   components: {
     BlocklyComponent,
-    Head
+    Head,
+    ButtonLink,
   },
-  data(){
-    return {
-      code: '',
-      options: {
-        media: '/storage/media/',
-        grid:
-          {
-            spacing: 25,
-            length: 3,
-            colour: '#ccc',
-            snap: true
-          },
-        toolbox:
-          `<xml>
+  setup() {
+    const blockly = ref(null)
+    const code = ref(null)
+    const options = {
+      media: '/storage/media/',
+      theme: DarkTheme,
+      grid: {
+        spacing: 25,
+        length: 3,
+        colour: '#ccc',
+        snap: true,
+      },
+      toolbox:
+        `<xml>
           <category name="Logic" colour="%{BKY_LOGIC_HUE}">
             <block type="controls_if"></block>
             <block type="logic_compare"></block>
@@ -74,15 +76,20 @@ export default {
             <block type="stock_buy_prog"></block>
             <block type="stock_fetch_price"></block>
           </category>
-        </xml>`
-      }
+        </xml>`,
+    }
+
+    const showCode = () => {
+      code.value = BlocklyLua.workspaceToCode(blockly.value.workspace.value)
+    }
+
+    return {
+      options,
+      blockly,
+      code,
+      showCode,
     }
   },
-  methods: {
-    showCode() {
-      this.code = BlocklyJS.workspaceToCode(this.$refs["foo"].workspace);
-    }
-  }
 }
 </script>
 
@@ -108,7 +115,7 @@ html, body {
   background-color: beige;
 }
 
-#blockly2 {
+#blockly {
   position: absolute;
   left: 0;
   bottom: 0;
