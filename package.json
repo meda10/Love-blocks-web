@@ -19,6 +19,8 @@
     },
     "devDependencies": {
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        "@blockly/dev-tools": "^2.6.1",
+        "@blockly/eslint-config": "^2.1.4",
         "@inertiajs/inertia": "^0.10.0",
         "@inertiajs/inertia-vue3": "^0.5.1",
         "@inertiajs/progress": "^0.2.6",
@@ -44,6 +46,8 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
+        "@blockly/theme-dark": "^2.0.6",
+        "@mdi/js": "^6.4.95",
         "@vueform/multiselect": "^2.2.0",
         "blockly": "^6.20210701.0",
         "daisyui": "^1.16.2"

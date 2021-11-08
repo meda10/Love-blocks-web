@@ -42,5 +42,6 @@ module.exports = {
     // 'plugin:import/recommended',
     // 'plugin:node/recommended',
     'plugin:promise/recommended',
+    // '@blockly/eslint-config',
   ],
 }

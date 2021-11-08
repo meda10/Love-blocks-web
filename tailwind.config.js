@@ -24,6 +24,9 @@ module.exports = {
       fontFamily: {
         sans: ['Nunito', ...defaultTheme.fontFamily.sans],
       },
+      zIndex: {
+        '-10': '-10',
+      },
     },
   },
 
