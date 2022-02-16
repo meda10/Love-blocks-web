@@ -7,39 +7,39 @@ on:
   workflow_dispatch:
 
 jobs:
-  deployment:
-    runs-on: self-hosted
+#   deployment:
+#     runs-on: self-hosted
+#     steps:
+#       - run: cd /home/git_action/diplomka/
+#       - run: git pull https://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@github.com/meda10/diplomka.git
+#       - run: docker-compose run --rm composer update --no-dev
+#       - run: docker-compose run --rm composer install --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
+#       - run: docker-compose run --rm artisan config:cache
+#       - run: docker-compose run --rm artisan route:cache
+#       - run: docker-compose run --rm npm ci
+#       - run: docker-compose run --rm npm run production
+#       - run: docker-compose restart nginx php mysql
+      
+  deploy-to-digital-ocean-droplet:
+    runs-on: ubuntu-latest
+    name: Deploy to DigitalOcean
     steps:
-#       - name: Checkout main branch
-#         uses: actions/checkout@v2
-
-      - run: cd /home/git_action/diplomka/
-      - run: git pull https://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@github.com/meda10/diplomka.git
-      - run: docker-compose run --rm composer update --no-dev
-      - run: docker-compose run --rm composer install --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
-      - run: docker-compose run --rm artisan config:cache
-      - run: docker-compose run --rm artisan route:cache
-      - run: docker-compose run --rm npm ci
-      - run: docker-compose run --rm npm run production
-      - run: docker-compose restart nginx php mysql
-      
-#       - uses: sudo-bot/action-docker-compose@latest
+      - name: Checkout master
+        uses: actions/checkout@master
+        
+      - name: Pull from GitHub
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DIGITALOCEAN_KEY }}
+          port: ${{ secrets.PORT }}
+          script: whoami
+#           script: cd ~/path/to/project && git pull git@github.com:project/home.git        
+#       - name: Docker Build
+#         uses: appleboy/ssh-action@master
 #         with:
-#           cli-args: "up"
-  
-#       - name: Docker Compose
-#       - uses: isbang/compose-action@v1.0.0
-      
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: '14.x'
-
-#       - name: Install dependencies
-#         run: npm ci
-
-#       - name: Test application
-#         run: npm test
-
-#       - name: Build application
-#         run: npm run build
+#           host: ${{ secrets.HOST_IP }}
+#           username: ${{ secrets.HOST_USERNAME }}
+#           password: ${{ secrets.HOST_PASSWORD }}
+#           script: cd ~/path/to/project && docker built -t <container> .
