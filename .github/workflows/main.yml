@@ -14,10 +14,9 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v2
 
-      - uses: docker-practice/actions-setup-docker@master
-    
-      - name: docker pre-install
-        run: docker --version
+      - uses: sudo-bot/action-docker-compose@latest
+        with:
+          cli-args: "up -d"
         
 #       - name: Docker Compose
 #       - uses: isbang/compose-action@v1.0.0
