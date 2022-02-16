@@ -51,5 +51,5 @@ jobs:
             docker-compose run --rm artisan route:cache
             docker-compose run --rm npm ci
             docker-compose run --rm npm run production
-            docker-compose restart nginx php mysql
+            docker-compose restart nginx php-app mysql
       
