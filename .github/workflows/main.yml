@@ -15,6 +15,8 @@ jobs:
 
       - run: cd /home/git_action/diplomka/
       - run: git pull https://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@github.com/meda10/diplomka.git
+      - run: docker-compose run --rm composer update
+      - run: docker-compose run --rm npm ci
       - run: docker-compose run --rm npm run production
       - run: docker-compose restart nginx php mysql
       
