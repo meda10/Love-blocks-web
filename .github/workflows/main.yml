@@ -10,13 +10,14 @@ jobs:
   deployment:
     runs-on: self-hosted
     steps:
+      - run: echo $USER
       - name: Checkout main branch
         uses: actions/checkout@v2
 
       - uses: docker-practice/actions-setup-docker@master
-      - run: |
-          docker version
-          docker run --rm hello-world
+    
+      - name: docker pre-install
+        run: docker --version
         
 #       - name: Docker Compose
 #       - uses: isbang/compose-action@v1.0.0
