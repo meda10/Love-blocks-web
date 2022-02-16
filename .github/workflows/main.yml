@@ -10,14 +10,18 @@ jobs:
   deployment:
     runs-on: self-hosted
     steps:
-      - run: echo $USER
-      - name: Checkout main branch
-        uses: actions/checkout@v2
+#       - name: Checkout main branch
+#         uses: actions/checkout@v2
 
-      - uses: sudo-bot/action-docker-compose@latest
-        with:
-          cli-args: "up -d"
-        
+      - run: cd diplomka
+      - run: git pull https://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@github.com/meda10/diplomka.git
+      - run: docker-compose run --rm npm run production
+      - run: docker-compose restart nginx php mysql
+      
+#       - uses: sudo-bot/action-docker-compose@latest
+#         with:
+#           cli-args: "up"
+  
 #       - name: Docker Compose
 #       - uses: isbang/compose-action@v1.0.0
       
