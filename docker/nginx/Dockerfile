@@ -1,10 +1,7 @@
-FROM nginx:stable-alpine
+FROM nginx:latest
 
 # ADD Custom Config
-ADD ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
-ADD ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
-ADD ./docker/nginx/localhost.crt /etc/nginx/localhost.crt
-ADD ./docker/nginx/localhost.decrypted.key /etc/nginx/localhost.decrypted.key
+COPY . /etc/nginx/
 
 # Make Directory - Workspace
 RUN mkdir -p /var/www/html
