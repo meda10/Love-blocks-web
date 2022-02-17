@@ -34,7 +34,8 @@ services:
     volumes:
       - ./docker/letsencrypt:/etc/letsencrypt
       #      - ./user_conf.d:/etc/nginx/user_conf.d
-      - ./docker/nginx/:/etc/nginx/
+      - ./docker/nginx/nginxconfig.io/:/etc/nginx/nginxconfig.io/
+      - ./docker/nginx/user_conf.d/:/etc/nginx/user_conf.d/
     depends_on:
       - php
       - mysql
