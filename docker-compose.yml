@@ -13,7 +13,7 @@ services:
       - "443:443"
     volumes:
       - ./:/var/www/html:delegated
-      - ./docker/nginx/letsencrypt/:/var/www/_letsencrypt/:ro
+      - ./docker/letsencrypt/:/var/www/_letsencrypt/:ro
       #      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
