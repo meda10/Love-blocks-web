@@ -1,33 +1,51 @@
 version: '3'
 
 services:
+  #  nginx:
+  #    build:
+  #      context: .
+  #      dockerfile: ./docker/nginx/Dockerfile
+  #    container_name: nginx
+  #    restart: always
+  #    ports:
+  #      #      - "8080:80"
+  #      - "80:80"
+  #      - "443:443"
+  #    volumes:
+  #      - ./:/var/www/html:delegated
+  #      - ./docker/letsencrypt/www/:/var/www/html/certbot:ro
+  #      - ./docker/letsencrypt/conf/:/etc/letsencrypt/:ro
+  #      - ./docker/nginx/sites-available/loveblocks.tk.conf:/etc/nginx/sites-available/loveblocks.tk.conf
+  #      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+  #    depends_on:
+  #      - php
+  #      - mysql
+  #    networks:
+  #      - laravel
+
   nginx:
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    container_name: nginx
-    restart: always
+    image: jonasal/nginx-certbot:latest
+    restart: unless-stopped
+    environment:
+      CERTBOT_EMAIL: info@loveblocks.tk
     ports:
-      #      - "8080:80"
       - "80:80"
       - "443:443"
     volumes:
-      - ./:/var/www/html:delegated
-      - ./docker/letsencrypt/www/:/var/www/html/certbot:ro
-      - ./docker/letsencrypt/conf/:/etc/letsencrypt/:ro
-      - ./docker/nginx/sites-available/loveblocks.tk.conf:/etc/nginx/sites-available/loveblocks.tk.conf
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/letsencrypt:/etc/letsencrypt
+      #      - ./user_conf.d:/etc/nginx/user_conf.d
+      - ./docker/nginx/:/etc/nginx/
     depends_on:
       - php
       - mysql
     networks:
       - laravel
 
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./docker/letsencrypt/www/:/var/www/html/certbot:rw
-      - ./docker/letsencrypt/conf/:/etc/letsencrypt/:rw
+  #  certbot:
+  #    image: certbot/certbot:latest
+  #    volumes:
+  #      - ./docker/letsencrypt/www/:/var/www/html/certbot:rw
+  #      - ./docker/letsencrypt/conf/:/etc/letsencrypt/:rw
 
   #  certbot:
   #    image: certbot/certbot
