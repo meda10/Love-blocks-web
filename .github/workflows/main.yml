@@ -11,7 +11,7 @@ jobs:
 #     runs-on: self-hosted
 #     steps:
 #       - run: cd /home/git_action/diplomka/
-#       - run: git pull https://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@github.com/meda10/diplomka.git
+#       - run: git pull https://${{ secrets.GIT_KEY }}@github.com/meda10/diplomka.git
 #       - run: docker-compose run --rm composer update --no-dev
 #       - run: docker-compose run --rm composer install --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
 #       - run: docker-compose run --rm artisan config:cache
@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DIGITALOCEAN_KEY }}
           port: ${{ secrets.PORT }}
-          script: cd /home/git_action/diplomka/ && git pull https://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@github.com/meda10/diplomka.git
+          script: cd /home/git_action/diplomka/ && git pull https://${{ secrets.GIT_KEY }}@github.com/meda10/diplomka.git
           
       - name: Docker Build
         uses: appleboy/ssh-action@master
