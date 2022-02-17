@@ -32,7 +32,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./docker/letsencrypt:/etc/letsencrypt
+      - nginx_secrets:/etc/letsencrypt
       #      - ./user_conf.d:/etc/nginx/user_conf.d
       - ./docker/nginx/nginxconfig.io/:/etc/nginx/nginxconfig.io/
       - ./docker/nginx/user_conf.d/:/etc/nginx/user_conf.d/
@@ -148,6 +148,8 @@ networks:
 
 volumes:
   dbdata:
+    driver: local
+  nginx_secrets:
     driver: local
   redisdata:
     driver: local
