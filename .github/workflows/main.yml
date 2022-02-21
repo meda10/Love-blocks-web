@@ -40,7 +40,7 @@ jobs:
 
   rebuild-and-deploy-to-digital-ocean-droplet:
     runs-on: ubuntu-latest
-    name: Deploy to DigitalOcean
+    name: Rebuild and Deploy to DigitalOcean
     if: "contains(github.event.head_commit.message, '[rebuild]')"
     steps:
       - name: Checkout master
@@ -64,13 +64,11 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/git_action/diplomka/
-            docker-compose run --rm composer update --no-dev
             docker-compose run --rm composer install --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
-            docker-compose run --rm artisan key:generate
-            docker-compose run --rm artisan migrate:fresh --seed
+            docker-compose run --rm artisan migrate:fresh --seed --force
             docker-compose run --rm artisan config:cache
             docker-compose run --rm artisan route:cache
-            docker-compose run --rm npm ci
+            docker-compose run --rm npm ci --production
             docker-compose run --rm npm run production
             docker-compose up -d nginx
 

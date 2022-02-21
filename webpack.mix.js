@@ -50,7 +50,7 @@ mix.options({
 })
 
 // Blockly copy assets
-mix.copyDirectory('./node_modules/blockly/media', './storage/app/public/media')
+// mix.copyDirectory('./node_modules/blockly/media', './storage/app/public/media')
 
 mix.babelConfig({
   plugins: ['@babel/plugin-syntax-dynamic-import'],

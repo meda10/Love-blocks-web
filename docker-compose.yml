@@ -63,9 +63,8 @@ services:
       - "9000:9000"
     #      - "3000:3000" # BROWSERSYNC_HOST_PORT
     #      - "3001:3001" # BROWSERSYNC_HOST_PORT
-    #    depends_on:
-    #      - nginx
-    #      - mysql
+    depends_on:
+      - mysql
     networks:
       - laravel
   #    environment:
