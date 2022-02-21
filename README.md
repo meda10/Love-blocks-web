@@ -96,35 +96,6 @@ sudo docker-compose run --rm npm run dev
 If you cannot install anything or run watch/dev than try [this](https://github.com/JeffreyWay/laravel-mix/issues/1072).
 This happens because of cache.
 
-
-<!--
-Next you must install the frontend scaffolding (Bootstrap and Vue.js). ("Yes" for commands with `--auth`):
-``` bash
-php artisan ui bootstrap
-php artisan ui vue
-php artisan ui bootstrap --auth
-php artisan ui vue --auth
-```
-
-Next you must install project frontend dependencies:
-``` bash
-npm install
-```
--->
-
-If you edit css (sass) files, run `npm run dev` command to compile sass file and it will be put into `public/css`
-directory (more [frontend writing](https://laravel.com/docs/7.x/frontend#writing-css)).
-
-Now it should work:
-
-Service | Address
-------- | -------
-Web app | localhost:8080
-phpmyadmin | localhost:8081
-
-In phpmyadmin leave **Server** field empty. Default **Name** is *root* and default **Password** is *secret* (from **
-.env** file).
-
 ## MySQL configuration
 
 Open MySQL container

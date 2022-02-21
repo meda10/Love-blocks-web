@@ -35,6 +35,19 @@ jobs:
             cd /home/git_action/diplomka/
             docker-compose run --rm artisan config:cache
             docker-compose run --rm artisan route:cache
+            docker-compose run --rm npm ci --production
+
+      - name: NPM compile JS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DIGITALOCEAN_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/git_action/diplomka/
+            docker-compose down
+            chown -R git_action:git_action /home/git_action/diplomka/
             docker-compose run --rm npm run production
             docker-compose up -d nginx
 
@@ -69,6 +82,17 @@ jobs:
             docker-compose run --rm artisan config:cache
             docker-compose run --rm artisan route:cache
             docker-compose run --rm npm ci --production
+
+      - name: NPM compile JS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DIGITALOCEAN_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/git_action/diplomka/
+            docker-compose down
+            chown -R git_action:git_action /home/git_action/diplomka/
             docker-compose run --rm npm run production
             docker-compose up -d nginx
-
