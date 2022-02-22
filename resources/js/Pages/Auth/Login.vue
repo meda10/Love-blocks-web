@@ -7,7 +7,7 @@
     <FormInput v-model="form.email" :error="form.errors.email" label="Email" required type="email" />
     <FormInput v-model="form.password" :error="form.errors.password" autocomplete="current-password"
                label="Password" required type="password" />
-    <div class="flex justify-between items-center py-4">
+    <div class="flex justify-between items-center pt-4">
       <label class="cursor-pointer items-center gap-1 inline-flex">
         <input v-model="form.remember" checked="checked" class="flex-shrink-0 checkbox" type="checkbox" />
         <span class="label-text">Remember me</span>
@@ -18,11 +18,12 @@
         </Link>
       </label>
     </div>
-    <div class="justify-center card-actions">
+    <div class="justify-center card-actions mt-4">
       <ButtonLink :button="true" :disabled="form.processing" component-style="btn w-full btn-primary"
                   label="Login" type="submit" />
     </div>
   </form>
+  <socialstream-providers v-if="$page.props.socialstream.show" />
 </template>
 
 <script>
@@ -30,12 +31,14 @@ import { Link } from '@inertiajs/inertia-vue3'
 import FormInput from '@/Shared/FormInput'
 import ButtonLink from '@/Shared/ButtonLink'
 import LoginLayout from '@/Layouts/LoginLayout'
+import SocialstreamProviders from '@/Socialstream/Providers'
 
 export default {
   components: {
     FormInput,
     ButtonLink,
     Link,
+    SocialstreamProviders,
   },
   layout: LoginLayout,
   props: {

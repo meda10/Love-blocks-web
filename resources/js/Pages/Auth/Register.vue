@@ -25,11 +25,12 @@
         </label>
       </label>
     </div>
-    <div class="justify-center card-actions">
+    <div class="justify-center card-actions mt-9">
       <ButtonLink :button="true" :disabled="form.processing" component-style="btn w-full btn-primary"
                   label="Register" type="submit" />
     </div>
   </form>
+  <socialstream-providers v-if="$page.props.socialstream.show" />
 </template>
 
 <script>
@@ -37,12 +38,14 @@ import { Link } from '@inertiajs/inertia-vue3'
 import FormInput from '@/Shared/FormInput'
 import ButtonLink from '@/Shared/ButtonLink'
 import LoginLayout from '@/Layouts/LoginLayout'
+import SocialstreamProviders from '@/Socialstream/Providers'
 
 export default {
   components: {
     FormInput,
     ButtonLink,
     Link,
+    SocialstreamProviders,
   },
   layout: LoginLayout,
   data() {
