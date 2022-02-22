@@ -3,6 +3,7 @@
     <Link :href="route('login')" class="tab tab-active flex-1">Login</Link>
     <Link :href="route('register')" class="tab flex-1">Register</Link>
   </div>
+  <validation-errors class="mb-4" />
   <form @submit.prevent="submit">
     <FormInput v-model="form.email" :error="form.errors.email" label="Email" required type="email" />
     <FormInput v-model="form.password" :error="form.errors.password" autocomplete="current-password"
@@ -32,6 +33,7 @@ import FormInput from '@/Shared/FormInput'
 import ButtonLink from '@/Shared/ButtonLink'
 import LoginLayout from '@/Layouts/LoginLayout'
 import SocialstreamProviders from '@/Socialstream/Providers'
+import ValidationErrors from '@/Shared/ValidationErrors'
 
 export default {
   components: {
@@ -39,6 +41,7 @@ export default {
     ButtonLink,
     Link,
     SocialstreamProviders,
+    ValidationErrors,
   },
   layout: LoginLayout,
   props: {
