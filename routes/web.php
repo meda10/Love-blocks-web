@@ -26,6 +26,16 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/home', function () { return Inertia::render('Home'); })->name('home');
-    Route::get('/blocks', function () { return Inertia::render('Blockly'); })->name('blocks');
+    Route::get('/home', function () {
+        return Inertia::render('Home');
+    })->name('home');
+    Route::get('/blocks', function () {
+        return Inertia::render('Blockly');
+    })->name('blocks');
+    Route::get('/profile', function () {
+        return Inertia::render('Profile/Show');
+    })->name('profile');
+    Route::get('/index', function () {
+        return Inertia::render('API/Index');
+    })->name('index');
 });
