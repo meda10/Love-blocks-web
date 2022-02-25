@@ -53,17 +53,18 @@
 </template>
 
 <script>
-import AppLayout from '@/Layouts/AppLayout'
-import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm'
-import JetSectionBorder from '@/Jetstream/SectionBorder'
-import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm'
-import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm'
+import { defineComponent } from 'vue'
+import AppLayout from '@/Layouts/AppLayout.vue'
+import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue'
+import JetSectionBorder from '@/Jetstream/SectionBorder.vue'
+import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue'
+import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue'
 import SetPasswordForm from '@/Pages/Profile/Partials/SetPasswordForm'
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm'
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm'
-import ConnectedAccountsForm from '@/Pages/Profile/Partials/ConnectedAccountsForm';
+import ConnectedAccountsForm from '@/Pages/Profile/Partials/ConnectedAccountsForm'
 
-export default {
+export default defineComponent({
   props: ['sessions'],
 
   components: {
@@ -77,5 +78,5 @@ export default {
     UpdatePasswordForm,
     UpdateProfileInformationForm,
   },
-}
+})
 </script>

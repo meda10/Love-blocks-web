@@ -21,7 +21,12 @@
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@blockly/dev-tools": "^3.0.6",
         "@blockly/eslint-config": "^2.1.7",
-        "@vue/compiler-sfc": "^3.2.31",
+        "@inertiajs/inertia": "^0.11.0",
+        "@inertiajs/inertia-vue3": "^0.6.0",
+        "@inertiajs/progress": "^0.2.6",
+        "@tailwindcss/forms": "^0.4.0",
+        "@tailwindcss/typography": "^0.5.0",
+        "@vue/compiler-sfc": "^3.0.5",
         "@vue/eslint-config-standard": "^6.1.0",
         "autoprefixer": "^10.4.2",
         "eslint": "^7.32.0",
@@ -31,7 +36,10 @@
         "eslint-plugin-vue": "^7.20.0",
         "lodash": "^4.17.21",
         "postcss": "^8.4.6",
-        "tailwindcss": "^3.0.23"
+        "postcss-import": "^14.0.2",
+        "tailwindcss": "^3.0.0",
+        "vue": "^3.0.5",
+        "vue-loader": "^16.1.2"
     },
     "dependencies": {
         "@blockly/theme-dark": "^3.0.3",
