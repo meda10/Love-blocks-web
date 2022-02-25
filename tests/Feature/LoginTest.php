@@ -33,7 +33,7 @@ class LoginTest extends TestCase
             'tokenable_type' => User::class,
             'tokenable_id' => $user->id
         ]);
-
+//        Log::channel('stdout')->info('Token ' . $response->getContent());
     }
 
     /** @test */

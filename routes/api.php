@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
@@ -25,36 +26,44 @@ Route::get('/book', static function (Request $request) {
 });
 
 Route::post('/login', function (Request $request) {
-
-    $request->validate([
+    $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'password' => 'required',
         'device_name' => 'required',
     ]);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()]);
+    }
 
     $user = User::where('email', $request['email'])->first();
 
     if (!$user || !Hash::check($request['password'], $user['password'])) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+//        throw ValidationException::withMessages([
+//            'email' => ['The provided credentials are incorrect.'],
+//        ]);
+        return response()->json(['Message' => 'The provided credentials are incorrect.']);
     }
 
-    return $user->createToken($request['device_name'])->plainTextToken;
+    return response()->json(['Token' => $user->tokens]);
+//    return $user->createToken($request['device_name'])->plainTextToken;
 });
 
 Route::post('/register', function (Request $request) {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
         'name' => 'required',
         'email' => 'required|email',
         'password' => 'required|confirmed',
         'device_name' => 'required',
     ]);
 
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()]);
+    }
+
     $user = User::create([
         'name' => $request['name'],
         'email' => $request['email'],
-        'password' => $request['password'],
+        'password' => Hash::make($request['password']),
     ]);
 
     return $user->createToken($request['device_name'])->plainTextToken;
