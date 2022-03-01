@@ -59,12 +59,17 @@ Route::post('/register', function (Request $request) {
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()]);
     }
+    try {
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
 
-    $user = User::create([
-        'name' => $request['name'],
-        'email' => $request['email'],
-        'password' => Hash::make($request['password']),
-    ]);
+    } catch (Exception) {
+        $user = User::where('email', $request['email'])->first();
+        return response()->json(['Token' => $user->tokens]);
+    }
 
     return $user->createToken($request['device_name'])->plainTextToken;
 });
