@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.2",
         "joelbutcher/socialstream": "^3.4",
+        "kreait/laravel-firebase": "^4.1",
         "laravel/framework": "^8.65",
         "laravel/jetstream": "^2.4",
         "laravel/sanctum": "^2.11",
