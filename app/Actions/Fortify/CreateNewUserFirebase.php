@@ -25,17 +25,19 @@ class CreateNewUserFirebase implements CreatesNewUsers
         $validator = Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'fcm_token' => ['required', 'string'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ]);
 
         if ($validator->fails()) {
-            return ['error' => $validator->errors()];
+            return ['errors' => $validator->errors()];
         }
 
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'FCM_token' => $input['fcm_token'],
             'password' => Hash::make($input['password']),
         ]);
 

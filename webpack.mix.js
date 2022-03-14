@@ -1,5 +1,6 @@
 const mix = require('laravel-mix')
-
+const Components = require('unplugin-vue-components/webpack')
+const { NaiveUiResolver } = require('unplugin-vue-components/resolvers')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -20,6 +21,7 @@ mix.js('resources/js/app.js', 'public/js').vue()
           __VUE_OPTIONS_API__: true,
           __VUE_PROD_DEVTOOLS__: false,
         }),
+        Components({ resolvers: [NaiveUiResolver()] }),
       ],
     }
   })

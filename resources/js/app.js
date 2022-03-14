@@ -1,6 +1,13 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress'
+// Native UI
+import 'vfonts/Lato.css'
+import 'vfonts/FiraCode.css'
+
+const meta = document.createElement('meta')
+meta.name = 'naive-ui-style'
+document.head.appendChild(meta)
 
 require('./bootstrap')
 

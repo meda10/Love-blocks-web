@@ -1,47 +1,72 @@
 <template>
-  <div class="tabs tabs-boxed mb-4">
-    <Link :href="route('login')" class="tab tab-active flex-1">Login</Link>
-    <Link :href="route('register')" class="tab flex-1">Register</Link>
-  </div>
-  <validation-errors class="mb-4" />
-  <form @submit.prevent="submit">
-    <FormInput v-model="form.email" :error="form.errors.email" label="Email" required type="email" />
-    <FormInput v-model="form.password" :error="form.errors.password" autocomplete="current-password"
-               label="Password" required type="password" />
-    <div class="flex justify-between items-center pt-4">
-      <label class="cursor-pointer items-center gap-1 inline-flex">
-        <input v-model="form.remember" checked="checked" class="flex-shrink-0 checkbox" type="checkbox" />
-        <span class="label-text">Remember me</span>
-      </label>
-      <label class="">
-        <Link v-if="canResetPassword" :href="route('password.request')" class="label-text-alt">
-          Forgot your password?
-        </Link>
-      </label>
-    </div>
-    <div class="justify-center card-actions mt-4">
-      <ButtonLink :button="true" :disabled="form.processing" component-style="btn w-full btn-primary"
-                  label="Login" type="submit" />
-    </div>
-  </form>
-  <socialstream-providers v-if="$page.props.socialstream.show" />
+  <n-card>
+    <n-tabs :tabs-padding="20" justify-content="space-evenly" pane-style="padding: 20px;" size="large" type="segment">
+      <n-tab-pane name="Login">
+        <n-form :label-width="80" :model="form" size="medium">
+          <n-form-item :feedback="form.errors.email"
+                       :validation-status="form.errors.email != null ? 'error' : 'success'"
+                       label="E-mail" path="email">
+            <n-input v-model:value="form.email" placeholder="E-mail" />
+          </n-form-item>
+          <n-form-item :feedback="form.errors.password"
+                       :validation-status="form.errors.password != null ? 'error' : 'success' "
+                       label="Password" path="password">
+            <n-input v-model:value="form.password" placeholder="Password" />
+          </n-form-item>
+          <n-form-item :show-feedback="true" :show-label="false" path="remember">
+            <n-space justify="space-between" style="flex-grow: 1">
+              <n-checkbox v-model:checked="form.remember">Remember me</n-checkbox>
+              <Link v-if="canResetPassword" :href="route('password.request')" class="label-text-alt">
+                Forgot your password?
+              </Link>
+            </n-space>
+          </n-form-item>
+        </n-form>
+        <n-button :block="true" :strong="true" type="primary" @click="submit">Login</n-button>
+        <socialstream-providers v-if="$page.props.socialstream.show" />
+      </n-tab-pane>
+      <n-tab-pane name="Register">
+        <n-form :label-width="80" :model="form" size="medium">
+          <n-form-item :feedback="form_reg.errors.name"
+                       :validation-status="form_reg.errors.name != null ? 'error' : 'success'"
+                       label="Name" path="name">
+            <n-input v-model:value="form_reg.name" placeholder="Name" />
+          </n-form-item>
+          <n-form-item :feedback="form_reg.errors.email"
+                       :validation-status="form_reg.errors.email != null ? 'error' : 'success'"
+                       label="E-mail" path="email">
+            <n-input v-model:value="form_reg.email" placeholder="E-mail" />
+          </n-form-item>
+          <n-form-item :feedback="form_reg.errors.password"
+                       :validation-status="form_reg.errors.password != null ? 'error' : 'success'"
+                       label="Password" path="password">
+            <n-input v-model:value="form_reg.password" placeholder="Password" show-password-on="mousedown"
+                     type="password" />
+          </n-form-item>
+          <n-form-item :feedback="form_reg.errors.password_confirmation"
+                       :validation-status="form_reg.errors.password_confirmation != null ? 'error' : 'success'"
+                       label="Password" path="password">
+            <n-input v-model:value="form_reg.password_confirmation" placeholder="Password" show-password-on="mousedown"
+                     type="password" />
+          </n-form-item>
+        </n-form>
+        <n-button :block="true" :strong="true" type="primary" @click="submit_reg">Register</n-button>
+        <socialstream-providers v-if="$page.props.socialstream.show" />
+      </n-tab-pane>
+    </n-tabs>
+  </n-card>
 </template>
 
 <script>
 import { Link } from '@inertiajs/inertia-vue3'
-import FormInput from '@/Shared/FormInput'
-import ButtonLink from '@/Shared/ButtonLink'
 import LoginLayout from '@/Layouts/LoginLayout'
 import SocialstreamProviders from '@/Socialstream/Providers'
-import ValidationErrors from '@/Shared/ValidationErrors'
 
 export default {
+  metaInfo: { title: 'Login' },
   components: {
-    FormInput,
-    ButtonLink,
     Link,
     SocialstreamProviders,
-    ValidationErrors,
   },
   layout: LoginLayout,
   props: {
@@ -55,18 +80,25 @@ export default {
         password: '',
         remember: false,
       }),
+      form_reg: this.$inertia.form({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        terms: false,
+      }),
     }
   },
   methods: {
     submit() {
       this.form
-        .transform(data => ({
-          ...data,
-          remember: this.form.remember ? 'on' : '',
-        }))
-        .post(this.route('login'), {
-          onFinish: () => this.form.reset('password'),
-        })
+        .transform(data => ({ ...data, remember: this.form.remember ? 'on' : '' }))
+        .post(this.route('login'), { onFinish: () => this.form.reset('password') })
+    },
+    submit_reg() {
+      this.form.post(this.route('register'), {
+        onFinish: () => this.form.reset('password', 'password_confirmation'),
+      })
     },
   },
 }

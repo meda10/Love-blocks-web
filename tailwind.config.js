@@ -12,28 +12,28 @@ module.exports = {
       './resources/**/*.js',
       './resources/**/*.vue',
     ],
-    options: {
-      safelist: [
-        /data-theme$/,
-      ],
-    },
+    // options: {
+    //   safelist: [
+    //     /data-theme$/,
+    //   ],
+    // },
   },
 
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-      },
-      zIndex: {
-        '-10': '-10',
-      },
-    },
-  },
+  // theme: {
+  //   extend: {
+  //     fontFamily: {
+  //       sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+  //     },
+  //     zIndex: {
+  //       '-10': '-10',
+  //     },
+  //   },
+  // },
 
   plugins: [
     require('@tailwindcss/forms'),
     require('tailwind-scrollbar'),
-    require('daisyui'),
+    // require('daisyui'),
     require('@tailwindcss/typography'),
   ],
 }

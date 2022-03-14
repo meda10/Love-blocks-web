@@ -1,17 +1,30 @@
 <template>
-  <div class="hero min-h-screen bg-base-200">
-    <div class="flex-col justify-center hero-content lg:flex-row w-full max-w-md items-stretch">
-      <div class="card flex-shrink-0 flex-grow shadow-2xl bg-base-100">
-        <div class="card-body">
+  <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">
+    <n-message-provider>
+      <Head :title="title" />
+      <div class="flex justify-center items-center h-screen">
+        <div class="max-w-md shadow-2xl flex-grow">
           <slot />
         </div>
       </div>
-    </div>
-  </div>
+    </n-message-provider>
+  </n-config-provider>
 </template>
 
 <script>
+import { darkTheme, NThemeEditor } from 'naive-ui'
+import { Head } from '@inertiajs/inertia-vue3';
+
 export default {
   name: 'LoginLayout',
+  components: {
+    NThemeEditor,
+    Head,
+  },
+  setup() {
+    return {
+      darkTheme,
+    }
+  },
 }
 </script>

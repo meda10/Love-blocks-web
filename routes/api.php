@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FirebaseLoginController;
+use App\Http\Controllers\ProjectController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,8 @@ Route::get('/book', static function (Request $request) {
 
 Route::post('/login', [FirebaseLoginController::class, 'login'])->name('firebase.login');
 Route::post('/register', [FirebaseLoginController::class, 'register'])->name('firebase.register');
+Route::post('/token', [FirebaseLoginController::class, 'token'])->name('firebase.token');
+Route::post('/project', [ProjectController::class, 'project'])->name('project');
 
 //Route::post('/login', function (Request $request) {
 //    $validator = Validator::make($request->all(), [
