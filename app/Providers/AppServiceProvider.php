@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\ProjectResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        ProjectResource::withoutWrapping();
     }
 }

@@ -12,13 +12,19 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $casts = [
-        'user_id' => 'int'
+        'user_id' => 'int',
+        'id' => 'int'
     ];
 
     protected $fillable = [
         'name',
         'user_id'
     ];
+
+    public function getProjectsByUser($id)
+    {
+        return $this->where('user_id', $id)->get();
+    }
 
     public function user()
     {

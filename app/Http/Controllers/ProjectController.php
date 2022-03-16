@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
+use App\Models\Project;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Response;
@@ -11,7 +14,7 @@ class ProjectController extends Controller
 {
 
 
-    public function project(Request $request)
+    public function project(Request $request): JsonResponse
     {
         //todo find project by ID -> find files -> download files
         $file_path = 'x.jpg';
@@ -37,6 +40,11 @@ class ProjectController extends Controller
         } catch (FileNotFoundException $e) {
             return response()->json(['errors' => ['error' => 'Could not download project']]);
         }
+    }
+
+    public function getUserProjects($id)
+    {
+        return ProjectResource::collection((new Project)->getProjectsByUser($id));
     }
 
     public function testDownload()

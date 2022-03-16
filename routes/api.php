@@ -31,6 +31,7 @@ Route::post('/login', [FirebaseLoginController::class, 'login'])->name('firebase
 Route::post('/register', [FirebaseLoginController::class, 'register'])->name('firebase.register');
 Route::post('/token', [FirebaseLoginController::class, 'token'])->name('firebase.token');
 Route::post('/project', [ProjectController::class, 'project'])->name('project');
+Route::post('/project/{id}', [ProjectController::class, 'getUserProjects'])->name('project.user');
 
 //Route::post('/login', function (Request $request) {
 //    $validator = Validator::make($request->all(), [
