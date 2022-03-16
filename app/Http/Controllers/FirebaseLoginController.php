@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FirebaseUserAuthAction;
 use App\Actions\Fortify\CreateNewUserFirebase;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -29,20 +30,6 @@ class FirebaseLoginController extends Controller
             return response()->json(['errors' => ['error' => 'Invalid e-mail or password']]);
         }
 
-//        $idTokenString =
-//        try {
-//            $verifiedIdToken = $auth->verifyIdToken($idTokenString->toString());
-//        } catch (\InvalidArgumentException $e) {
-//            return response()->json([
-//                'error' => 'Unauthorized - Can\'t parse the token: ' . $e->getMessage()
-//            ], 401);
-//        } catch (FailedToVerifyToken $e) {
-//            return response()->json([
-//                'error' => 'Unauthorized - Token is invalide: ' . $e->getMessage()
-//            ], 401);
-//        }
-//        $id = $verifiedIdToken->getClaim('sub');
-
         try {
             $customToken = $auth->createCustomToken($user->id);
             $user->firebaseUID = $customToken->toString();
@@ -62,9 +49,10 @@ class FirebaseLoginController extends Controller
 
     /**
      * @param Request $request
+     * @param CreateNewUserFirebase $createNewUserFirebase
      * @return JsonResponse
      */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request, CreateNewUserFirebase $createNewUserFirebase): JsonResponse
     {
         $user = User::where('email', '=', $request['email'])->first();
         if ($user !== null) {
@@ -79,14 +67,14 @@ class FirebaseLoginController extends Controller
             'password_confirmation' => $request['password_confirmation'],
             'terms' => $request['terms'],
         ];
-        $user = (new CreateNewUserFirebase)->create($user_array);
-        if ($user['errors'] !== null) {
+        $user = $createNewUserFirebase->create($user_array);
+        if (array_key_exists('errors', $user)) {
             return response()->json(['errors' => $user['errors']]);
         }
-        if ($user['error'] !== null) {
+        if (array_key_exists('error', $user)) {
             return response()->json(['errors' => ['error' => $user['error']]]);
         }
-
+        $user = $user['user'];
         return response()->json([
             'id' => $user['id'],
             'access_token' => $user['firebaseUID'],
@@ -97,22 +85,17 @@ class FirebaseLoginController extends Controller
 
     /**
      * @param Request $request
+     * @param FirebaseUserAuthAction $firebaseUserAuthAction
      * @return JsonResponse
      */
-    public function token(Request $request): JsonResponse
+    public function token(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
     {
-        $auth = Firebase::auth();
-        $idTokenString = $request['id_token'];
-        try {
-            $verifiedIdToken = $auth->verifyIdToken($idTokenString->toString());
-        } catch (\InvalidArgumentException $e) {
-            return response()->json(['errors' => ['error' => 'Unauthorized - Can\'t parse the token: ' . $e->getMessage()]]);
-        } catch (FailedToVerifyToken $e) {
-            return response()->json(['errors' => ['error' => 'Unauthorized - Token is invalide: ' . $e->getMessage()]]);
+        $id = $firebaseUserAuthAction->execute($request['id_token']);
+        if (array_key_exists('error', $id)) {
+            return response()->json(['errors' => ['error' => $id['error']]]);
         }
-        $id = $verifiedIdToken->getClaim('sub');
 
-        $user = User::where('id', '=', $id)->first();
+        $user = User::where('id', '=', $id['id'])->first();
         $user->FCM_token = $request['fcm_token'];
         $user->save();
 

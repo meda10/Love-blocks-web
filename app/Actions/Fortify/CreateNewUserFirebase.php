@@ -17,9 +17,9 @@ class CreateNewUserFirebase implements CreatesNewUsers
 
     /**
      * @param array $input
-     * @return User|array
+     * @return array
      */
-    public function create(array $input): User|array
+    public function create(array $input): array
     {
         $auth = Firebase::auth();
         $validator = Validator::make($input, [
@@ -49,6 +49,6 @@ class CreateNewUserFirebase implements CreatesNewUsers
 
         $user->firebaseUID = $customToken->toString();
         $user->save();
-        return $user;
+        return ['user' => $user];
     }
 }

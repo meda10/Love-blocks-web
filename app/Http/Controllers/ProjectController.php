@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FirebaseUserAuthAction;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 use Response;
 
@@ -14,7 +16,7 @@ class ProjectController extends Controller
 {
 
 
-    public function project(Request $request): JsonResponse
+    public function projectFile(Request $request): JsonResponse
     {
         //todo find project by ID -> find files -> download files
         $file_path = 'x.jpg';
@@ -42,9 +44,13 @@ class ProjectController extends Controller
         }
     }
 
-    public function getUserProjects($id)
+    public function getUserProjects(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse|AnonymousResourceCollection
     {
-        return ProjectResource::collection((new Project)->getProjectsByUser($id));
+        $user = $firebaseUserAuthAction->execute($request['id_token']);
+        if (array_key_exists('error', $user)) {
+            return response()->json(['errors' => ['error' => $user['error']]]);
+        }
+        return ProjectResource::collection((new Project)->getProjectsByUser($user['id']));
     }
 
     public function testDownload()
