@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Project extends Migration
+class CreateProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,8 +16,8 @@ class Project extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')->nullable()->index();
-//            $table->string('profile_photo_path', 2048)->nullable();
+            $table->foreignId('user_id')->constrained('users');
+            //            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
     }

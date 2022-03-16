@@ -24,13 +24,23 @@ class User extends Authenticatable
     use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
 
+    protected $table = 'users';
+
+    protected $dates = [
+        'email_verified_at'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'firebaseUID',
+        'FCM_token',
+        'password',
     ];
 
     /**
@@ -62,4 +72,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'user_project');
+    }
 }
