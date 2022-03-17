@@ -56,6 +56,9 @@ Route::put('/administration/user/{user}/restore', [UserController::class, 'resto
 
 
 Route::get('/download', [ProjectController::class, 'testDownload'])->name('download');
+Route::get('/editor', function () {
+    return Inertia::render('Editor');
+})->name('editor');
 
 
 //Route::get('storage/{file}', function ($file) {

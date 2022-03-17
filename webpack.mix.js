@@ -12,7 +12,7 @@ const { NaiveUiResolver } = require('unplugin-vue-components/resolvers')
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue()
+mix.js('resources/js/app.js', 'public/js')
   .vue({ version: 3 }) //, extractStyles: 'css/vue-styles.css'
   .webpackConfig((webpack) => {
     return {
@@ -41,7 +41,7 @@ mix.options({
   },
 })
 
-// Add PostCss stuff -> config doesnt load
+// Add PostCss stuff -> config doesn't load
 mix.options({
   postCss: [
     require('postcss-import'),

@@ -14,8 +14,7 @@ use Response;
 
 class ProjectController extends Controller
 {
-
-
+    
     public function projectFile(Request $request): JsonResponse
     {
         //todo find project by ID -> find files -> download files
