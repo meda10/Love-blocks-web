@@ -4,6 +4,7 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve('resources/js'),
+      vscode: require.resolve('monaco-languageclient/lib/vscode-compatibility'),
     },
   },
   // Cache Busting

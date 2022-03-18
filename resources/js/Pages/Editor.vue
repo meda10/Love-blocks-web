@@ -1,42 +1,24 @@
 <template>
-  <!--  <div id="container" ref="container" style="height: calc(100% - 2.5rem)" />-->
-  <div id="container" style="width:800px; height:600px; border:1px solid #ccc;" />
+  <div id="monaco-container" style="width:800px; height:600px; border:1px solid #ccc;" />
 </template>
 <script>
 import { onMounted, ref, onUnmounted, watch, toRefs } from 'vue'
 // import { useResizeObserver, useStorage, useDebounceFn } from '@vueuse/core'
 // import { initialEditorValue, useDarkGlobal } from '../utils';
-// import * as monaco from 'monaco-editor'
+
+import { MonacoServices } from 'monaco-languageclient'
 import loader from '@monaco-editor/loader'
+import { connectLanguageServer } from '@/languageServerConnect'
 
 export default {
   name: 'Editor',
   components: {},
   setup() {
-    // self.MonacoEnvironment = {
-    //   getWorker: function (_, label) {
-    //     if (label === 'json') return jsonWorker()
-    //     if (label === 'css' || label === 'scss' || label === 'less') return cssWorker()
-    //     if (label === 'html' || label === 'handlebars' || label === 'razor') return htmlWorker()
-    //     if (label === 'typescript' || label === 'javascript') return tsWorker()
-    //     return editorWorker()
-    //   },
-    // }
-    // self.MonacoEnvironment = {
-    //   getWorkerUrl: function (moduleId, label) {
-    //     if (label === 'json') return './js/json.worker.js'
-    //     if (label === 'css' || label === 'scss' || label === 'less') return './js/css.worker.js'
-    //     if (label === 'html' || label === 'handlebars' || label === 'razor') return './js/html.worker.js'
-    //     if (label === 'typescript' || label === 'javascript') return './js/ts.worker.js'
-    //     return './js/editor.worker.js'
-    //   },
-    //   getWorker: (moduleId, label) => {
-    //     return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleId, label))
-    //   },
-    // }
-
     const container = ref(null)
+    const port = 8888
     let editor
+    const protocol = location.protocol === 'https:' ? 'wss' : 'ws'
+
     // const isDark = useDarkGlobal()
     // const ACTIVE_TAB = 'active-tab'
     // const EDITOR_STATE = 'editor-state'
@@ -46,23 +28,26 @@ export default {
     // const emit = defineEmits()
 
     onMounted(function () {
-      loader.init().then(monaco => {
-        monaco.editor.create(document.getElementById('container'), {
-          value: 'const foo = () => 0;',
-          language: 'javascript',
-          theme: 'vs-dark',
-        })
+      loader.config({
+        paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs' },
+        'vs/nls': { availableLanguages: { '*': '' } },
       })
 
-      // monaco.editor.create(document.getElementById('container'), {
-      //   value: `const foo = () => 0;`,
-      //   language: 'javascript',
-      //   theme: 'vs-dark',
-      // })
-      // editor = monaco.editor.create(container.value, {
-      //   language: 'javascript',
-      //   theme: isDark.value ? 'vs-dark' : 'vs',
-      // })
+      loader.init().then(result => {
+        const editorOptions = {
+          value: 'function test()\nprint(\'hello world\')\nend',
+          language: 'lua',
+          theme: 'vs-dark',
+          tabSize: 2,
+          minimap: { enabled: false },
+        }
+        editor = result.editor.create(document.getElementById('monaco-container'), editorOptions)
+        MonacoServices.install(result)
+        connectLanguageServer(`ws://${location.hostname}:${port}`)
+
+        editor.getAction('editor.action.formatDocument').run()
+      })
+
       // emit('change', editorValue.value)
       // editor.onDidChangeModelContent(useDebounceFn(function () {
       //   if (editorValue.value[activeTab.value] !== editor.getValue()) {
@@ -105,23 +90,6 @@ export default {
       editor.dispose()
       // editorObserver.stop()
     })
-
-    // self.MonacoEnvironment = {
-    //   getWorkerUrl: function (moduleId, label) {
-    //     if (label === 'json') return './json.worker.js'
-    //     if (label === 'css' || label === 'scss' || label === 'less') return './css.worker.js'
-    //     if (label === 'html' || label === 'handlebars' || label === 'razor') return './html.worker.js'
-    //     if (label === 'typescript' || label === 'javascript') return './ts.worker.js'
-    //     return './editor.worker.js'
-    //   },
-    // }
-    //
-    // monaco.editor.create(document.getElementById('container'), {
-    //   // value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
-    //   // language: 'javascript',
-    // })
-    // onMounted()
-
     return {}
   },
 }
