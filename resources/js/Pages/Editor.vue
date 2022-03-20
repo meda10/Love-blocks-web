@@ -35,7 +35,7 @@ export default {
 
       loader.init().then(result => {
         const editorOptions = {
-          value: 'function test()\nprint(\'hello world\')\nend',
+          value: 'print("Hello World")',
           language: 'lua',
           theme: 'vs-dark',
           tabSize: 2,
