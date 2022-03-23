@@ -24,9 +24,9 @@ module.exports = {
   // },
 
   plugins: [
-    require('@tailwindcss/forms'),
+    // require('@tailwindcss/forms'),
     require('tailwind-scrollbar'),
     // require('daisyui'),
-    require('@tailwindcss/typography'),
+    // require('@tailwindcss/typography'),
   ],
 }

@@ -79,7 +79,7 @@ jobs:
             cd /home/git_action/diplomka/
             docker-compose run --rm composer dump-autoload
             docker-compose run --rm composer install --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
-            docker-compose run --rm artisan migrate:fresh --seed --force
+            docker-compose run --rm artisan migrate:fresh
             docker-compose run --rm artisan config:cache
             docker-compose run --rm artisan route:cache
 
