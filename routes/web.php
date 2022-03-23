@@ -61,8 +61,8 @@ Route::get('/editor', function () {
 })->name('editor');
 
 
-//Route::get('storage/{file}', function ($file) {
+Route::get('storage/{file}', function ($file) {
 //    $path = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $file);
-//$path = Storage::url($file);
-//    return response()->file($path);
-//});
+    $path = Storage::url($file);
+    return response()->file($path);
+});
