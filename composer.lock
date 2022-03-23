@@ -2012,16 +2012,16 @@
         },
         {
             "name": "joelbutcher/socialstream",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joelbutcher/socialstream.git",
-                "reference": "b61d89b21827fdb6f7de743dad1407c6c06a1dd7"
+                "reference": "eed36c7a7fafe21856fbaef752974513c4496041"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joelbutcher/socialstream/zipball/b61d89b21827fdb6f7de743dad1407c6c06a1dd7",
-                "reference": "b61d89b21827fdb6f7de743dad1407c6c06a1dd7",
+                "url": "https://api.github.com/repos/joelbutcher/socialstream/zipball/eed36c7a7fafe21856fbaef752974513c4496041",
+                "reference": "eed36c7a7fafe21856fbaef752974513c4496041",
                 "shasum": ""
             },
             "require": {
@@ -2094,7 +2094,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-27T16:44:10+00:00"
+            "time": "2022-03-09T00:50:54+00:00"
         },
         {
             "name": "kreait/firebase-php",

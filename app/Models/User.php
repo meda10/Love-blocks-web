@@ -24,16 +24,10 @@ class User extends Authenticatable
     use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'users';
-
-    protected $dates = [
-        'email_verified_at'
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array
      */
     protected $fillable = [
         'name',
@@ -44,7 +38,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden for arrays.
      *
      * @var array
      */
@@ -76,5 +70,19 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'user_project');
+    }
+
+    /**
+     * Get the URL to the user's profile photo.
+     *
+     * @return string
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        if (filter_var($this->profile_photo_path, FILTER_VALIDATE_URL)) {
+            return $this->profile_photo_path;
+        }
+
+        return $this->getPhotoUrl();
     }
 }

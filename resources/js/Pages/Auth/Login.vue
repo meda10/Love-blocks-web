@@ -11,7 +11,8 @@
           <n-form-item :feedback="form.errors.password"
                        :validation-status="form.errors.password != null ? 'error' : 'success' "
                        label="Password" path="password">
-            <n-input v-model:value="form.password" placeholder="Password" />
+            <n-input v-model:value="form.password" placeholder="Password" show-password-on="mousedown"
+                     type="password" />
           </n-form-item>
           <n-form-item :show-feedback="true" :show-label="false" path="remember">
             <n-space justify="space-between" style="flex-grow: 1">
@@ -96,8 +97,8 @@ export default {
         .post(this.route('login'), { onFinish: () => this.form.reset('password') })
     },
     submit_reg() {
-      this.form.post(this.route('register'), {
-        onFinish: () => this.form.reset('password', 'password_confirmation'),
+      this.form_reg.post(this.route('register'), {
+        onFinish: () => this.form_reg.reset('password', 'password_confirmation'),
       })
     },
   },
