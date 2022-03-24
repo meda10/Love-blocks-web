@@ -32,6 +32,7 @@ Route::post('/register', [FirebaseLoginController::class, 'register'])->name('fi
 Route::post('/token', [FirebaseLoginController::class, 'token'])->name('firebase.token');
 Route::post('/file', [ProjectController::class, 'projectFile'])->name('project.file');
 Route::post('/projects', [ProjectController::class, 'getUserProjects'])->name('project.user');
+Route::post('/apk', [ProjectController::class, 'getProjectAPK'])->name('project.apk');
 
 //Route::post('/login', function (Request $request) {
 //    $validator = Validator::make($request->all(), [

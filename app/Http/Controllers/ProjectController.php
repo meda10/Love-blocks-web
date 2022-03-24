@@ -14,7 +14,7 @@ use Response;
 
 class ProjectController extends Controller
 {
-    
+
     public function projectFile(Request $request): JsonResponse
     {
         //todo find project by ID -> find files -> download files
@@ -44,6 +44,15 @@ class ProjectController extends Controller
     }
 
     public function getUserProjects(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse|AnonymousResourceCollection
+    {
+        $user = $firebaseUserAuthAction->execute($request['id_token']);
+        if (array_key_exists('error', $user)) {
+            return response()->json(['errors' => ['error' => $user['error']]]);
+        }
+        return ProjectResource::collection((new Project)->getProjectsByUser($user['id']));
+    }
+
+    public function getProjectAPK(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse|AnonymousResourceCollection
     {
         $user = $firebaseUserAuthAction->execute($request['id_token']);
         if (array_key_exists('error', $user)) {
