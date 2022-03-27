@@ -13,7 +13,7 @@
 
 <script>
 import { darkTheme, NThemeEditor } from 'naive-ui'
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/inertia-vue3'
 
 export default {
   name: 'LoginLayout',

@@ -15,6 +15,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-vue3'
 import { h, ref, watch, computed } from 'vue'
 import { NButton, useMessage } from 'naive-ui'
+import { onMounted } from 'vue/dist/vue';
 
 export default {
   metaInfo: { title: 'Users' },
@@ -28,7 +29,12 @@ export default {
     const message = useMessage()
     const flash = computed(() => usePage().props.value.flash)
 
-    watch(flash, data => {
+    onMounted(() => {
+      if (flash.value.success != null) message.success(flash.value.success)
+      if (flash.value.error != null) message.error(flash.value.error)
+    })
+
+    watch(flash, () => {
       flash.value.success ? message.success(flash.value.success) : message.error(flash.value.error)
     })
 
