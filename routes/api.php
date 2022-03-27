@@ -30,9 +30,9 @@ Route::get('/book', static function (Request $request) {
 Route::post('/login', [FirebaseLoginController::class, 'login'])->name('firebase.login');
 Route::post('/register', [FirebaseLoginController::class, 'register'])->name('firebase.register');
 Route::post('/token', [FirebaseLoginController::class, 'token'])->name('firebase.token');
-Route::post('/file', [ProjectController::class, 'projectFile'])->name('project.file');
-Route::post('/projects', [ProjectController::class, 'getUserProjects'])->name('project.user');
-Route::post('/apk', [ProjectController::class, 'getProjectAPK'])->name('project.apk');
+Route::post('/file', [ProjectController::class, 'projectFile'])->name('api.project.file');
+Route::post('/projects', [ProjectController::class, 'getFirebaseUserProjects'])->name('api.project.user');
+Route::post('/apk', [ProjectController::class, 'getProjectAPK'])->name('api.project.apk');
 
 //Route::post('/login', function (Request $request) {
 //    $validator = Validator::make($request->all(), [

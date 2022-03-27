@@ -31,7 +31,7 @@ class UserController extends Controller
             'birth' => ['required', 'date', 'date_format:YYYY-MM-DD'],
             'description' => ['required', 'string', 'max:250'],
         ]));
-        return Redirect::route('users.index')->with('successMessage', 'User was successfully added');
+        return Redirect::route('users.index')->with('success', 'User was successfully added');
     }
 
     public function edit(User $user)

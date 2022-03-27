@@ -17,7 +17,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -26,25 +26,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
 
-    Route::get('/home', function () {
-        return Inertia::render('Home');
-    })->name('home');
-    Route::get('/blocks', function () {
-        return Inertia::render('Blockly');
-    })->name('blocks');
-    Route::get('/profile', function () {
-        return Inertia::render('Profile/Show');
-    })->name('profile');
-    Route::get('/index', function () {
-        return Inertia::render('API/Index');
-    })->name('index');
+    Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
+    Route::get('/blocks', static fn() => Inertia::render('Blockly'))->name('blocks');
+    Route::get('/profile', static fn() => Inertia::render('Profile/Show'))->name('profile');
+    Route::get('/index', static fn() => Inertia::render('API/Index'))->name('index');
 
 });
-Route::get('/administration', function () {
-    return Inertia::render('dashboard');
-})->name('administration');
+Route::get('/administration', static fn() => Inertia::render('dashboard'))->name('administration');
 
 Route::get('/administration/users', [UserController::class, 'index'])->name('user.index');
 Route::get('/administration/user/create', [UserController::class, 'create'])->name('user.create');
@@ -54,15 +44,19 @@ Route::patch('/administration/user/{user}', [UserController::class, 'update'])->
 Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore');
 
+Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
+Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
+//Route::get('/project/{project}/apk', [ProjectController::class, ''])->name('project.apk');
+Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
 
 Route::get('/download', [ProjectController::class, 'testDownload'])->name('download');
-Route::get('/editor', function () {
-    return Inertia::render('Editor');
-})->name('editor');
+Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects'])->name('download');
+Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
 
 
-Route::get('storage/{file}', function ($file) {
+Route::get('storage/{file}', static function ($file) {
 //    $path = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $file);
-    $path = Storage::url($file);
-    return response()->file($path);
+//    $path = Storage::url($file);
+//    return Response::file($path);
+    return Storage::disk('public')->download($file);
 });
