@@ -23,10 +23,17 @@ class Project extends Model
 
     public function getProjectsByUser($id)
     {
-        return $this->where('user_id', $id)->get();
+        return User::find($id)->projects;
     }
 
-    public function user()
+//    public function getProjectAPK($id)
+//    {
+//        // todo
+//        $this->where('id', $id)->get()->project_files;
+//        return $this->where('user_id', $id)->get();
+//    }
+
+    public function owner()
     {
         return $this->belongsTo(User::class);
     }
