@@ -16,7 +16,7 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')->constrained('users');
+            $table->string('directory_name');
             //            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });

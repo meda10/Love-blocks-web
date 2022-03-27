@@ -17,6 +17,7 @@ class CreateUserProjectTable extends Migration
             $table->primary(['user_id', 'project_id']);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('project_id')->constrained('projects');
+            $table->boolean('owner')->default('0');
 //            $table->timestamps();
         });
     }

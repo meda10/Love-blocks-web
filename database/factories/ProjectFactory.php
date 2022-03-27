@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ProjectFactory extends Factory
 {
@@ -24,7 +25,7 @@ class ProjectFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'directory_name' => Str::random(32),
             'created_at' => now(),
             'updated_at' => now(),
         ];
