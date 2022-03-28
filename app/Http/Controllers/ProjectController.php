@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Exception\MessagingException;
@@ -189,7 +188,7 @@ class ProjectController extends Controller
         $project = Project::find($request['id']);
         $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
         Storage::disk('public')->makeDirectory($outputDirName);
-        $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.zip';
+        $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
         if ($this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
             return Response::json(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name']]);
@@ -198,6 +197,7 @@ class ProjectController extends Controller
     }
 
     /**
+     * Create .love file from project
      * @param $projectDirectory
      * @param $outputFilePath
      * @return bool
@@ -246,7 +246,7 @@ class ProjectController extends Controller
 
             $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
             Storage::disk('public')->makeDirectory($outputDirName);
-            $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.zip';
+            $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
             if (!$this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
                 return Redirect::route('project.show', $project)->with('error', 'Something went wrong, can not send message to Android, try again later.');
