@@ -33,6 +33,15 @@ RUN apk add --no-cache \
     libpng-dev \
     libjpeg-turbo-dev
 
+#RUN apk add --no-cache libzip-dev \
+#    && docker-php-ext-configure zip \
+#    --with-libzip=/usr/include \
+#    && docker-php-ext-install zip
+
+RUN apk add --no-cache \
+  libzip-dev zip \
+  && docker-php-ext-install zip
+
 RUN docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg
