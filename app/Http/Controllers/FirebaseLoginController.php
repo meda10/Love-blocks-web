@@ -9,8 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -19,10 +17,11 @@ class FirebaseLoginController extends Controller
 {
 
     /**
+     * For Android -> Login android user
      * @param Request $request
      * @return JsonResponse
      */
-    public function login(Request $request): JsonResponse
+    public function loginAndroidUser(Request $request): JsonResponse
     {
         $auth = Firebase::auth();
         $user = User::where('email', $request['email'])->first();
@@ -35,7 +34,7 @@ class FirebaseLoginController extends Controller
             $user->firebaseUID = $customToken->toString();
             $user->FCM_token = $request['fcm_token'];
             $user->save();
-        } catch (AuthException|FirebaseException $e) {
+        } catch (AuthException|FirebaseException) {
             return response()->json(['errors' => ['error' => 'Can not login, try again later']]);
         }
 
@@ -48,11 +47,12 @@ class FirebaseLoginController extends Controller
     }
 
     /**
+     * For Android -> Register android user
      * @param Request $request
      * @param CreateNewUserFirebase $createNewUserFirebase
      * @return JsonResponse
      */
-    public function register(Request $request, CreateNewUserFirebase $createNewUserFirebase): JsonResponse
+    public function registerAndroidUser(Request $request, CreateNewUserFirebase $createNewUserFirebase): JsonResponse
     {
         $user = User::where('email', '=', $request['email'])->first();
         if ($user !== null) {
@@ -84,11 +84,12 @@ class FirebaseLoginController extends Controller
     }
 
     /**
+     * For Android -> Refresh FCM token
      * @param Request $request
      * @param FirebaseUserAuthAction $firebaseUserAuthAction
      * @return JsonResponse
      */
-    public function token(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
+    public function refreshFCMToken(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
     {
         $id = $firebaseUserAuthAction->execute($request['id_token']);
         if (array_key_exists('error', $id)) {
@@ -102,4 +103,3 @@ class FirebaseLoginController extends Controller
         return response()->json(['errors' => ['error' => null]]);
     }
 }
-

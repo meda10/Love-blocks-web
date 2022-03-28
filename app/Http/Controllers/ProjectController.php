@@ -7,23 +7,24 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use App\Models\User;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
-use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use Response;
 use Str;
+use ZipArchive;
 
 class ProjectController extends Controller
 {
@@ -41,7 +42,6 @@ class ProjectController extends Controller
     /**
      * Store project + project files
      * @param Request $request
-     * @param User $user
      * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse
@@ -158,34 +158,6 @@ class ProjectController extends Controller
         return Redirect::back()->with('error', 'Please sign in.');
     }
 
-    public function projectFile(Request $request): JsonResponse
-    {
-        //todo find project by ID -> find files -> download files
-        $file_path = 'x.jpg';
-        try {
-            if (Storage::exists($file_path)) {
-                Storage::setVisibility($file_path, 'public');
-
-                $file = Storage::get($file_path);
-                $path = Storage::path($file_path);
-                $url = Storage::url($file_path);
-                $visibility = Storage::getVisibility($file_path);
-                $allFiles = Storage::allFiles('/');
-//                ddd($allFiles);
-
-                return Response::json([
-                    'url' => $url,
-                    'name' => $file_path,
-                ]);
-//                 $headers = ['Content-Type: image/jpg'];
-//                 return Response::download($path, 'x.jpg', $headers);
-            }
-            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
-        } catch (FileNotFoundException $e) {
-            return Response::json(['errors' => ['error' => 'Could not download project']]);
-        }
-    }
-
     /**
      * For Android -> returns all projects of Firebase user
      * @param Request $request
@@ -206,34 +178,51 @@ class ProjectController extends Controller
      * For Android -> returns .love file for project
      * @param Request $request
      * @param FirebaseUserAuthAction $firebaseUserAuthAction
-     * @param Project $project
      * @return JsonResponse
      */
-    public function getProjectFile(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction, Project $project): JsonResponse
+    public function getProjectsLoveFile(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
     {
         $user = $firebaseUserAuthAction->execute($request['id_token']);
         if (array_key_exists('error', $user)) {
             return Response::json(['errors' => ['error' => $user['error']]]);
         }
-        $projectFiles = Project::find($request['id'])->project_files;
-        //todo make .love file
+        $project = Project::find($request['id']);
+        $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
+        Storage::disk('public')->makeDirectory($outputDirName);
+        $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.zip';
 
-        //todo return .love file for download
-        return Response::json(['file' => 'https://XXX']);
+        if ($this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
+            return Response::json(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name']]);
+        }
+        return Response::json(['errors' => ['error' => 'Could not download project']]);
     }
 
-//    public function getProjectAPK(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction, Project $project): JsonResponse
-//    {
-//        $user = $firebaseUserAuthAction->execute($request['id_token']);
-//        if (array_key_exists('error', $user)) {
-//            return Response::json(['errors' => ['error' => $user['error']]]);
-//        }
-//        $projectFiles = Project::find($request['id'])->project_files;
-//        //todo make APK from project files
-//
-//        //todo return APK for download
-//        return Response::json(['apk' => 'https://APK../']);
-//    }
+    /**
+     * @param $projectDirectory
+     * @param $outputFilePath
+     * @return bool
+     */
+    private function createLoveFile($projectDirectory, $outputFilePath): bool
+    {
+        $zip = new ZipArchive();
+        $tempFile = tmpfile();
+        $tempFileUri = stream_get_meta_data($tempFile)['uri'] . '.zip';
+        $fullFilePath = Storage::disk('public')->path($outputFilePath);
+
+        if ($zip->open($tempFileUri, ZipArchive::CREATE) !== TRUE) {
+            return false;
+        }
+
+        $files = File::files(Storage::path('projects' . DIRECTORY_SEPARATOR . $projectDirectory));
+        foreach ($files as $value) {
+            if (!$zip->addFile($value->getPathname(), $value->getBasename())) {
+                return false;
+            }
+        }
+        $zip->close();
+        File::move($tempFileUri, $fullFilePath);
+        return true;
+    }
 
     /**
      * Sends FCM to Android app
@@ -255,45 +244,74 @@ class ProjectController extends Controller
             }
             $config = AndroidConfig::new()->withHighPriority();
 
-            //todo make APK
-            //todo make .love File
+            $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
+            Storage::disk('public')->makeDirectory($outputDirName);
+            $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.zip';
 
+            if (!$this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
+                return Redirect::route('project.show', $project)->with('error', 'Something went wrong, can not send message to Android, try again later.');
+            }
             $message = CloudMessage::withTarget('token', $user['FCM_token'])
                 ->withAndroidConfig($config)
-                ->withData(['apk' => '', 'file' => '']);
-
+                ->withData(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name']]);
             $messaging->send($message);
-        } catch (MessagingException|FirebaseException $e) {
+        } catch (MessagingException|FirebaseException) {
             return Redirect::route('project.show', $project)->with('error', 'Can not not find valid token. Press refresh token in your application');
         }
         return Redirect::route('project.show', $project)->with('success', 'Open you\'r android device');
     }
 
-    public function testDownload()
-    {
-        //todo find project by ID -> find files -> download files
-        $file_path = 'x.jpg';
-        try {
-            if (Storage::exists($file_path)) {
-                Storage::setVisibility($file_path, 'public');
+//    public function testDownload()
+//    {
+//        $file_path = 'x.jpg';
+//        try {
+//            if (Storage::exists($file_path)) {
+//                Storage::setVisibility($file_path, 'public');
+//
+//                $file = Storage::get($file_path);
+//                $path = Storage::path($file_path);
+//                $url = Storage::url($file_path);
+//                $visibility = Storage::getVisibility($file_path);
+//                $allFiles = Storage::allFiles('/');
+////                ddd($allFiles);
+//
+////                 return Response::json([
+////                     'url' => $url,
+////                     'name' => $file_path,
+////                 ]);
+//                $headers = ['Content-Type: image/jpg'];
+//                return Response::download($path, 'x.jpg', $headers);
+//            }
+//            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
+//        } catch (FileNotFoundException $e) {
+//            return Response::json(['errors' => ['error' => 'Could not download project']]);
+//        }
+//    }
 
-                $file = Storage::get($file_path);
-                $path = Storage::path($file_path);
-                $url = Storage::url($file_path);
-                $visibility = Storage::getVisibility($file_path);
-                $allFiles = Storage::allFiles('/');
-//                ddd($allFiles);
-
-//                 return Response::json([
-//                     'url' => $url,
-//                     'name' => $file_path,
-//                 ]);
-                $headers = ['Content-Type: image/jpg'];
-                return Response::download($path, 'x.jpg', $headers);
-            }
-            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
-        } catch (FileNotFoundException $e) {
-            return Response::json(['errors' => ['error' => 'Could not download project']]);
-        }
-    }
+//    public function projectFile(Request $request): JsonResponse
+//    {
+//        $file_path = 'x.jpg';
+//        try {
+//            if (Storage::exists($file_path)) {
+//                Storage::setVisibility($file_path, 'public');
+//
+//                $file = Storage::get($file_path);
+//                $path = Storage::path($file_path);
+//                $url = Storage::url($file_path);
+//                $visibility = Storage::getVisibility($file_path);
+//                $allFiles = Storage::allFiles('/');
+////                ddd($allFiles);
+//
+//                return Response::json([
+//                    'url' => $url,
+//                    'name' => $file_path,
+//                ]);
+////                 $headers = ['Content-Type: image/jpg'];
+////                 return Response::download($path, 'x.jpg', $headers);
+//            }
+//            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
+//        } catch (FileNotFoundException $e) {
+//            return Response::json(['errors' => ['error' => 'Could not download project']]);
+//        }
+//    }
 }

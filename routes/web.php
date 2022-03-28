@@ -49,7 +49,6 @@ Route::get('/project/{project}/update', [ProjectController::class, 'update'])->n
 //Route::get('/project/{project}/apk', [ProjectController::class, ''])->name('project.apk');
 Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
 
-Route::get('/download', [ProjectController::class, 'testDownload'])->name('download');
 Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects'])->name('download');
 Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
 
