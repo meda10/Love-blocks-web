@@ -13,13 +13,14 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/inertia-vue3'
+import { Head, usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout'
 import ButtonLink from '@/Shared/ButtonLink'
 import { Inertia } from '@inertiajs/inertia'
 import { mdiMoonWaningCrescent, mdiWeatherSunny } from '@mdi/js'
-import { ref } from 'vue'
 import Icon from '@/Shared/Icon'
+import { useMessage } from 'naive-ui'
+import { computed, onMounted, watch, ref } from 'vue'
 
 export default {
   name: 'Home',
@@ -30,13 +31,25 @@ export default {
   },
   layout: AppLayout,
   setup() {
-    const theme = ref(localStorage.getItem('theme'))
+    const message = useMessage()
+    const flash = computed(() => usePage().props.value.flash)
 
+    onMounted(() => {
+      if (flash.value.success != null) message.success(flash.value.success)
+      if (flash.value.error != null) message.error(flash.value.error)
+    })
+
+    watch(flash, () => {
+      console.log('watch')
+      console.log(flash.value.success)
+      flash.value.success ? message.success(flash.value.success) : message.error(flash.value.error)
+    })
+
+    const theme = ref(localStorage.getItem('theme'))
     if (theme.value === null || theme.value === undefined || theme.value === '') {
       localStorage.setItem('theme', 'dark')
       theme.value = localStorage.getItem('theme')
     }
-
     const changeTheme = () => {
       theme.value = localStorage.getItem('theme')
       if (theme.value === 'dark') {
@@ -52,6 +65,7 @@ export default {
     const logout = () => {
       Inertia.post(route('logout'))
     }
+
     return {
       logout,
       theme,
