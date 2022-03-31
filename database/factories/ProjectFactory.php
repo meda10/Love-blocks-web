@@ -24,7 +24,7 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->userName(),
             'directory_name' => Str::random(32),
             'created_at' => now(),
             'updated_at' => now(),
