@@ -1,6 +1,10 @@
 <template>
+  <Head :title="title" />
   <n-card>
-    <n-tabs :tabs-padding="20" justify-content="space-evenly" pane-style="padding: 20px;" size="large" type="segment">
+    <n-tabs :tabs-padding="20" default-value="Login" justify-content="space-evenly" pane-style="padding: 20px;"
+            size="large"
+            type="segment"
+            @update:value="handleUpdateValue">
       <n-tab-pane name="Login">
         <n-form :label-width="80" :model="form" size="medium">
           <n-form-item :feedback="form.errors.email"
@@ -28,30 +32,31 @@
       </n-tab-pane>
       <n-tab-pane name="Register">
         <n-form :label-width="80" :model="form" size="medium">
-          <n-form-item :feedback="form_reg.errors.name"
-                       :validation-status="form_reg.errors.name != null ? 'error' : 'success'"
+          <n-form-item :feedback="registrationForm.errors.name"
+                       :validation-status="registrationForm.errors.name != null ? 'error' : 'success'"
                        label="Name" path="name">
-            <n-input v-model:value="form_reg.name" placeholder="Name" />
+            <n-input v-model:value="registrationForm.name" placeholder="Name" />
           </n-form-item>
-          <n-form-item :feedback="form_reg.errors.email"
-                       :validation-status="form_reg.errors.email != null ? 'error' : 'success'"
+          <n-form-item :feedback="registrationForm.errors.email"
+                       :validation-status="registrationForm.errors.email != null ? 'error' : 'success'"
                        label="E-mail" path="email">
-            <n-input v-model:value="form_reg.email" placeholder="E-mail" />
+            <n-input v-model:value="registrationForm.email" placeholder="E-mail" />
           </n-form-item>
-          <n-form-item :feedback="form_reg.errors.password"
-                       :validation-status="form_reg.errors.password != null ? 'error' : 'success'"
+          <n-form-item :feedback="registrationForm.errors.password"
+                       :validation-status="registrationForm.errors.password != null ? 'error' : 'success'"
                        label="Password" path="password">
-            <n-input v-model:value="form_reg.password" placeholder="Password" show-password-on="mousedown"
+            <n-input v-model:value="registrationForm.password" placeholder="Password" show-password-on="mousedown"
                      type="password" />
           </n-form-item>
-          <n-form-item :feedback="form_reg.errors.password_confirmation"
-                       :validation-status="form_reg.errors.password_confirmation != null ? 'error' : 'success'"
+          <n-form-item :feedback="registrationForm.errors.password_confirmation"
+                       :validation-status="registrationForm.errors.password_confirmation != null ? 'error' : 'success'"
                        label="Password" path="password">
-            <n-input v-model:value="form_reg.password_confirmation" placeholder="Password" show-password-on="mousedown"
+            <n-input v-model:value="registrationForm.password_confirmation" placeholder="Password"
+                     show-password-on="mousedown"
                      type="password" />
           </n-form-item>
         </n-form>
-        <n-button :block="true" :strong="true" type="primary" @click="submit_reg">Register</n-button>
+        <n-button :block="true" :strong="true" type="primary" @click="submitReg">Register</n-button>
         <socialstream-providers v-if="$page.props.socialstream.show" />
       </n-tab-pane>
     </n-tabs>
@@ -59,14 +64,15 @@
 </template>
 
 <script>
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, Head, useForm } from '@inertiajs/inertia-vue3'
 import LoginLayout from '@/Layouts/LoginLayout'
 import SocialstreamProviders from '@/Socialstream/Providers'
+import { ref } from 'vue'
 
 export default {
-  metaInfo: { title: 'Login' },
   components: {
     Link,
+    Head,
     SocialstreamProviders,
   },
   layout: LoginLayout,
@@ -74,33 +80,45 @@ export default {
     canResetPassword: Boolean,
     status: String,
   },
-  data() {
-    return {
-      form: this.$inertia.form({
-        email: '',
-        password: '',
-        remember: false,
-      }),
-      form_reg: this.$inertia.form({
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        terms: false,
-      }),
+  setup() {
+    const title = ref('Login')
+    const form = useForm({
+      email: '',
+      password: '',
+      remember: false,
+    })
+
+    const registrationForm = useForm({
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+      terms: false,
+    })
+
+    const submit = () => {
+      form.transform(data => ({ ...data, remember: form.remember ? 'on' : '' }))
+        .post(route('login'), { onFinish: () => form.reset('password') })
     }
-  },
-  methods: {
-    submit() {
-      this.form
-        .transform(data => ({ ...data, remember: this.form.remember ? 'on' : '' }))
-        .post(this.route('login'), { onFinish: () => this.form.reset('password') })
-    },
-    submit_reg() {
-      this.form_reg.post(this.route('register'), {
-        onFinish: () => this.form_reg.reset('password', 'password_confirmation'),
+
+    const submitReg = () => {
+      registrationForm.post(route('register'), {
+        onFinish: () => registrationForm.reset('password', 'password_confirmation'),
       })
-    },
+    }
+
+    const handleUpdateValue = (value) => {
+      title.value = value
+    }
+
+    return {
+      submit,
+      submitReg,
+      title,
+      form,
+      registrationForm,
+      handleUpdateValue,
+    }
   },
 }
 </script>
