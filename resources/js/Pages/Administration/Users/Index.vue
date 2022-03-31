@@ -13,9 +13,8 @@
 import Administration from '@/Layouts/Administration'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-vue3'
-import { h, ref, watch, computed } from 'vue'
+import { h, ref, watch, computed, onMounted } from 'vue'
 import { NButton, useMessage } from 'naive-ui'
-import { onMounted } from 'vue/dist/vue';
 
 export default {
   metaInfo: { title: 'Users' },
