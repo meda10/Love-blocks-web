@@ -1,5 +1,5 @@
 <template>
-  <div id="monaco-container" style="width:800px; height:600px; border:1px solid #ccc;" />
+  <div id="monaco-container" style="width:100%; height:100%;" />
 </template>
 <script>
 import { onMounted, ref, onUnmounted, watch, toRefs } from 'vue'
@@ -40,6 +40,7 @@ export default {
           theme: 'vs-dark',
           tabSize: 2,
           minimap: { enabled: false },
+          automaticLayout: true,
         }
         editor = result.editor.create(document.getElementById('monaco-container'), editorOptions)
         MonacoServices.install(result)

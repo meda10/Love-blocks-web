@@ -34,11 +34,6 @@
         "vfonts": "^0.0.3"
     },
     "dependencies": {
-        "autoprefixer": "^10.4.2",
-        "postcss": "^8.4.6",
-        "tailwindcss": "^3.0.0",
-        "naive-ui": "^2.26.4",
-        "vue-loader": "^16.1.2",
         "@blockly/theme-dark": "^3.0.3",
         "@codingame/monaco-jsonrpc": "^0.3.1",
         "@inertiajs/inertia": "^0.11.0",
@@ -48,17 +43,23 @@
         "@monaco-editor/loader": "^1.2.0",
         "@vueform/multiselect": "^2.2.0",
         "@vueuse/core": "^8.1.1",
+        "autoprefixer": "^10.4.2",
         "axios": "^0.26.0",
         "blockly": "^7.20211209.4",
         "laravel-mix": "^6.0.43",
         "love.js": "^11.3.1",
         "monaco-languageclient": "^0.18.0",
+        "naive-ui": "^2.26.4",
+        "postcss": "^8.4.6",
         "postcss-import": "^14.0.2",
         "postcss-purgecss-laravel": "^2.0.0",
         "reconnecting-websocket": "^4.4.0",
+        "splitpanes": "^3.1.1",
         "tailwind-scrollbar": "^1.3.1",
+        "tailwindcss": "^3.0.0",
         "unplugin-vue-components": "^0.18.0",
         "vue": "^3.2.31",
+        "vue-loader": "^16.1.2",
         "ws": "^8.3.0"
     }
 }

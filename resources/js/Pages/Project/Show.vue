@@ -1,21 +1,44 @@
 <template>
-  <div>Project SHOW</div>
+  <Head :title="title"></Head>
+  <div class="flex-grow">
+    <splitpanes class="default-theme" style="height: 100%">
+      <pane min-size="25">
+        <editor />
+      </pane>
+      <pane>
+        <splitpanes horizontal>
+          <pane>2</pane>
+          <pane>3</pane>
+        </splitpanes>
+      </pane>
+    </splitpanes>
+  </div>
+  <slot name="interpret" />
 </template>
 
 <script>
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import { useMessage } from 'naive-ui'
 import { computed, watch, onMounted } from 'vue'
-import { usePage } from '@inertiajs/inertia-vue3'
+import { usePage, Head } from '@inertiajs/inertia-vue3'
+import Editor from '@/Pages/Editor'
+import { Splitpanes, Pane } from '../../../../node_modules/splitpanes/dist/splitpanes.es'
 
 export default {
   name: 'Show',
   metaInfo: { title: 'Project' },
+  components: {
+    Editor,
+    Head,
+    Splitpanes,
+    Pane,
+  },
   layout: ProjectLayout,
   props: {
     project: Object,
   },
-  setup() {
+  setup(props) {
+    const title = computed(() => props.project.name)
     const message = useMessage()
     const flash = computed(() => usePage().props.value.flash)
 
@@ -25,12 +48,13 @@ export default {
     })
 
     watch(flash, () => {
-      console.log('watch')
       console.log(flash.value.success)
       flash.value.success ? message.success(flash.value.success) : message.error(flash.value.error)
     })
 
-    return {}
+    return {
+      title,
+    }
   },
 }
 </script>
