@@ -1,6 +1,12 @@
 <template>
-  <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
-  <!--  <n-button :block="true" :strong="true" type="primary" @click="sendMSG">Send MSG</n-button>-->
+  <div class="flex flex-row flex-nowrap justify-end">
+    <n-space align="center" justify="center">
+      <n-button :block="true" :strong="true" size="small" type="primary" @click="downloadToAndroid">
+        Download to Android
+      </n-button>
+    </n-space>
+    <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
+  </div>
 </template>
 
 <script>
@@ -22,8 +28,6 @@ export default {
   setup(props) {
     const activeKey = ref(null)
     const user = computed(() => usePage().props.value.user)
-    console.log(user)
-    console.log(user.value)
 
     const menuOptions = [
       {
@@ -56,7 +60,7 @@ export default {
       return () => h(NIcon, null, { default: () => h(icon) })
     }
 
-    const sendMSG = () => {
+    const downloadToAndroid = () => {
       Inertia.get(route('project.download', { project: props.project.id }), {}, {
         preserveState: true,
         preserveScroll: true,
@@ -65,7 +69,7 @@ export default {
     }
 
     return {
-      sendMSG,
+      downloadToAndroid,
       activeKey,
       menuOptions,
     }

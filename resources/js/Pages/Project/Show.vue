@@ -1,6 +1,6 @@
 <template>
   <Head :title="title"></Head>
-  <top-panel />
+  <top-panel :project="project" />
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
       <pane min-size="25">
