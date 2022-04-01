@@ -13,7 +13,7 @@
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { h, ref, computed } from 'vue'
-import { NIcon } from 'naive-ui'
+import { NIcon, useDialog } from 'naive-ui'
 import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
@@ -26,9 +26,23 @@ export default {
     project: Object,
   },
   setup(props) {
+    const dialog = useDialog()
     const activeKey = ref(null)
     const user = computed(() => usePage().props.value.user)
 
+    // const getUserProjects = computed(() => Inertia.get(route('project.user', { user: user.value })))
+    // console.log(getUserProjects.value)
+
+    const userProjects = () => {
+      dialog.success({
+        title: 'Success',
+        content: 'Cool',
+        positiveText: 'Wow!',
+        // onPositiveClick: () => {
+        //   message.success('Great!')
+        // },
+      })
+    }
     const menuOptions = [
       {
         label: () => h('div', {}, { default: () => user.value === null ? 'Profile' : user.value.name }),
@@ -38,6 +52,11 @@ export default {
           {
             label: () => h(Link, { href: route('profile.show') }, { default: () => 'Edit' }),
             key: 'edit',
+            icon: renderIcon(CreateIcon),
+          },
+          {
+            label: () => h(Link, { href: route('project.user') }, { default: () => 'Projects' }),
+            key: 'projects',
             icon: renderIcon(CreateIcon),
           },
           {

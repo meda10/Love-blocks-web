@@ -1,0 +1,113 @@
+<template>
+  <Head title="My Projects" />
+  <n-card title="My projects">
+    <n-data-table
+      ref="tableRef"
+      :columns="columns"
+      :data="projects"
+      :pagination="pagination"
+    />
+  </n-card>
+  <n-modal
+    v-model:show="showModalRef"
+    :mask-closable="false"
+    content="Are you sure?"
+    negative-text="Cancel"
+    positive-text="Confirm"
+    preset="dialog"
+    title="Dialog"
+    @positive-click="onPositiveClick"
+    @negative-click="onNegativeClick"
+  />
+</template>
+
+<script>
+import Administration from '@/Layouts/Administration'
+import { Inertia } from '@inertiajs/inertia'
+import { Head } from '@inertiajs/inertia-vue3'
+import { h, ref } from 'vue'
+import { NButton, NButtonGroup } from 'naive-ui'
+
+export default {
+  name: 'Index',
+  components: {
+    Head,
+  },
+  layout: Administration,
+  props: {
+    projects: Object,
+  },
+  setup() {
+    const showModalRef = ref(false)
+    const tableRef = ref(null)
+    const pagination = { pageSize: 5 }
+    const columns = [
+      {
+        title: 'Name',
+        key: 'name',
+        defaultSortOrder: 'ascend',
+        sorter: 'default',
+      },
+      {
+        title: 'Created at',
+        key: 'created_at',
+        sorter: 'default',
+        // sorter: (row1, row2) => row1.age - row2.age,
+      },
+      {
+        title: 'Action',
+        key: 'actions',
+        render(row) {
+          const deleteBtn = h(NButton, {
+            type: 'error',
+            size: 'small',
+            onClick: () => deleteItem(row.id),
+          }, { default: () => 'Delete' })
+          const shareBtn = h(NButton, {
+            type: 'info',
+            size: 'small',
+            onClick: () => shareItem(row.id),
+          }, { default: () => 'Share' })
+          return h(NButtonGroup, () => [deleteBtn, shareBtn])
+        },
+      },
+    ]
+
+    const onPositiveClick = () => {
+      // message.success("Submit");
+      showModalRef.value = false
+    }
+
+    const onNegativeClick = () => {
+      // message.success("Cancel")
+      showModalRef.value = false
+    }
+
+    const sortName = () => {
+      tableRef.value.sort('name', 'ascend')
+    }
+    const sortEmail = () => {
+      tableRef.value.sort('email', 'ascend')
+    }
+
+    const shareItem = (id) => {
+      // Inertia.delete(route('user.destroy', { user: id }))
+    }
+
+    const deleteItem = (id) => {
+      Inertia.delete(route('user.destroy', { user: id }))
+    }
+
+    return {
+      columns,
+      pagination,
+      tableRef,
+      sortName,
+      sortEmail,
+      showModalRef,
+      onNegativeClick,
+      onPositiveClick,
+    }
+  },
+}
+</script>

@@ -46,10 +46,10 @@ Route::put('/administration/user/{user}/restore', [UserController::class, 'resto
 
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
 Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
-//Route::get('/project/{project}/apk', [ProjectController::class, ''])->name('project.apk');
 Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
 
-Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects'])->name('download');
+Route::get('/user/projects', [ProjectController::class, 'getUserProjects'])->name('project.user');
+
 Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
 
 

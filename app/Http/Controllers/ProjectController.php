@@ -20,6 +20,7 @@ use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use Response;
 use Str;
@@ -123,13 +124,13 @@ class ProjectController extends Controller
 
     /**
      * Get all projects of current user
-     * @return AnonymousResourceCollection|RedirectResponse
+     * @return \Inertia\Response|RedirectResponse
      */
-    public function getUserProjects(): AnonymousResourceCollection|RedirectResponse
+    public function getUserProjects(): \Inertia\Response|RedirectResponse
     {
         if (Auth::check()) {
             $user = Auth::user();
-            return ProjectResource::collection($user->projects);
+            return Inertia::render('Project/Index', ['projects' => ProjectResource::collection($user->projects)]);
         }
         return Redirect::back()->with('error', 'Please sign in.');
     }
@@ -191,7 +192,7 @@ class ProjectController extends Controller
         $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
         if ($this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
-            return Response::json(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name']]);
+            return Response::json(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name'] . '.love']);
         }
         return Response::json(['errors' => ['error' => 'Could not download project']]);
     }
@@ -233,7 +234,7 @@ class ProjectController extends Controller
     {
         $user = $project->users()->wherePivot('owner', 1)->first();
         if ($user['FCM_token'] === null) {
-            return Redirect::route('project.show', $project)->with('error', 'Can not fond android device');
+            return Redirect::route('project.show', $project)->with('error', 'Can not find android device. Did you downloaded Love Block application?');
         }
         $messaging = Firebase::messaging();
 
@@ -253,12 +254,13 @@ class ProjectController extends Controller
             }
             $message = CloudMessage::withTarget('token', $user['FCM_token'])
                 ->withAndroidConfig($config)
-                ->withData(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name']]);
+                ->withNotification(Notification::create('New Msg', date('H:i:s')))
+                ->withData(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name'] . '.love']);
             $messaging->send($message);
         } catch (MessagingException|FirebaseException) {
             return Redirect::route('project.show', $project)->with('error', 'Can not not find valid token. Press refresh token in your application');
         }
-        return Redirect::route('project.show', $project)->with('success', 'Open you\'r android device');
+        return Redirect::route('project.show', $project)->with('success', 'Open your android device');
     }
 
 //    public function testDownload()
