@@ -56,7 +56,7 @@ export default {
       {
         title: 'Created at',
         key: 'created_at',
-        sorter: 'default',
+        // sorter: 'default',
         // sorter: (row1, row2) => row1.age - row2.age,
       },
       {
@@ -95,8 +95,8 @@ export default {
     })
 
     const onPositiveClick = () => {
-      console.log('Project: ' + currentProject.value + ' Email: ' + shareEmail.value)
-      Inertia.get(route('project.share', { project: currentProject.value, email: shareEmail.value }))
+      Inertia.post(route('project.share', { project: currentProject.value }), { email: shareEmail.value })
+      showModalRef.value = false
     }
 
     const onNegativeClick = () => {
@@ -106,11 +106,9 @@ export default {
     const sortName = () => {
       tableRef.value.sort('name', 'ascend')
     }
-    const sortEmail = () => {
-      tableRef.value.sort('email', 'ascend')
-    }
 
     const shareItem = (id) => {
+      shareEmail.value = null
       showModalRef.value = true
       currentProject.value = id
     }
@@ -130,7 +128,6 @@ export default {
       shareEmail,
       showModalRef,
       sortName,
-      sortEmail,
       onNegativeClick,
       onPositiveClick,
     }

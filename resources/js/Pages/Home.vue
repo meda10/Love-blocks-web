@@ -1,24 +1,35 @@
 <template>
   <Head title="Home" />
-  <h1>HOMESCREAN</h1>
-  <ButtonLink :href="route('login')" component-style="btn btn-primary" label="Login" />
-  <ButtonLink :href="route('register')" component-style="btn btn-primary" label="Register" />
-  <ButtonLink :href="route('blocks')" component-style="btn btn-primary" label="Blockly" />
-  <form class="w-full" @submit.prevent="logout">
-    <ButtonLink :button="true" component-style="btn btn-primary" label="Log Out" type="submit" />
-  </form>
-  <button class="btn btn-square btn-ghost" @click="changeTheme">
-    <Icon :path="theme === 'dark' ? mdiWeatherSunny : mdiMoonWaningCrescent" :size="24" />
-  </button>
+  <h1>Home</h1>
+  <n-divider />
+  <Link :href="route('project.user')">Projects</Link>
+  <Link :href="route('login')">Login</Link>
+  <n-space align="center" justify="center">
+    <n-button :block="true" :strong="true" size="small" type="primary" @click="logout">
+      Log out
+    </n-button>
+    <n-button :block="true" :strong="true" size="small" type="primary" @click="createProject">
+      Create Project
+    </n-button>
+  </n-space>
+  <n-modal
+    v-model:show="showModalRef"
+    :mask-closable="false"
+    negative-text="Cancel"
+    positive-text="Create"
+    preset="dialog"
+    title="Project Name"
+    @positive-click="onPositiveClick"
+    @negative-click="onNegativeClick">
+    <n-input v-model:value="projectName" placeholder="Project name" />
+  </n-modal>
 </template>
 
 <script>
-import { Head, usePage } from '@inertiajs/inertia-vue3'
+import { Head, usePage, Link } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout'
-import ButtonLink from '@/Shared/ButtonLink'
 import { Inertia } from '@inertiajs/inertia'
 import { mdiMoonWaningCrescent, mdiWeatherSunny } from '@mdi/js'
-import Icon from '@/Shared/Icon'
 import { useMessage } from 'naive-ui'
 import { computed, onMounted, watch, ref } from 'vue'
 
@@ -26,12 +37,13 @@ export default {
   name: 'Home',
   components: {
     Head,
-    ButtonLink,
-    Icon,
+    Link,
   },
   layout: AppLayout,
   setup() {
     const message = useMessage()
+    const showModalRef = ref(false)
+    const projectName = ref(null)
     const flash = computed(() => usePage().props.value.flash)
 
     onMounted(() => {
@@ -65,12 +77,31 @@ export default {
       Inertia.post(route('logout'))
     }
 
+    const onPositiveClick = () => {
+      Inertia.post(route('project.create'), { name: projectName.value })
+      showModalRef.value = false
+    }
+
+    const onNegativeClick = () => {
+      showModalRef.value = false
+    }
+
+    const createProject = () => {
+      showModalRef.value = true
+      projectName.value = null
+    }
+
     return {
-      logout,
       theme,
-      changeTheme,
+      projectName,
+      showModalRef,
       mdiWeatherSunny,
       mdiMoonWaningCrescent,
+      logout,
+      changeTheme,
+      onNegativeClick,
+      onPositiveClick,
+      createProject,
     }
   },
 }

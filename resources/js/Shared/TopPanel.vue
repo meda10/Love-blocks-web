@@ -7,13 +7,24 @@
     </n-space>
     <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
   </div>
+  <n-modal
+    v-model:show="showModalRef"
+    :mask-closable="false"
+    negative-text="Cancel"
+    positive-text="Confirm"
+    preset="dialog"
+    title="Share Project"
+    @positive-click="onPositiveClick"
+    @negative-click="onNegativeClick">
+    <n-input v-model:value="shareEmail" placeholder="E-mail" />
+  </n-modal>
 </template>
 
 <script>
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-vue3'
-import { h, ref, computed } from 'vue'
-import { NIcon, useDialog } from 'naive-ui'
+import { h, ref, computed, watch } from 'vue'
+import { NIcon, NModal, useMessage } from 'naive-ui'
 import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
@@ -22,27 +33,21 @@ import {
 
 export default {
   name: 'TopPanel',
+  components: {
+    NModal,
+  },
   props: {
     project: Object,
   },
   setup(props) {
-    const dialog = useDialog()
+    const message = useMessage()
+    const validationErrors = computed(() => usePage().props.value.errors)
     const activeKey = ref(null)
+    const shareEmail = ref(null)
+    const currentProject = ref(null)
+    const showModalRef = ref(false)
     const user = computed(() => usePage().props.value.user)
 
-    // const getUserProjects = computed(() => Inertia.get(route('project.user', { user: user.value })))
-    // console.log(getUserProjects.value)
-
-    const userProjects = () => {
-      dialog.success({
-        title: 'Success',
-        content: 'Cool',
-        positiveText: 'Wow!',
-        // onPositiveClick: () => {
-        //   message.success('Great!')
-        // },
-      })
-    }
     const menuOptions = [
       {
         label: () => h('div', {}, { default: () => user.value === null ? 'Profile' : user.value.name }),
@@ -57,6 +62,15 @@ export default {
           {
             label: () => h(Link, { href: route('project.user') }, { default: () => 'Projects' }),
             key: 'projects',
+            icon: renderIcon(CreateIcon),
+          },
+          {
+            label: () => h('div', {
+              onClick: () => {
+                share()
+              },
+            }, { default: () => 'Share' }),
+            key: 'share',
             icon: renderIcon(CreateIcon),
           },
           {
@@ -75,6 +89,25 @@ export default {
       },
     ]
 
+    watch(validationErrors, () => {
+      if (validationErrors.value.email != null) message.error(validationErrors.value.email)
+    })
+
+    const onPositiveClick = () => {
+      Inertia.post(route('project.share', { project: currentProject.value }), { email: shareEmail.value })
+      showModalRef.value = false
+    }
+
+    const onNegativeClick = () => {
+      showModalRef.value = false
+    }
+
+    const share = () => {
+      shareEmail.value = null
+      showModalRef.value = true
+      currentProject.value = props.project.id
+    }
+
     function renderIcon(icon) {
       return () => h(NIcon, null, { default: () => h(icon) })
     }
@@ -88,9 +121,13 @@ export default {
     }
 
     return {
-      downloadToAndroid,
       activeKey,
       menuOptions,
+      showModalRef,
+      shareEmail,
+      downloadToAndroid,
+      onPositiveClick,
+      onNegativeClick,
     }
   },
 }

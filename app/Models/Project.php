@@ -12,13 +12,12 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $casts = [
-        'user_id' => 'int',
-        'id' => 'int'
+        'id' => 'int',
     ];
 
     protected $fillable = [
         'name',
-        'user_id'
+        'directory_name'
     ];
 
     public function getProjectsByUser($id)

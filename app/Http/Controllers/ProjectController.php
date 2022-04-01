@@ -46,11 +46,31 @@ class ProjectController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return RedirectResponse|\Inertia\Response
+     */
+    public function store(Request $request): \Inertia\Response|RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $project = Project::create([
+            'directory_name' => Str::random(32),
+            'name' => $request['name'],
+        ]);
+        if (Auth::check()) {
+            $project->users()->attach(Auth::user(), ['owner' => 1]);
+            return Redirect::route('project.show', $project);
+        }
+        return Inertia::render('Project/Show', ['project' => $project]);
+    }
+
+    /**
      * Store project + project files
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function storeFiles(Request $request): RedirectResponse
     {
         $request->validate([
             'file_name' => 'required|string|max:255',
@@ -171,10 +191,10 @@ class ProjectController extends Controller
             $owner = $project->users()->wherePivot('owner', 1)->first();
             if ($owner['id'] === Auth::id()) {
                 $user = User::where('email', $request['email'])->first();
-                $project->users()->attach($user['id']);
+                $project->users()->syncWithoutDetaching($user['id']);
                 return Redirect::back()->with('success', 'Project was shared.');
             }
-            return Redirect::back()->with('warning', 'Can\'t share project, you are not the owner.');
+            return Redirect::back()->with('error', 'Can\'t share project, you are not the owner.');
         }
         return Redirect::back()->with('error', 'Please sign in.');
     }
@@ -253,6 +273,8 @@ class ProjectController extends Controller
      */
     public function sendMessageToAndroid(Project $project): RedirectResponse
     {
+        return Redirect::back()->with('error', 'Please sign in.');
+
         $user = $project->users()->wherePivot('owner', 1)->first();
         if ($user['FCM_token'] === null) {
             return Redirect::route('project.show', $project)->with('error', 'Can not find android device. Did you downloaded Love Block application?');

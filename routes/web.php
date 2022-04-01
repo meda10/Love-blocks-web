@@ -33,9 +33,12 @@ Route::group(['middleware' => 'auth'], static function () {
     Route::get('/profile', static fn() => Inertia::render('Profile/Show'))->name('profile');
     Route::get('/index', static fn() => Inertia::render('API/Index'))->name('index');
 
+    Route::get('/user/projects', [ProjectController::class, 'index'])->name('project.user');
+    Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
 });
-Route::get('/administration', static fn() => Inertia::render('dashboard'))->name('administration');
 
+
+Route::get('/administration', static fn() => Inertia::render('dashboard'))->name('administration');
 Route::get('/administration/users', [UserController::class, 'index'])->name('user.index');
 Route::get('/administration/user/create', [UserController::class, 'create'])->name('user.create');
 Route::post('/administration/users', [UserController::class, 'store'])->name('user.store');
@@ -44,13 +47,11 @@ Route::patch('/administration/user/{user}', [UserController::class, 'update'])->
 Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore');
 
+Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
 Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
-Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
-Route::get('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
-
-Route::get('/user/projects', [ProjectController::class, 'index'])->name('project.user');
+Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
 
 Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
 
