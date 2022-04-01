@@ -18,6 +18,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'created_at' => $this->created_at->format('d M Y, H:i a'),
         ];
     }
 }
