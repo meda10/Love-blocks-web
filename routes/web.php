@@ -45,10 +45,12 @@ Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])
 Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore');
 
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
+Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
 Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
+Route::get('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
 
-Route::get('/user/projects', [ProjectController::class, 'getUserProjects'])->name('project.user');
+Route::get('/user/projects', [ProjectController::class, 'index'])->name('project.user');
 
 Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
 

@@ -11,22 +11,22 @@
   <n-modal
     v-model:show="showModalRef"
     :mask-closable="false"
-    content="Are you sure?"
     negative-text="Cancel"
     positive-text="Confirm"
     preset="dialog"
-    title="Dialog"
+    title="Share Project"
     @positive-click="onPositiveClick"
-    @negative-click="onNegativeClick"
-  />
+    @negative-click="onNegativeClick">
+    <n-input v-model:value="shareEmail" placeholder="E-mail" />
+  </n-modal>
 </template>
 
 <script>
 import Administration from '@/Layouts/Administration'
 import { Inertia } from '@inertiajs/inertia'
-import { Head } from '@inertiajs/inertia-vue3'
-import { h, ref } from 'vue'
-import { NButton, NButtonGroup } from 'naive-ui'
+import { Head, usePage } from '@inertiajs/inertia-vue3'
+import { h, ref, computed, onMounted, watch } from 'vue'
+import { NButton, NButtonGroup, useMessage } from 'naive-ui'
 
 export default {
   name: 'Index',
@@ -38,6 +38,11 @@ export default {
     projects: Object,
   },
   setup() {
+    const message = useMessage()
+    const flash = computed(() => usePage().props.value.flash)
+    const validationErrors = computed(() => usePage().props.value.errors)
+    const shareEmail = ref(null)
+    const currentProject = ref(null)
     const showModalRef = ref(false)
     const tableRef = ref(null)
     const pagination = { pageSize: 5 }
@@ -58,6 +63,11 @@ export default {
         title: 'Action',
         key: 'actions',
         render(row) {
+          const openBtn = h(NButton, {
+            type: 'info',
+            size: 'small',
+            onClick: () => openItem(row.id),
+          }, { default: () => 'open' })
           const deleteBtn = h(NButton, {
             type: 'error',
             size: 'small',
@@ -68,18 +78,28 @@ export default {
             size: 'small',
             onClick: () => shareItem(row.id),
           }, { default: () => 'Share' })
-          return h(NButtonGroup, () => [deleteBtn, shareBtn])
+          return h(NButtonGroup, () => [openBtn, shareBtn, deleteBtn])
         },
       },
     ]
 
+    onMounted(() => {
+      if (flash.value.success != null) message.success(flash.value.success)
+      if (flash.value.error != null) message.error(flash.value.error)
+      if (validationErrors.value.email != null) message.error(validationErrors.value.email)
+    })
+
+    watch(flash, () => {
+      if (flash.value.success != null) message.success(flash.value.success)
+      if (flash.value.error != null) message.error(flash.value.error)
+    })
+
     const onPositiveClick = () => {
-      // message.success("Submit");
-      showModalRef.value = false
+      console.log('Project: ' + currentProject.value + ' Email: ' + shareEmail.value)
+      Inertia.get(route('project.share', { project: currentProject.value, email: shareEmail.value }))
     }
 
     const onNegativeClick = () => {
-      // message.success("Cancel")
       showModalRef.value = false
     }
 
@@ -91,20 +111,26 @@ export default {
     }
 
     const shareItem = (id) => {
-      // Inertia.delete(route('user.destroy', { user: id }))
+      showModalRef.value = true
+      currentProject.value = id
     }
 
     const deleteItem = (id) => {
-      Inertia.delete(route('user.destroy', { user: id }))
+      Inertia.delete(route('project.destroy', { project: id }))
+    }
+
+    const openItem = (id) => {
+      Inertia.get(route('project.show', { project: id }))
     }
 
     return {
       columns,
       pagination,
       tableRef,
+      shareEmail,
+      showModalRef,
       sortName,
       sortEmail,
-      showModalRef,
       onNegativeClick,
       onPositiveClick,
     }

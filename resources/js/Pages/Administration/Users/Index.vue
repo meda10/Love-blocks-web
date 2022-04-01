@@ -34,7 +34,8 @@ export default {
     })
 
     watch(flash, () => {
-      flash.value.success ? message.success(flash.value.success) : message.error(flash.value.error)
+      if (flash.value.success != null) message.success(flash.value.success)
+      if (flash.value.error != null) message.error(flash.value.error)
     })
 
     const pagination = { pageSize: 5 }
