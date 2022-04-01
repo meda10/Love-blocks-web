@@ -32,11 +32,17 @@ class ProjectController extends Controller
     /**
      * Show Project
      * @param Project $project
-     * @return \Inertia\Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function show(Project $project): \Inertia\Response
+    public function show(Project $project): \Inertia\Response|RedirectResponse
     {
-        return Inertia::render('Project/Show', ['project' => $project]);
+        if (Auth::check()) {
+            if ($project->userHasAccess(Auth::user())) {
+                return Inertia::render('Project/Show', ['project' => $project]);
+            }
+            abort(403);
+        }
+        return Redirect::back()->with('error', 'Please sign in.');
     }
 
     /**
@@ -122,11 +128,26 @@ class ProjectController extends Controller
         return Redirect::back()->with('success', 'Project was saved');
     }
 
+    public function destroy(Project $project): RedirectResponse
+    {
+        if (Auth::check()) {
+            if (Auth::id() === $project->getProjectOwner()['id']) {
+                File::deleteDirectory(Storage::path('projects' . DIRECTORY_SEPARATOR . $project['directory_name']));
+                $project->files()->delete();
+                $project->users()->detach();
+                $project->delete();
+                return Redirect::back()->with('success', 'Project was deleted');
+            }
+            return Redirect::back()->with('error', 'Can not delete, you are not project owner.');
+        }
+        return Redirect::back()->with('error', 'Please sign in.');
+    }
+
     /**
      * Get all projects of current user
      * @return \Inertia\Response|RedirectResponse
      */
-    public function getUserProjects(): \Inertia\Response|RedirectResponse
+    public function index(): \Inertia\Response|RedirectResponse
     {
         if (Auth::check()) {
             $user = Auth::user();

@@ -26,20 +26,27 @@ class Project extends Model
         return User::find($id)->projects;
     }
 
-//    public function getProjectAPK($id)
-//    {
-//        // todo
-//        $this->where('id', $id)->get()->project_files;
-//        return $this->where('user_id', $id)->get();
-//    }
-
-    public function owner()
+    public function getProjectOwner()
     {
-        return $this->belongsTo(User::class);
+        return $this->users()->wherePivot('owner', '1')->first();
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_project');
+        return $this->belongsToMany(User::class, 'user_project')->withPivot('owner');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(ProjectFile::class);
+    }
+
+    public function userHasAccess(User $user): bool
+    {
+        $users = $this->users()->get();
+        if ($users->contains($user)) {
+            return true;
+        }
+        return false;
     }
 }
