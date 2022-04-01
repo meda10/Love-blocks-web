@@ -28,7 +28,6 @@ import TopPanel from '@/Shared/TopPanel'
 
 export default {
   name: 'Show',
-  metaInfo: { title: 'Project' },
   components: {
     Editor,
     Head,
