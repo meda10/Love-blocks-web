@@ -1,5 +1,6 @@
 <template>
   <Head :title="title"></Head>
+  <top-panel />
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
       <pane min-size="25">
@@ -23,6 +24,7 @@ import { computed, watch, onMounted } from 'vue'
 import { usePage, Head } from '@inertiajs/inertia-vue3'
 import Editor from '@/Pages/Editor'
 import { Splitpanes, Pane } from '../../../../node_modules/splitpanes/dist/splitpanes.es'
+import TopPanel from '@/Shared/TopPanel'
 
 export default {
   name: 'Show',
@@ -32,6 +34,7 @@ export default {
     Head,
     Splitpanes,
     Pane,
+    TopPanel,
   },
   layout: ProjectLayout,
   props: {
