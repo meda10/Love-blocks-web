@@ -35,6 +35,12 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'user_project')->withPivot('owner');
     }
 
+    public function isProjectOwner(User $user): bool
+    {
+        $owner = $this->users()->wherePivot('owner', '1')->first();
+        return $user['id'] === $owner['id'];
+    }
+
     public function files()
     {
         return $this->hasMany(ProjectFile::class);

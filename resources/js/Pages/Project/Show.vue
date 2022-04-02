@@ -1,6 +1,6 @@
 <template>
   <Head :title="title"></Head>
-  <top-panel :project="project" />
+  <top-panel :owner="owner" :project="project" />
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
       <pane min-size="25">
@@ -38,6 +38,7 @@ export default {
   layout: ProjectLayout,
   props: {
     project: Object,
+    owner: Boolean,
   },
   setup(props) {
     const title = computed(() => props.project.name)

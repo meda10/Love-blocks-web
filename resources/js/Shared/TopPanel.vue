@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-row flex-nowrap justify-end">
     <n-space align="center" justify="center">
-      <n-button :block="true" :strong="true" size="small" type="primary" @click="downloadToAndroid">
+      <n-button :block="true" :disabled="!owner" :strong="true" size="small" type="primary" @click="downloadToAndroid">
         Download to Android
       </n-button>
-      <n-button :block="true" :strong="true" size="small" type="primary" @click="share">
+      <n-button :block="true" :disabled="!owner" :strong="true" size="small" type="primary" @click="share">
         <template #icon>
           <n-icon>
             <share-icon />
@@ -47,6 +47,7 @@ export default {
   },
   props: {
     project: Object,
+    owner: Boolean,
   },
   setup(props) {
     const message = useMessage()

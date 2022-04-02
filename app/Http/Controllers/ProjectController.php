@@ -38,7 +38,7 @@ class ProjectController extends Controller
     {
         if (Auth::check()) {
             if ($project->userHasAccess(Auth::user())) {
-                return Inertia::render('Project/Show', ['project' => $project]);
+                return Inertia::render('Project/Show', ['project' => $project, 'owner' => $project->isProjectOwner(Auth::user())]);
             }
             abort(403);
         }
@@ -62,7 +62,7 @@ class ProjectController extends Controller
             $project->users()->attach(Auth::user(), ['owner' => 1]);
             return Redirect::route('project.show', $project);
         }
-        return Inertia::render('Project/Show', ['project' => $project]);
+        return Inertia::render('Project/Show', ['project' => $project, 'owner' => false]);
     }
 
     /**
@@ -273,8 +273,6 @@ class ProjectController extends Controller
      */
     public function sendMessageToAndroid(Project $project): RedirectResponse
     {
-        return Redirect::back()->with('error', 'Please sign in.');
-
         $user = $project->users()->wherePivot('owner', 1)->first();
         if ($user['FCM_token'] === null) {
             return Redirect::route('project.show', $project)->with('error', 'Can not find android device. Did you downloaded Love Block application?');
