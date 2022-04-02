@@ -43,7 +43,7 @@
         "@mdi/js": "^6.4.95",
         "@monaco-editor/loader": "^1.2.0",
         "@vueform/multiselect": "^2.2.0",
-        "@vueuse/core": "^8.1.1",
+        "@vueuse/core": "^8.2.3",
         "autoprefixer": "^10.4.2",
         "axios": "^0.26.0",
         "blockly": "^7.20211209.4",
