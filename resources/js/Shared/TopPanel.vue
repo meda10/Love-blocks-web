@@ -4,6 +4,13 @@
       <n-button :block="true" :strong="true" size="small" type="primary" @click="downloadToAndroid">
         Download to Android
       </n-button>
+      <n-button :block="true" :strong="true" size="small" type="primary" @click="share">
+        <template #icon>
+          <n-icon>
+            <share-icon />
+          </n-icon>
+        </template>
+      </n-button>
     </n-space>
     <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
   </div>
@@ -29,12 +36,14 @@ import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
   LogOutOutline as LogOutIcon,
+  ShareOutline as ShareIcon,
 } from '@vicons/ionicons5'
 
 export default {
   name: 'TopPanel',
   components: {
     NModal,
+    ShareIcon,
   },
   props: {
     project: Object,
@@ -62,15 +71,6 @@ export default {
           {
             label: () => h(Link, { href: route('project.user') }, { default: () => 'Projects' }),
             key: 'projects',
-            icon: renderIcon(CreateIcon),
-          },
-          {
-            label: () => h('div', {
-              onClick: () => {
-                share()
-              },
-            }, { default: () => 'Share' }),
-            key: 'share',
             icon: renderIcon(CreateIcon),
           },
           {
@@ -103,9 +103,11 @@ export default {
     }
 
     const share = () => {
-      shareEmail.value = null
-      showModalRef.value = true
-      currentProject.value = props.project.id
+      if (user.value != null) {
+        shareEmail.value = null
+        showModalRef.value = true
+        currentProject.value = props.project.id
+      } else message.error('Please Sign In')
     }
 
     function renderIcon(icon) {
@@ -113,11 +115,13 @@ export default {
     }
 
     const downloadToAndroid = () => {
-      Inertia.get(route('project.download', { project: props.project.id }), {}, {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-      })
+      if (user.value != null) {
+        Inertia.get(route('project.download', { project: props.project.id }), {}, {
+          preserveState: true,
+          preserveScroll: true,
+          replace: true,
+        })
+      } else message.error('Please Sign In')
     }
 
     return {
@@ -125,6 +129,7 @@ export default {
       menuOptions,
       showModalRef,
       shareEmail,
+      share,
       downloadToAndroid,
       onPositiveClick,
       onNegativeClick,

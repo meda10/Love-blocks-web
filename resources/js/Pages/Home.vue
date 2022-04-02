@@ -30,7 +30,7 @@ import { Head, usePage, Link } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout'
 import { Inertia } from '@inertiajs/inertia'
 import { mdiMoonWaningCrescent, mdiWeatherSunny } from '@mdi/js'
-import { useMessage } from 'naive-ui'
+import { useMessage, useDialog } from 'naive-ui'
 import { computed, onMounted, watch, ref } from 'vue'
 
 export default {
@@ -42,6 +42,8 @@ export default {
   layout: AppLayout,
   setup() {
     const message = useMessage()
+    const dialog = useDialog()
+    const user = computed(() => usePage().props.value.user)
     const showModalRef = ref(false)
     const projectName = ref(null)
     const flash = computed(() => usePage().props.value.flash)
@@ -86,9 +88,25 @@ export default {
       showModalRef.value = false
     }
 
-    const createProject = () => {
+    const createProjectNotSignedIn = () => {
+      dialog.warning({
+        title: 'Confirm',
+        content: 'You are not signed in! If you create project your data won\'t be saved',
+        positiveText: 'Create',
+        negativeText: 'Cancel',
+        onPositiveClick: () => {
+          Inertia.get(route('project.host'))
+        },
+      })
+    }
+
+    const createProjectSignedIn = () => {
       showModalRef.value = true
       projectName.value = null
+    }
+
+    const createProject = () => {
+      user.value === null ? createProjectNotSignedIn() : createProjectSignedIn()
     }
 
     return {

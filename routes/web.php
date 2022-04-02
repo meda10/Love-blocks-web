@@ -47,6 +47,7 @@ Route::patch('/administration/user/{user}', [UserController::class, 'update'])->
 Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore');
 
+Route::get('/project/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
 Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
 Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');

@@ -1,13 +1,10 @@
 <template>
   <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">
-    <n-message-provider>
-      <!--      <div>-->
-      <Head :title="title" />
-      <!--        <main>-->
-      <slot />
-      <!--        </main>-->
-      <!--      </div>-->
-    </n-message-provider>
+    <n-dialog-provider>
+      <n-message-provider>
+        <slot />
+      </n-message-provider>
+    </n-dialog-provider>
   </n-config-provider>
 </template>
 
