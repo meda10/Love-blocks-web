@@ -8,7 +8,9 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane>2</pane>
+          <pane>
+            <Interpret />
+          </pane>
           <pane>3</pane>
         </splitpanes>
       </pane>
@@ -25,10 +27,12 @@ import { usePage, Head } from '@inertiajs/inertia-vue3'
 import Editor from '@/Pages/Project/Editor/Editor'
 import { Splitpanes, Pane } from '../../../../node_modules/splitpanes/dist/splitpanes.es'
 import TopPanel from '@/Shared/TopPanel'
+import Interpret from '@/Pages/Project/Interpret/Interpret'
 
 export default {
   name: 'Show',
   components: {
+    Interpret,
     Editor,
     Head,
     Splitpanes,
