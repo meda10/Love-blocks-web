@@ -2,7 +2,7 @@ import { useMessage } from 'naive-ui'
 import { usePage } from '@inertiajs/inertia-vue3'
 import { onMounted, watch, computed } from 'vue'
 
-export default function () {
+export default () => {
   const message = useMessage()
   const flash = computed(() => usePage().props.value.flash)
 

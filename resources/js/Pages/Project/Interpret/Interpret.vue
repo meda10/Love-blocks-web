@@ -19,7 +19,8 @@
                 @click="changeGameMode">
         <template #icon>
           <n-icon>
-            <power-icon />
+            <play-icon v-show="gameMode" />
+            <pause-icon v-show="!gameMode" />
           </n-icon>
         </template>
       </n-button>
@@ -36,13 +37,13 @@
 
 <script>
 import { Head } from '@inertiajs/inertia-vue3'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onBeforeUnmount } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import useMessaging from '@/messages'
 import {
-  PowerOutline as PowerIcon,
   RefreshOutline as RefreshIcon,
   PlayOutline as PlayIcon,
+  PauseOutline as PauseIcon,
 } from '@vicons/ionicons5'
 
 // https://github.com/Davidobot/love.js
@@ -50,9 +51,9 @@ export default {
   name: 'Interpret',
   components: {
     Head,
-    PowerIcon,
     RefreshIcon,
     PlayIcon,
+    PauseIcon,
   },
   layout: ProjectLayout,
   props: {
@@ -63,34 +64,40 @@ export default {
     const show = ref(false)
     const refText = ref('')
     const refCanvas = ref(false)
-    const gameMode = ref(false)
+    const gameMode = ref(true)
 
     const refreshGame = () => {
 
     }
 
     const keyPressListener = (event) => {
-      console.log(event)
-      console.log(event.target)
       event.stopImmediatePropagation()
-      // if (event.target.localName === 'textarea') {
-      //   event.stopImmediatePropagation()
-      // }
     }
 
     const changeGameMode = () => {
       if (gameMode.value) {
         message.info('Game mode is on. Your keyboard input will be used for the game.')
-        console.log('Turning off game mode')
+        console.log('Turning on game mode')
         gameMode.value = false
         window.removeEventListener('keypress', keyPressListener, true)
+        window.removeEventListener('keydown', keyPressListener, true)
+        window.removeEventListener('keyup', keyPressListener, true)
       } else {
         message.info('Game mode is off.')
-        console.log('Turning on game mode')
+        console.log('Turning off game mode')
         gameMode.value = true
         window.addEventListener('keypress', keyPressListener, true)
+        window.addEventListener('keydown', keyPressListener, true)
+        window.addEventListener('keyup', keyPressListener, true)
       }
     }
+
+    onBeforeUnmount(() => {
+      console.log('Turning off game mode')
+      window.addEventListener('keypress', keyPressListener, true)
+      window.addEventListener('keydown', keyPressListener, true)
+      window.addEventListener('keyup', keyPressListener, true)
+    })
 
     onMounted(() => {
       const love = require('../../../../../storage/app/public/download/E4HNfXMMxaEp3EOKTwhoRVqtJ19rzqas/game_old/love.js')

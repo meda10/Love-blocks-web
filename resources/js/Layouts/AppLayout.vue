@@ -10,14 +10,10 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { Head } from '@inertiajs/inertia-vue3'
 import { darkTheme } from 'naive-ui'
 
 export default defineComponent({
   name: 'AppLayout',
-  components: {
-    Head,
-  },
   props: {
     title: String,
   },
