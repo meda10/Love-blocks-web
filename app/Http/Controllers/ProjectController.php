@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use App\Models\User;
+use ErrorException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,6 +47,7 @@ class ProjectController extends Controller
     }
 
     /**
+     * Stores Project to DB
      * @param Request $request
      * @return RedirectResponse|\Inertia\Response
      */
@@ -148,6 +150,11 @@ class ProjectController extends Controller
         return Redirect::back()->with('success', 'Project was saved');
     }
 
+    /**
+     * Destroy Project
+     * @param Project $project
+     * @return RedirectResponse
+     */
     public function destroy(Project $project): RedirectResponse
     {
         if (Auth::check()) {
@@ -262,7 +269,11 @@ class ProjectController extends Controller
             }
         }
         $zip->close();
-        File::move($tempFileUri, $fullFilePath);
+        try {
+            File::move($tempFileUri, $fullFilePath);
+        } catch (ErrorException) {
+            return false;
+        }
         return true;
     }
 
@@ -295,7 +306,7 @@ class ProjectController extends Controller
             }
             $message = CloudMessage::withTarget('token', $user['FCM_token'])
                 ->withAndroidConfig($config)
-                ->withNotification(Notification::create('New Msg', date('H:i:s')))
+                ->withNotification(Notification::create('Open project', $project['name']))
                 ->withData(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name'] . '.love']);
             $messaging->send($message);
         } catch (MessagingException|FirebaseException) {
