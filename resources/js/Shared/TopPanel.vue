@@ -1,21 +1,10 @@
 <template>
   <div class="flex flex-row flex-nowrap justify-end">
-    <n-space align="center" justify="center">
-      <n-button :disabled="!owner" :strong="true" size="small" type="primary" @click="downloadToAndroid">
-        Download to Android
-      </n-button>
-      <n-button :disabled="!owner" :strong="true" size="small" type="primary" @click="share">
-        <template #icon>
-          <n-icon>
-            <share-icon />
-          </n-icon>
-        </template>
-      </n-button>
-    </n-space>
+    <n-menu v-model:value="activeProfileMenu" :options="projectMenuOptions" mode="horizontal" />
     <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
   </div>
   <n-modal
-    v-model:show="showModalRef"
+    v-model:show="showShareModalRef"
     :mask-closable="false"
     negative-text="Cancel"
     positive-text="Confirm"
@@ -36,14 +25,15 @@ import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
   LogOutOutline as LogOutIcon,
+  BookOutline as BookIcon,
   ShareOutline as ShareIcon,
+  DownloadOutline as DownloadIcon,
 } from '@vicons/ionicons5'
 
 export default {
   name: 'TopPanel',
   components: {
     NModal,
-    ShareIcon,
   },
   props: {
     project: Object,
@@ -53,10 +43,51 @@ export default {
     const message = useMessage()
     const validationErrors = computed(() => usePage().props.value.errors)
     const activeKey = ref(null)
+    const activeProfileMenu = ref(null)
     const shareEmail = ref(null)
     const currentProject = ref(null)
-    const showModalRef = ref(false)
+    const showShareModalRef = ref(false)
     const user = computed(() => usePage().props.value.user)
+
+    const projectMenuOptions = [
+      {
+        label: () => h('div', {}, { default: () => 'Project' }),
+        key: 'project',
+        icon: renderIcon(PersonIcon),
+        children: [
+          {
+            label: () => h('div', { onClick: () => share() }, { default: () => 'Share' }),
+            key: 'share',
+            disabled: !props.owner,
+            icon: renderIcon(ShareIcon),
+          },
+          {
+            label: () => h('div', { onClick: () => downloadToAndroid() }, { default: () => 'Download to Android' }),
+            key: 'download',
+            icon: renderIcon(DownloadIcon),
+          },
+          {
+            label: () => h(Link, { href: route('project.files', { project: props.project }) }, { default: () => 'Files' }),
+            key: 'files',
+            icon: renderIcon(BookIcon),
+          },
+          // {
+          //   label: () => h(NUpload, {
+          //       ref: uploadRef.value,
+          //       customRequest: fileUpload,
+          //       // customRequest: () => fileUpload(this),
+          //       // action: route('file.upload', { project: props.project }),
+          //       defaultUpload: true,
+          //       multiple: false,
+          //       showFileList: false,
+          //     },
+          //     { default: () => 'Upload file' }),
+          //   key: 'signOut',
+          //   icon: renderIcon(UploadIcon),
+          // },
+        ],
+      },
+    ]
 
     const menuOptions = [
       {
@@ -72,7 +103,7 @@ export default {
           {
             label: () => h(Link, { href: route('project.user') }, { default: () => 'Projects' }),
             key: 'projects',
-            icon: renderIcon(CreateIcon),
+            icon: renderIcon(BookIcon),
           },
           {
             label: () => h(user.value === null ? Link : 'div', user.value === null
@@ -92,21 +123,22 @@ export default {
 
     watch(validationErrors, () => {
       if (validationErrors.value.email != null) message.error(validationErrors.value.email)
+      if (validationErrors.value.file != null) message.error(validationErrors.value.file)
     })
 
     const onPositiveClick = () => {
       Inertia.post(route('project.share', { project: currentProject.value }), { email: shareEmail.value })
-      showModalRef.value = false
+      showShareModalRef.value = false
     }
 
     const onNegativeClick = () => {
-      showModalRef.value = false
+      showShareModalRef.value = false
     }
 
     const share = () => {
       if (user.value != null) {
         shareEmail.value = null
-        showModalRef.value = true
+        showShareModalRef.value = true
         currentProject.value = props.project.id
       } else message.error('Please Sign In')
     }
@@ -127,8 +159,10 @@ export default {
 
     return {
       activeKey,
+      activeProfileMenu,
       menuOptions,
-      showModalRef,
+      projectMenuOptions,
+      showShareModalRef,
       shareEmail,
       share,
       downloadToAndroid,
