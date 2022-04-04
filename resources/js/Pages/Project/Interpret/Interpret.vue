@@ -5,7 +5,27 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no, minimum-scale=1, maximum-scale=1"
           name="viewport" />
   </Head>
-  <n-space align="center" class="h-full" justify="center" vertical="true" wrap="false">
+  <div class="absolute right-0 pr-2 mt-2 z-50">
+    <div class=" flex flex-row flex-nowrap">
+      <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                @click="refreshGame">
+        <template #icon>
+          <n-icon>
+            <refresh-icon />
+          </n-icon>
+        </template>
+      </n-button>
+      <n-button :strong="true" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
+                @click="changeGameMode">
+        <template #icon>
+          <n-icon>
+            <power-icon />
+          </n-icon>
+        </template>
+      </n-button>
+    </div>
+  </div>
+  <n-space :vertical="true" :wrap="false" align="center" class="h-full" justify="center">
     <n-spin :show="show">
       <canvas v-show="!show" id="canvas" ref="refCanvas" class="h-full w-full pr-0 border-0"
               oncontextmenu="return false;" />
@@ -18,28 +38,69 @@
 import { Head } from '@inertiajs/inertia-vue3'
 import { onMounted, ref } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
+import useMessaging from '@/messages'
+import {
+  PowerOutline as PowerIcon,
+  RefreshOutline as RefreshIcon,
+  PlayOutline as PlayIcon,
+} from '@vicons/ionicons5'
 
+// https://github.com/Davidobot/love.js
 export default {
   name: 'Interpret',
   components: {
     Head,
+    PowerIcon,
+    RefreshIcon,
+    PlayIcon,
   },
   layout: ProjectLayout,
-  props: {},
+  props: {
+    directory: String,
+  },
   setup() {
+    const { message } = useMessaging()
     const show = ref(false)
     const refText = ref('')
     const refCanvas = ref(false)
+    const gameMode = ref(false)
+
+    const refreshGame = () => {
+
+    }
+
+    const keyPressListener = (event) => {
+      console.log(event)
+      console.log(event.target)
+      event.stopImmediatePropagation()
+      // if (event.target.localName === 'textarea') {
+      //   event.stopImmediatePropagation()
+      // }
+    }
+
+    const changeGameMode = () => {
+      if (gameMode.value) {
+        message.info('Game mode is on. Your keyboard input will be used for the game.')
+        console.log('Turning off game mode')
+        gameMode.value = false
+        window.removeEventListener('keypress', keyPressListener, true)
+      } else {
+        message.info('Game mode is off.')
+        console.log('Turning on game mode')
+        gameMode.value = true
+        window.addEventListener('keypress', keyPressListener, true)
+      }
+    }
 
     onMounted(() => {
       const love = require('../../../../../storage/app/public/download/E4HNfXMMxaEp3EOKTwhoRVqtJ19rzqas/game_old/love.js')
 
-      window.addEventListener('keydown', function (e) {
-        // space and arrow keys
-        if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-          e.preventDefault()
-        }
-      }, false)
+      window.onload = () => {
+        window.focus()
+      }
+      window.onclick = () => {
+        window.focus()
+      }
 
       const getCanvas = () => {
         const canvas = refCanvas.value
@@ -343,6 +404,9 @@ export default {
       show,
       refCanvas,
       refText,
+      gameMode,
+      refreshGame,
+      changeGameMode,
     }
   },
 }

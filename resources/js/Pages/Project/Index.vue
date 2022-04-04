@@ -25,8 +25,9 @@
 import Administration from '@/Layouts/Administration'
 import { Inertia } from '@inertiajs/inertia'
 import { Head, usePage } from '@inertiajs/inertia-vue3'
-import { h, ref, computed, onMounted, watch } from 'vue'
-import { NButton, NButtonGroup, useMessage } from 'naive-ui'
+import { h, ref, computed, onMounted } from 'vue'
+import { NButton, NButtonGroup } from 'naive-ui'
+import useMessaging from '@/messages'
 
 export default {
   name: 'Index',
@@ -38,8 +39,7 @@ export default {
     projects: Object,
   },
   setup() {
-    const message = useMessage()
-    const flash = computed(() => usePage().props.value.flash)
+    const { message } = useMessaging()
     const validationErrors = computed(() => usePage().props.value.errors)
     const shareEmail = ref(null)
     const currentProject = ref(null)
@@ -84,14 +84,7 @@ export default {
     ]
 
     onMounted(() => {
-      if (flash.value.success != null) message.success(flash.value.success)
-      if (flash.value.error != null) message.error(flash.value.error)
       if (validationErrors.value.email != null) message.error(validationErrors.value.email)
-    })
-
-    watch(flash, () => {
-      if (flash.value.success != null) message.success(flash.value.success)
-      if (flash.value.error != null) message.error(flash.value.error)
     })
 
     const onPositiveClick = () => {

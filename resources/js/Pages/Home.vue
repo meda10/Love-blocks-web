@@ -30,8 +30,9 @@ import { Head, usePage, Link } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout'
 import { Inertia } from '@inertiajs/inertia'
 import { mdiMoonWaningCrescent, mdiWeatherSunny } from '@mdi/js'
-import { useMessage, useDialog } from 'naive-ui'
-import { computed, onMounted, watch, ref } from 'vue'
+import { useDialog } from 'naive-ui'
+import { computed, ref } from 'vue'
+import useMessaging from '@/messages'
 
 export default {
   name: 'Home',
@@ -41,22 +42,11 @@ export default {
   },
   layout: AppLayout,
   setup() {
-    const message = useMessage()
+    useMessaging()
     const dialog = useDialog()
     const user = computed(() => usePage().props.value.user)
     const showModalRef = ref(false)
     const projectName = ref(null)
-    const flash = computed(() => usePage().props.value.flash)
-
-    onMounted(() => {
-      if (flash.value.success != null) message.success(flash.value.success)
-      if (flash.value.error != null) message.error(flash.value.error)
-    })
-
-    watch(flash, () => {
-      if (flash.value.success != null) message.success(flash.value.success)
-      if (flash.value.error != null) message.error(flash.value.error)
-    })
 
     const theme = ref(localStorage.getItem('theme'))
     if (theme.value === null || theme.value === undefined || theme.value === '') {
