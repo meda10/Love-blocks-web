@@ -1,12 +1,7 @@
 <template>
   <Head title="My Projects" />
   <n-card title="My projects">
-    <n-data-table
-      ref="tableRef"
-      :columns="columns"
-      :data="projects"
-      :pagination="pagination"
-    />
+    <n-data-table ref="tableRef" :columns="columns" :data="projects" :pagination="pagination" />
   </n-card>
   <n-modal
     v-model:show="showModalRef"

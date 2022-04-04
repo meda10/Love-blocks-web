@@ -6,6 +6,7 @@ use App\Http\Resources\FileResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
@@ -24,7 +25,7 @@ class ProjectFileController extends Controller
     {
         if (Auth::check()) {
             if ($project->userHasAccess(Auth::user())) {
-                return Inertia::render('Project/Files/Index', ['files' => FileResource::collection($project['files']), 'projectName' => $project['name']]);
+                return Inertia::render('Project/Files/Index', ['files' => FileResource::collection($project['files']), 'project' => $project]);
             }
             abort(403);
         }
@@ -46,6 +47,28 @@ class ProjectFileController extends Controller
                 return Redirect::back()->with('success', 'File was deleted');
             }
             return Redirect::back()->with('error', 'Can not delete, you don\'t have access.');
+        }
+        return Redirect::back()->with('error', 'Please sign in.');
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function uploadFile(Project $project, Request $request): RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        if (Auth::check()) {
+            $file = $request->file('file');
+            $filePath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'file';
+            if (Storage::disk('local')->putFileAs($filePath, $file, $file->getClientOriginalName())) {
+                return Redirect::back()->with('success', 'File was uploaded');
+            }
+            return Redirect::back()->with('error', 'can not save...');
         }
         return Redirect::back()->with('error', 'Please sign in.');
     }

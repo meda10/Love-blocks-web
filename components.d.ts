@@ -22,6 +22,7 @@ declare module 'vue' {
     NSpin: typeof import('naive-ui')['NSpin']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
+    NUpload: typeof import('naive-ui')['NUpload']
   }
 }
 

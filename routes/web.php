@@ -53,10 +53,10 @@ Route::post('/project/create', [ProjectController::class, 'store'])->name('proje
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
 Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
-Route::post('/project/{project}/upload', [ProjectController::class, 'uploadFile'])->name('project.upload');
 Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
-Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
 
+Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadFile'])->name('file.upload');
+Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
 Route::delete('/file/{projectFile}', [ProjectFileController::class, 'destroy'])->name('file.destroy');
 
 Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');

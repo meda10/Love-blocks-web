@@ -1,12 +1,21 @@
 <template>
   <Head :title="title" />
   <n-card :title="title">
-    <n-data-table
-      ref="tableRef"
-      :columns="columns"
-      :data="files"
-      :pagination="pagination"
-    />
+    <n-space :size="12" vertical>
+      <n-space>
+        <n-upload ref="uploadRef" :custom-request="fileUpload" :default-upload="true" :show-file-list="false">
+          <n-button :strong="true" icon-placement="right" size="small" type="primary">
+            <template #icon>
+              <n-icon>
+                <upload-icon />
+              </n-icon>
+            </template>
+            Upload File
+          </n-button>
+        </n-upload>
+      </n-space>
+      <n-data-table ref="tableRef" :columns="columns" :data="files" :pagination="pagination" />
+    </n-space>
   </n-card>
 </template>
 
@@ -16,21 +25,26 @@ import { Head } from '@inertiajs/inertia-vue3'
 import { NButton } from 'naive-ui'
 import { Inertia } from '@inertiajs/inertia'
 import Administration from '@/Layouts/Administration'
-import useMessaging from '@/messages';
+import useMessaging from '@/messages'
+import {
+  CloudUploadOutline as UploadIcon,
+} from '@vicons/ionicons5'
 
 export default {
   name: 'Index',
   components: {
+    UploadIcon,
     Head,
   },
   layout: Administration,
   props: {
-    projectName: String,
+    project: Object,
     files: Object,
   },
   setup(props) {
     useMessaging()
-    const title = props.projectName + ' files'
+    const uploadRef = ref(null)
+    const title = props.project.name + ' files'
     const tableRef = ref(null)
     const pagination = { pageSize: 5 }
     const columns = [
@@ -67,12 +81,18 @@ export default {
       Inertia.delete(route('file.destroy', { projectFile: id }))
     }
 
+    const fileUpload = ({ file }) => {
+      Inertia.post((route('file.upload', { project: props.project })), { file: file.file })
+    }
+
     return {
+      uploadRef,
       title,
       columns,
       pagination,
       tableRef,
       sortName,
+      fileUpload,
     }
   },
 }

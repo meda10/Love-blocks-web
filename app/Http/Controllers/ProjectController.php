@@ -171,7 +171,7 @@ class ProjectController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            return Inertia::render('Project/Index', ['projects' => ProjectResource::collection($user->projects)]);
+            return Inertia::render('Project/Index', ['projects' => ProjectResource::collection($user['projects'])]);
         }
         return Redirect::back()->with('error', 'Please sign in.');
     }
