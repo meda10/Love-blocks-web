@@ -41,6 +41,13 @@ class ProjectFile extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function f($projectID)
+    {
+        return self::where('project_id', $projectID)->get(['name', 'file_path', 'id'])->mapWithKeys(function ($item, $key) {
+            return [$item['name'] => ['file_path' => $item['file_path'], 'id' => $item['id']]];
+        });
+    }
+
     public function getProjectFiles($projectID)
     {
         return self::where('project_id', $projectID)->get(['name', 'file_path', 'id'])->mapWithKeys(function ($item, $key) {
