@@ -64,8 +64,13 @@ class ProjectFileController extends Controller
 
         if (Auth::check()) {
             $file = $request->file('file');
-            $filePath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'file';
+            $filePath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'resources';
             if (Storage::disk('local')->putFileAs($filePath, $file, $file->getClientOriginalName())) {
+                ProjectFile::create([
+                    'name' => $file->getClientOriginalName(),
+                    'project_id' => $project['id'],
+                    'file_path' => $filePath,
+                ]);
                 return Redirect::back()->with('success', 'File was uploaded');
             }
             return Redirect::back()->with('error', 'can not save...');

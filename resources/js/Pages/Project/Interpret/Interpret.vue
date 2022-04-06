@@ -27,17 +27,17 @@
     </div>
   </div>
   <n-space :vertical="true" :wrap="false" align="center" class="h-full" justify="center">
-    <n-spin :show="show">
-      <canvas v-show="!show" id="canvas" ref="refCanvas" class="h-full w-full pr-0 border-0"
+    <n-spin :show="showSpinner">
+      <canvas v-show="show" id="canvas" ref="refCanvas" class="h-full w-full pr-0 border-0"
               oncontextmenu="return false;" />
     </n-spin>
-    <p v-show="show" class="mt-4">{{ refText }}</p>
+    <p v-show="!show" class="mt-4">{{ refText }}</p>
   </n-space>
 </template>
 
 <script>
-import { Head } from '@inertiajs/inertia-vue3'
-import { onMounted, ref, onBeforeUnmount } from 'vue'
+import { Head, usePage } from '@inertiajs/inertia-vue3'
+import { onMounted, ref, onBeforeUnmount, computed, onUnmounted } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import useMessaging from '@/messages'
 import {
@@ -45,6 +45,8 @@ import {
   PlayOutline as PlayIcon,
   PauseOutline as PauseIcon,
 } from '@vicons/ionicons5'
+import { Inertia } from '@inertiajs/inertia'
+import useListeners from '@/keyListeners'
 
 // https://github.com/Davidobot/love.js
 export default {
@@ -57,22 +59,21 @@ export default {
   },
   layout: ProjectLayout,
   props: {
-    directory: String,
+    project: Object,
+    gamePackage: Object,
   },
-  setup() {
+  setup(props) {
     const { message } = useMessaging()
+    const { keyPressListener } = useListeners()
+    const showSpinner = ref(false)
     const show = ref(false)
     const refText = ref('')
     const refCanvas = ref(false)
     const gameMode = ref(true)
-
-    const refreshGame = () => {
-
-    }
-
-    const keyPressListener = (event) => {
-      event.stopImmediatePropagation()
-    }
+    const user = computed(() => usePage().props.value.user)
+    const gamePackage = computed(() => props.gamePackage)
+    const PACKAGE_PATH = '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/'
+    const wasmBinaryFile = window.top.origin + '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/love.wasm'
 
     const changeGameMode = () => {
       if (gameMode.value) {
@@ -92,15 +93,20 @@ export default {
       }
     }
 
-    onBeforeUnmount(() => {
-      console.log('Turning off game mode')
-      window.addEventListener('keypress', keyPressListener, true)
-      window.addEventListener('keydown', keyPressListener, true)
-      window.addEventListener('keyup', keyPressListener, true)
+    onMounted(() => {
+      if (gamePackage.value === null || typeof gamePackage.value === 'undefined') {
+        refText.value = 'Game is not loaded. Press refresh button.'
+        show.value = false
+        showSpinner.value = false
+      } else if (user.value.id === null) {
+        show.value = false
+        showSpinner.value = false
+        refText.value = 'Interpret only works if you sign in'
+      }
     })
 
-    onMounted(() => {
-      const love = require('../../../../../storage/app/public/download/E4HNfXMMxaEp3EOKTwhoRVqtJ19rzqas/game_old/love.js')
+    const runGame = () => {
+      const love = require('@/love')
 
       window.onload = () => {
         window.focus()
@@ -125,10 +131,12 @@ export default {
         canvas: getCanvas(),
         setStatus: text => {
           if (text) {
-            show.value = true
-            refText.value = text
-          } else if (Module.remainingDependencies === 0) {
             show.value = false
+            refText.value = text
+            showSpinner.value = true
+          } else if (Module.remainingDependencies === 0) {
+            show.value = true
+            showSpinner.value = false
           }
         },
         totalDependencies: 0,
@@ -141,7 +149,7 @@ export default {
       }
 
       Module.setStatus('Downloading...')
-      window.onerror = event => {
+      window.onerror = () => {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
         Module.setStatus('Exception thrown, see JavaScript console')
         Module.setStatus = text => {
@@ -157,7 +165,6 @@ export default {
 
       const loadGame = () => {
         const loadPackage = (metadata) => {
-          const PACKAGE_PATH = '/storage/download/E4HNfXMMxaEp3EOKTwhoRVqtJ19rzqas/game_old/'
           const PACKAGE_NAME = 'game.data'
           const REMOTE_PACKAGE_BASE = 'game.data'
           const REMOTE_PACKAGE_NAME = typeof Module.locateFile === 'function' ? Module.locateFile(REMOTE_PACKAGE_BASE) : ((Module.filePackagePrefixURL || '') + REMOTE_PACKAGE_BASE)
@@ -397,18 +404,36 @@ export default {
         }
 
         loadPackage({
-          package_uuid: '680f1883-c4c7-47ac-85bb-5b61f9ae7899',
-          remote_package_size: 1587,
-          files: [{ filename: '/game.love', crunched: 0, start: 0, end: 1587, audio: false }],
+          package_uuid: gamePackage.value.package_uuid,
+          remote_package_size: gamePackage.value.remote_package_size,
+          files: [{
+            filename: gamePackage.value.files[0].filename,
+            crunched: gamePackage.value.files[0].crunched,
+            start: gamePackage.value.files[0].start,
+            end: gamePackage.value.files[0].end,
+            audio: gamePackage.value.files[0].audio,
+          },
+          ],
         })
       }
 
       loadGame()
-      love(Module)
-    })
+      love(Module, wasmBinaryFile)
+    }
+
+    const refreshGame = () => {
+      Inertia.reload({
+        only: ['gamePackage'],
+        onFinish: () => {
+          gameMode.value = false
+          runGame()
+        },
+      })
+    }
 
     return {
       show,
+      showSpinner,
       refCanvas,
       refText,
       gameMode,

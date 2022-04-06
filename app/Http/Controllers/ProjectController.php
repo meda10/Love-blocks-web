@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateLoveFileAction;
 use App\Actions\FirebaseUserAuthAction;
+use App\Actions\RefreshGameAction;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use App\Models\User;
-use ErrorException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,6 @@ use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use Response;
 use Str;
-use ZipArchive;
 
 class ProjectController extends Controller
 {
@@ -39,7 +39,11 @@ class ProjectController extends Controller
     {
         if (Auth::check()) {
             if ($project->userHasAccess(Auth::user())) {
-                return Inertia::render('Project/Show', ['project' => $project, 'owner' => $project->isProjectOwner(Auth::user())]);
+                return Inertia::render('Project/Show', [
+                    'project' => $project,
+                    'owner' => $project->isProjectOwner(Auth::user()),
+                    'gamePackage' => Inertia::lazy(static fn() => RefreshGameAction::execute($project)),
+                ]);
             }
             abort(403);
         }
@@ -225,7 +229,6 @@ class ProjectController extends Controller
     /**
      * For Android -> returns .love file for project
      * @param Request $request
-     * @param FirebaseUserAuthAction $firebaseUserAuthAction
      * @return JsonResponse
      */
     public function getProjectsLoveFile(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
@@ -237,44 +240,12 @@ class ProjectController extends Controller
         $project = Project::find($request['id']);
         $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
         Storage::disk('public')->makeDirectory($outputDirName);
-        $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
+        $path = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
-        if ($this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
-            return Response::json(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name'] . '.love']);
+        if (Storage::disk('public')->exists($path) && CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
+            return Response::json(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
         }
         return Response::json(['errors' => ['error' => 'Could not download project']]);
-    }
-
-    /**
-     * Create .love file from project
-     * @param $projectDirectory
-     * @param $outputFilePath
-     * @return bool
-     */
-    private function createLoveFile($projectDirectory, $outputFilePath): bool
-    {
-        $zip = new ZipArchive();
-        $tempFile = tmpfile();
-        $tempFileUri = stream_get_meta_data($tempFile)['uri'] . '.zip';
-        $fullFilePath = Storage::disk('public')->path($outputFilePath);
-
-        if ($zip->open($tempFileUri, ZipArchive::CREATE) !== TRUE) {
-            return false;
-        }
-
-        $files = File::files(Storage::path('projects' . DIRECTORY_SEPARATOR . $projectDirectory));
-        foreach ($files as $value) {
-            if (!$zip->addFile($value->getPathname(), $value->getBasename())) {
-                return false;
-            }
-        }
-        $zip->close();
-        try {
-            File::move($tempFileUri, $fullFilePath);
-        } catch (ErrorException) {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -299,15 +270,15 @@ class ProjectController extends Controller
 
             $outputDirName = 'download' . DIRECTORY_SEPARATOR . $project['directory_name'];
             Storage::disk('public')->makeDirectory($outputDirName);
-            $outputFilePath = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
+            $path = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
-            if (!$this->createLoveFile($project['directory_name'], $outputFilePath) && Storage::disk('public')->exists($outputFilePath)) {
+            if (!Storage::disk('public')->exists($path) || !CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
                 return Redirect::route('project.show', $project)->with('error', 'Something went wrong, can not send message to Android, try again later.');
             }
             $message = CloudMessage::withTarget('token', $user['FCM_token'])
                 ->withAndroidConfig($config)
                 ->withNotification(Notification::create('Open project', $project['name']))
-                ->withData(['url' => Storage::disk('public')->url($outputFilePath), 'name' => $project['name'] . '.love']);
+                ->withData(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
             $messaging->send($message);
         } catch (MessagingException|FirebaseException) {
             return Redirect::route('project.show', $project)->with('error', 'Can not not find valid token. Press refresh token in your application');
