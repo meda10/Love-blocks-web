@@ -16,7 +16,8 @@
         "express": "^4.17.1",
         "nodemon": "^2.0.15",
         "vscode-languageserver": "^7.0.0",
-        "vscode-ws-jsonrpc": "^0.2.0"
+        "vscode-ws-jsonrpc": "^0.2.0",
+        "ws": "^8.5.0"
     },
     "devDependencies": {
         "esbuild-register": "^3.3.2"

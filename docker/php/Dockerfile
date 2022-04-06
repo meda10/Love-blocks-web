@@ -1,64 +1,61 @@
-FROM php:8.0-fpm-alpine
+FROM node:16 AS node
+
+FROM php:8.0-fpm
+
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
+
+ADD ./docker/php/language-server /language-server
+RUN cd /language-server && npm install
 
 # Copy File Config
 ADD ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-# ADD and set Group
-RUN addgroup -g 1000 laravel && adduser -G laravel -g laravel -s /bin/sh -D laravel
-
-# Create folder to run
-RUN mkdir -p /var/www/html
-
-# Set Profile
-RUN chown laravel:laravel /var/www/html
-
-# Work in the specific space
+# Set working directory
 WORKDIR /var/www/html
 
-# crontab schedule COPY
-COPY ./docker/php/crontab /etc/crontabs/root
+# Add docker php ext repo
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/crontabs/root
-
-# Apply cron job
-RUN crontab /etc/crontabs/root
+# Install php extensions
+RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached
 
 # Install dependencies
-RUN apk add --no-cache \
-    freetype \
-    libpng \
-    libjpeg-turbo \
-    freetype-dev \
+RUN apt-get update && apt-get install -y \
+    build-essential \
     libpng-dev \
-    libjpeg-turbo-dev
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    unzip \
+    git \
+    curl \
+    lua-zlib-dev \
+    libmemcached-dev
 
-#RUN apk add --no-cache libzip-dev \
-#    && docker-php-ext-configure zip \
-#    --with-libzip=/usr/include \
-#    && docker-php-ext-install zip
 
-RUN apk add --no-cache \
-  libzip-dev zip \
-  && docker-php-ext-install zip
+# Install supervisor
+RUN apt-get install -y supervisor
 
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg
+# Install composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-    docker-php-ext-install -j${NPROC} gd
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+# Add user for laravel application
+RUN groupadd -g 1000 laravel
+RUN useradd -u 1000 -ms /bin/bash -g laravel laravel
 
-RUN docker-php-ext-install pdo pdo_mysql
+# Copy code to /var/www
+COPY --chown=laravel:laravel . /var/www/html
+RUN chmod -R ug+w /var/www/html/storage
 
-# install and enable xdebug
-#RUN apk add --no-cache $PHPIZE_DEPS \
-#	&& pecl install xdebug-2.9.7 \
-#	&& docker-php-ext-enable xdebug
-
-RUN apk add icu-dev
-RUN docker-php-ext-configure intl \
-    && docker-php-ext-install intl \
-    && docker-php-ext-enable intl
+# PHP Error Log Files
+RUN mkdir /var/log/php
+RUN touch /var/log/php/errors.log && chmod 777 /var/log/php/errors.log

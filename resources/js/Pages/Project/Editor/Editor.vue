@@ -58,7 +58,7 @@ export default {
         }
         editor = result.editor.create(document.getElementById('monaco-container'), editorOptions)
         MonacoServices.install(result)
-        // connectLanguageServer(`ws://${location.hostname}:${port}`) //TODO remove comment
+        connectLanguageServer(`ws://${location.hostname}:${port}`) //TODO remove comment
 
         editor.getAction('editor.action.formatDocument').run()
 
