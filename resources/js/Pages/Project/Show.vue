@@ -6,13 +6,19 @@
       <pane>
         <div ref="editorPane" class="h-full w-full">
           <div ref="btnEditor" class="absolute mt-2 z-50">
-            <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
-                      @click="changeEditor">
-              {{ btnText }}
-            </n-button>
+            <div class=" flex flex-row flex-nowrap">
+              <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small"
+                        style="margin-right: 0.5rem" @click="changeEditor">
+                {{ btnText }}
+              </n-button>
+              <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small"
+                        style="margin-right: 0.5rem" @click="saveRef = !saveRef">
+                Save
+              </n-button>
+            </div>
           </div>
-          <Blockly v-if="!editorShow" />
-          <editor v-if="editorShow" />
+          <Blockly v-if="!editorShow" :save-blockly="saveRef" @saveCode="saveCode" />
+          <editor v-if="editorShow" :save-monaco="saveRef" />
         </div>
       </pane>
       <pane>
@@ -27,7 +33,6 @@
       </pane>
     </splitpanes>
   </div>
-  <slot name="interpret" />
 </template>
 
 <script>
@@ -63,9 +68,15 @@ export default {
     const { keyPressListener } = useListeners()
     const title = computed(() => props.project.name)
     const editorShow = ref(false)
+    const saveRef = ref(false)
     const editorPane = ref(null)
     const btnEditor = ref(null)
     const btnText = ref('Code')
+
+    const saveCode = (code) => {
+      console.log('DO SMTHING')
+      console.log(code)
+    }
 
     useResizeObserver(editorPane, () => {
       const position = window.innerWidth - editorPane.value.getBoundingClientRect().right
@@ -90,7 +101,9 @@ export default {
       editorPane,
       btnEditor,
       btnText,
+      saveRef,
       changeEditor,
+      saveCode,
     }
   },
 }

@@ -17,12 +17,12 @@ export default {
   components: {
     Tabs,
   },
-  emits: ['change'],
+  props: {
+    saveMonaco: Boolean,
+  },
+  emits: ['saveCode'],
   setup(props, { emit }) {
-    let editor
-    let monaco
-    let webSocket
-
+    let editor, monaco, webSocket
     const items = ref([
       { text: 'HTML', value: 'html' },
       { text: 'CSS', value: 'css' },
@@ -33,12 +33,19 @@ export default {
       javascript: 'import { setup as JAVASCRIPT }',
       css: 'width: 875px',
     }
-
     const currentTab = ref(items.value[0].value)
     const editorState = ref({})
     const editorValue = ref(initialEditorValue)
 
-    onMounted(function () {
+    const generateCode = () => {
+      emit('saveCode', '')
+    }
+
+    watch(() => props.saveMonaco, () => {
+      generateCode()
+    })
+
+    onMounted(() => {
       loader.config({
         paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs' },
         'vs/nls': { availableLanguages: { '*': '' } },
@@ -60,11 +67,9 @@ export default {
 
         editor.getAction('editor.action.formatDocument').run()
 
-        emit('change', editorValue.value)
         editor.onDidChangeModelContent(useDebounceFn(function () {
           if (editorValue.value[currentTab.value] !== editor.getValue()) {
             editorValue.value[currentTab.value] = editor.getValue()
-            emit('change', editorValue.value)
           }
         }, 500))
 
