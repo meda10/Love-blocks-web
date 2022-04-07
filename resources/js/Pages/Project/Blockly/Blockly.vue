@@ -1,36 +1,38 @@
 <template>
-  <Head title="Home" />
-  <div id="xxx">
-    <BlocklyComponent id="blockly" ref="blockly" :options="options" />
-    <div id="code">
-      <ButtonLink :button="true" component-style="btn btn-primary" label="Show code" @click="showCode" />
-      <pre v-html="code" />
-    </div>
+  <div class="h-full w-full">
+    <div ref="blocklyArea" class="h-full w-full" />
+    <div ref="blocklyDiv" style="position: absolute" />
+    <xml ref="blocklyToolbox" style="display:none">
+      <slot />
+    </xml>
   </div>
+
+  <!--  <BlocklyComponent id="blockly" ref="blockly" :blockly-area="blocklyArea" :options="options" />-->
+  <!--    <div id="code">-->
+  <!--      <ButtonLink :button="true" component-style="btn btn-primary" label="Show code" @click="showCode" />-->
+  <!--      <pre v-html="code" />-->
+  <!--    </div>-->
 </template>
 
 <script>
-import { Head } from '@inertiajs/inertia-vue3'
-import BlocklyComponent from '@/Pages/BlocklyComponent.vue'
 import BlocklyLua from 'blockly/lua'
-import ButtonLink from '@/Shared/ButtonLink'
 import DarkTheme from '@blockly/theme-dark'
-import { ref } from 'vue'
-import BlocklyLayout from '@/Layouts/BlocklyLayout'
+import { ref, onMounted, reactive } from 'vue'
+import Blockly from 'blockly'
+import { useResizeObserver } from '@vueuse/core'
 // import './blocks/stocks';
 // import './prompt';
 
 export default {
-  name: 'BlocklyLayout',
-  components: {
-    BlocklyComponent,
-    Head,
-    ButtonLink,
-  },
-  layout: BlocklyLayout,
+  name: 'Blockly',
+  components: {},
   setup() {
-    const blockly = ref(null)
     const code = ref(null)
+    const workspace = reactive({})
+    const blocklyArea = ref(null)
+    const blocklyDiv = ref(null)
+    const blocklyToolbox = ref(null)
+
     const options = {
       media: '/storage/media/',
       theme: DarkTheme,
@@ -82,12 +84,32 @@ export default {
     }
 
     const showCode = () => {
-      code.value = BlocklyLua.workspaceToCode(blockly.value.workspace.value)
+      code.value = BlocklyLua.workspaceToCode(workspace.value)
     }
 
+    useResizeObserver(blocklyArea, (entries) => {
+      const entry = entries[0]
+      const { width, height } = entry.contentRect
+      blocklyDiv.value.style.left = blocklyArea.value.getBoundingClientRect().left + 'px'
+      blocklyDiv.value.style.top = blocklyArea.value.getBoundingClientRect().top + 'px'
+      blocklyDiv.value.style.width = width + 'px'
+      blocklyDiv.value.style.height = height + 'px'
+      Blockly.svgResize(workspace.value)
+    })
+
+    onMounted(() => {
+      if (!options.toolbox) {
+        options.toolbox = blocklyToolbox.value
+      }
+      workspace.value = Blockly.inject(blocklyDiv.value, options)
+    })
+
     return {
+      blocklyToolbox,
+      workspace,
+      blocklyDiv,
       options,
-      blockly,
+      blocklyArea,
       code,
       showCode,
     }
@@ -96,32 +118,32 @@ export default {
 </script>
 
 <style>
-#xxx {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+/*#xxx {*/
+/*  font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*  color: #2c3e50;*/
+/*}*/
 
-html, body {
-  margin: 0;
-}
+/*html, body {*/
+/*  margin: 0;*/
+/*}*/
 
-#code {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 50%;
-  height: 100%;
-  margin: 0;
-  background-color: beige;
-}
+/*#code {*/
+/*  position: absolute;*/
+/*  right: 0;*/
+/*  bottom: 0;*/
+/*  width: 50%;*/
+/*  height: 100%;*/
+/*  margin: 0;*/
+/*  background-color: beige;*/
+/*}*/
 
-#blockly {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 50%;
-  height: 100%;
-}
+/*#blockly {*/
+/*  position: absolute;*/
+/*  left: 0;*/
+/*  bottom: 0;*/
+/*  width: 50%;*/
+/*  height: 100%;*/
+/*}*/
 </style>

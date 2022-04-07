@@ -1,10 +1,20 @@
 <template>
   <Head :title="title" />
   <top-panel :owner="owner" :project="project" />
+  <!--  <button @click="hidePane = !hidePane">SWITCH</button>-->
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
-      <pane min-size="25">
-        <editor />
+      <pane>
+        <div ref="editorPane" class="h-full w-full">
+          <div ref="btnEditor" class="absolute mt-2 z-50">
+            <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                      @click="changeEditor">
+              {{ btnText }}
+            </n-button>
+          </div>
+          <Blockly v-if="!editorShow" />
+          <editor v-if="editorShow" />
+        </div>
       </pane>
       <pane>
         <splitpanes horizontal>
@@ -23,23 +33,26 @@
 
 <script>
 import ProjectLayout from '@/Layouts/ProjectLayout'
-import { computed, onUnmounted } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import Editor from '@/Pages/Project/Editor/Editor'
+import Blockly from '@/Pages/Project/Blockly/Blockly'
 import { Splitpanes, Pane } from '../../../../node_modules/splitpanes/dist/splitpanes.es'
 import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
 import useListeners from '@/keyListeners'
+import { useResizeObserver } from '@vueuse/core/index'
 
 export default {
   name: 'Show',
   components: {
     Interpret,
-    Editor,
     Head,
     Splitpanes,
     Pane,
     TopPanel,
+    Editor,
+    Blockly,
   },
   layout: ProjectLayout,
   props: {
@@ -50,6 +63,32 @@ export default {
   setup(props) {
     const { keyPressListener } = useListeners()
     const title = computed(() => props.project.name)
+    const editorShow = ref(false)
+    const editorPane = ref(null)
+    const btnEditor = ref(null)
+    const btnText = ref('Code')
+    const sizeRefresh = ref(false)
+    const hidePane = ref(false)
+    const paneSize = ref(50)
+
+    useResizeObserver(editorPane, () => {
+      const position = window.innerWidth - editorPane.value.getBoundingClientRect().right
+      btnEditor.value.style.right = position + 'px'
+    })
+
+    const changeEditor = () => {
+      if (editorShow.value) {
+        console.log(editorShow.value)
+        editorShow.value = false
+        btnText.value = 'Code'
+        paneSize.value = paneSize.value - 0.001
+      } else {
+        console.log(editorShow.value)
+        editorShow.value = true
+        btnText.value = 'Block'
+        paneSize.value = paneSize.value + 0.001
+      }
+    }
 
     onUnmounted(() => {
       console.log('UNMOUNT')
@@ -61,6 +100,14 @@ export default {
 
     return {
       title,
+      editorShow,
+      editorPane,
+      btnEditor,
+      btnText,
+      changeEditor,
+      sizeRefresh,
+      hidePane,
+      paneSize,
     }
   },
 }
