@@ -7,9 +7,6 @@ COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/include /usr/local/include
 COPY --from=node /usr/local/bin /usr/local/bin
 
-ADD ./docker/php/language-server /language-server
-RUN cd /language-server && npm install
-
 # Copy File Config
 ADD ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
@@ -38,7 +35,6 @@ RUN apt-get update && apt-get install -y \
     lua-zlib-dev \
     libmemcached-dev
 
-
 # Install supervisor
 RUN apt-get install -y supervisor
 
@@ -52,9 +48,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN groupadd -g 1000 laravel
 RUN useradd -u 1000 -ms /bin/bash -g laravel laravel
 
-# Copy code to /var/www
-COPY --chown=laravel:laravel . /var/www/html
-RUN chmod -R ug+w /var/www/html/storage
+# Copy code to /var/www/html
+# COPY --chown=laravel:laravel . /var/www/html
+# RUN chmod -R ug+w /var/www/html/storage
 
 # PHP Error Log Files
 RUN mkdir /var/log/php

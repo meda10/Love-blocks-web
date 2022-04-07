@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  language-server:
+    build:
+      context: .
+      dockerfile: ./docker/workspace/Dockerfile
+    restart: always
+    container_name: language-server
+    ports:
+      - "8888:8888"
+    networks:
+      - laravel
+
   nginx:
     image: jonasal/nginx-certbot:latest
     restart: always
@@ -27,7 +38,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
-    restart: unless-stopped
+    restart: always
     tty: true
     ports:
       - "3306:3306"
@@ -54,18 +65,18 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: php
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./:/var/www/html:delegated
       #      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
     ports:
       - "9000:9000"
-      - "8888:8888"
     #      - "3000:3000" # BROWSERSYNC_HOST_PORT
     #      - "3001:3001" # BROWSERSYNC_HOST_PORT
     depends_on:
       - mysql
+      - language-server
     networks:
       - laravel
   #    environment:
