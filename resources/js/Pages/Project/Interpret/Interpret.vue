@@ -15,7 +15,16 @@
           </n-icon>
         </template>
       </n-button>
-      <n-button :strong="true" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
+      <n-button v-show="show" :strong="true" :type="'error'" class="flex-shrink" size="small"
+                style="margin-right: 0.5rem"
+                @click="stopGame">
+        <template #icon>
+          <n-icon>
+            <stop-icon />
+          </n-icon>
+        </template>
+      </n-button>
+      <n-button v-show="show" :strong="true" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
                 @click="changeGameMode">
         <template #icon>
           <n-icon>
@@ -37,13 +46,14 @@
 
 <script>
 import { Head, usePage } from '@inertiajs/inertia-vue3'
-import { onMounted, ref, onBeforeUnmount, computed, onUnmounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import useMessaging from '@/messages'
 import {
   RefreshOutline as RefreshIcon,
   PlayOutline as PlayIcon,
   PauseOutline as PauseIcon,
+  StopCircleOutline as StopIcon,
 } from '@vicons/ionicons5'
 import { Inertia } from '@inertiajs/inertia'
 import useListeners from '@/keyListeners'
@@ -56,6 +66,7 @@ export default {
     RefreshIcon,
     PlayIcon,
     PauseIcon,
+    StopIcon,
   },
   layout: ProjectLayout,
   props: {
@@ -431,6 +442,17 @@ export default {
       })
     }
 
+    const stopGame = () => {
+      show.value = false
+      refText.value = 'Game is not loaded. Press refresh button.'
+      message.info('Game mode is off.')
+      console.log('Turning off game mode')
+      gameMode.value = true
+      window.addEventListener('keypress', keyPressListener, true)
+      window.addEventListener('keydown', keyPressListener, true)
+      window.addEventListener('keyup', keyPressListener, true)
+    }
+
     return {
       show,
       showSpinner,
@@ -439,6 +461,7 @@ export default {
       gameMode,
       refreshGame,
       changeGameMode,
+      stopGame,
     }
   },
 }

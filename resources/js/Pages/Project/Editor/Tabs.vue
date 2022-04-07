@@ -33,10 +33,10 @@ export default {
 
 <style>
 .tab-item {
-  @apply inline-block px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400;
+  @apply inline-block px-4 py-3 text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400;
 }
 
 .tab-item-active {
-  @apply inline-block px-4 py-2 border-t-2 border-indigo-500 text-indigo-500 font-semibold;
+  @apply inline-block px-4 py-3 border-t-2 border-indigo-500 text-indigo-500 font-semibold;
 }
 </style>
