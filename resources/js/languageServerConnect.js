@@ -46,8 +46,9 @@ const createLanguageClient = function (connection) {
 }
 
 export const connectLanguageServer = url => {
+  const ws = new ReconnectingWebSocket(url)
   listen({
-    webSocket: new ReconnectingWebSocket(url),
+    webSocket: ws,
     onConnection: connection => {
       const languageClient = createLanguageClient(connection)
       const disposable = languageClient.start()
@@ -55,4 +56,5 @@ export const connectLanguageServer = url => {
       connection.onError(error => console.log(error))
     },
   })
+  return ws
 }

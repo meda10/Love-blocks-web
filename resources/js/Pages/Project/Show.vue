@@ -1,7 +1,6 @@
 <template>
   <Head :title="title" />
   <top-panel :owner="owner" :project="project" />
-  <!--  <button @click="hidePane = !hidePane">SWITCH</button>-->
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
       <pane>
@@ -67,9 +66,6 @@ export default {
     const editorPane = ref(null)
     const btnEditor = ref(null)
     const btnText = ref('Code')
-    const sizeRefresh = ref(false)
-    const hidePane = ref(false)
-    const paneSize = ref(50)
 
     useResizeObserver(editorPane, () => {
       const position = window.innerWidth - editorPane.value.getBoundingClientRect().right
@@ -77,21 +73,11 @@ export default {
     })
 
     const changeEditor = () => {
-      if (editorShow.value) {
-        console.log(editorShow.value)
-        editorShow.value = false
-        btnText.value = 'Code'
-        paneSize.value = paneSize.value - 0.001
-      } else {
-        console.log(editorShow.value)
-        editorShow.value = true
-        btnText.value = 'Block'
-        paneSize.value = paneSize.value + 0.001
-      }
+      editorShow.value = !editorShow.value
+      btnText.value === 'Code' ? btnText.value = 'Block' : btnText.value = 'Code'
     }
 
     onUnmounted(() => {
-      console.log('UNMOUNT')
       console.log('Turning off game mode')
       window.addEventListener('keypress', keyPressListener, true)
       window.addEventListener('keydown', keyPressListener, true)
@@ -105,9 +91,6 @@ export default {
       btnEditor,
       btnText,
       changeEditor,
-      sizeRefresh,
-      hidePane,
-      paneSize,
     }
   },
 }
