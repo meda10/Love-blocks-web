@@ -22,8 +22,7 @@ export default {
   setup(props, { emit }) {
     let editor
     let monaco
-    const protocol = location.protocol === 'https:' ? 'wss' : 'ws'
-    const port = 8888
+    let webSocket
 
     const items = ref([
       { text: 'HTML', value: 'html' },
@@ -58,7 +57,7 @@ export default {
         }
         editor = result.editor.create(document.getElementById('monaco-container'), editorOptions)
         MonacoServices.install(result)
-        connectLanguageServer(`ws://${location.hostname}:${port}`) //TODO remove comment
+        webSocket = connectLanguageServer(`ws://${location.hostname}:8888`)
 
         editor.getAction('editor.action.formatDocument').run()
 
@@ -70,7 +69,6 @@ export default {
           }
         }, 500))
 
-        // Set values from storage on load
         if (editorValue.value[currentTab.value]) {
           editor.setValue(editorValue.value[currentTab.value])
           editor.restoreViewState(editorState.value[currentTab.value])
@@ -93,9 +91,11 @@ export default {
       }
     })
 
-    onUnmounted(function () {
+    onUnmounted(() => {
+      webSocket.close()
       editor.dispose()
     })
+
     return {
       items,
       currentTab,
