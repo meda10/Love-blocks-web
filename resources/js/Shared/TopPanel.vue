@@ -1,5 +1,15 @@
 <template>
   <div class="flex flex-row flex-nowrap justify-end">
+    <n-space align="center">
+      <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                @click="saveProject">
+        <template #icon>
+          <n-icon>
+            <save-icon />
+          </n-icon>
+        </template>
+      </n-button>
+    </n-space>
     <n-menu v-model:value="activeProfileMenu" :options="projectMenuOptions" mode="horizontal" />
     <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
   </div>
@@ -28,12 +38,14 @@ import {
   BookOutline as BookIcon,
   ShareOutline as ShareIcon,
   DownloadOutline as DownloadIcon,
+  SaveOutline as SaveIcon,
 } from '@vicons/ionicons5'
 
 export default {
   name: 'TopPanel',
   components: {
     NModal,
+    SaveIcon,
   },
   props: {
     project: Object,
@@ -167,6 +179,10 @@ export default {
       if (validationErrors.value.file != null) message.error(validationErrors.value.file)
     })
 
+    const saveProject = () => {
+      emit('pageLeave')
+    }
+
     const onPositiveClick = () => {
       Inertia.post(route('project.share', { project: currentProject.value }), { email: shareEmail.value })
       showShareModalRef.value = false
@@ -209,6 +225,7 @@ export default {
       downloadToAndroid,
       onPositiveClick,
       onNegativeClick,
+      saveProject,
     }
   },
 }

@@ -20,28 +20,27 @@ export default {
   props: {
     saveMonaco: Boolean,
     code: String,
+    config: String,
   },
   emits: ['saveCode'],
   setup(props, { emit }) {
     const monacoContainer = ref(null)
     let editor, monaco, webSocket
     const items = ref([
-      { text: 'HTML', value: 'html' },
-      { text: 'CSS', value: 'css' },
-      { text: 'JS', value: 'javascript' },
+      { text: 'main.lua', value: 'main' },
+      { text: 'conf.lua', value: 'conf' },
     ])
     const initialEditorValue = {
-      html: props.code,
-      javascript: 'import { setup as JAVASCRIPT }',
-      css: 'width: 875px',
+      main: props.code,
+      conf: props.config,
     }
     const currentTab = ref(items.value[0].value)
     const editorState = ref({})
     const editorValue = ref(initialEditorValue)
 
     const generateCode = () => {
+      //  todo monaco get code
       emit('saveCode', '')
-      //  todo save code
     }
 
     watch(() => props.saveMonaco, () => {

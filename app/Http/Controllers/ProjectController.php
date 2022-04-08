@@ -40,16 +40,15 @@ class ProjectController extends Controller
     {
         if (Auth::check()) {
             if ($project->userHasAccess(Auth::user())) {
+                try {
+                    $conf = Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua');
+                } catch (FileNotFoundException $e) {
+                    $conf = null;
+                }
                 return Inertia::render('Project/Show', [
                     'project' => $project,
                     'owner' => $project->isProjectOwner(Auth::user()),
-                    'conf' => Inertia::lazy(static function ($project) {
-                        try {
-                            return Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua');
-                        } catch (FileNotFoundException $e) {
-                            return null;
-                        }
-                    }),
+                    'config' => $conf,
                     'gamePackage' => Inertia::lazy(static fn() => RefreshGameAction::execute($project)),
                 ]);
             }

@@ -16,7 +16,7 @@
           <Blockly v-if="!editorShow" :project="project" :save-code="changeEditorRef"
                    :save-workspace="saveBlocklyWorkspaceRef" :workspace="project.workspace"
                    @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
-          <editor v-if="editorShow" :code="codeFromBlockly" :save-monaco="changeEditorRef"
+          <editor v-if="editorShow" :code="codeFromBlockly" :config="config" :save-monaco="changeEditorRef"
                   @saveCode="saveCodeFromMonaco" />
         </div>
       </pane>
@@ -45,7 +45,7 @@ import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
 import useListeners from '@/keyListeners'
 import { useResizeObserver } from '@vueuse/core/index'
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from '@inertiajs/inertia'
 
 export default {
   name: 'Show',
@@ -63,7 +63,7 @@ export default {
     project: Object,
     owner: Boolean,
     gamePackage: Object,
-    conf: String,
+    config: String,
   },
   setup(props) {
     const { keyPressListener } = useListeners()
