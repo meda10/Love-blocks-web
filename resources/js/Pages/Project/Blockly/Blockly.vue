@@ -17,9 +17,9 @@
 <script>
 import luaGenerator from 'blockly/lua'
 import DarkTheme from '@blockly/theme-dark'
-import { ref, onMounted, reactive, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Blockly from 'blockly'
-import { useResizeObserver } from '@vueuse/core'
+import { useResizeObserver, useSessionStorage } from '@vueuse/core'
 import toolboxOptions from '@/toolbox'
 import { ScrollOptions, ScrollBlockDragger, ScrollMetricsManager } from '@blockly/plugin-scroll-options'
 
@@ -31,10 +31,11 @@ export default {
   emits: ['saveCode'],
   setup(props, { emit }) {
     const code = ref(null)
-    const workspace = reactive({})
+    let workspace
     const blocklyArea = ref(null)
     const blocklyDiv = ref(null)
     const blocklyToolbox = ref(null)
+    const workplaceState = useSessionStorage('blocklyState', {})
 
     const options = {
       media: '/storage/media/',
@@ -66,7 +67,8 @@ export default {
     }
 
     const generateCode = () => {
-      code.value = luaGenerator.workspaceToCode(workspace.value)
+      code.value = luaGenerator.workspaceToCode(workspace)
+      workplaceState.value = Blockly.serialization.workspaces.save(workspace)
       emit('saveCode', code.value)
     }
 
@@ -81,21 +83,21 @@ export default {
       blocklyDiv.value.style.top = blocklyArea.value.getBoundingClientRect().top + 'px'
       blocklyDiv.value.style.width = width + 'px'
       blocklyDiv.value.style.height = height + 'px'
-      Blockly.svgResize(workspace.value)
+      Blockly.svgResize(workspace)
     })
 
     onMounted(() => {
       if (!options.toolbox) {
         options.toolbox = blocklyToolbox.value
       }
-      workspace.value = Blockly.inject(blocklyDiv.value, options)
-      const plugin = new ScrollOptions(workspace.value)
+      workspace = Blockly.inject(blocklyDiv.value, options)
+      Blockly.serialization.workspaces.load(workplaceState.value, workspace)
+      const plugin = new ScrollOptions(workspace)
       plugin.init()
     })
 
     return {
       blocklyToolbox,
-      workspace,
       blocklyDiv,
       options,
       blocklyArea,
