@@ -19,7 +19,7 @@ import luaGenerator from 'blockly/lua'
 import DarkTheme from '@blockly/theme-dark'
 import { ref, onMounted, watch } from 'vue'
 import Blockly from 'blockly'
-import { useResizeObserver, useSessionStorage } from '@vueuse/core'
+import { useResizeObserver } from '@vueuse/core'
 import toolboxOptions from '@/toolbox'
 import { ScrollOptions, ScrollBlockDragger, ScrollMetricsManager } from '@blockly/plugin-scroll-options'
 
@@ -29,6 +29,7 @@ export default {
     saveCode: Boolean,
     saveWorkspace: Boolean,
     project: Object,
+    workspace: Object,
   },
   emits: ['passCodeToMonaco', 'saveWorkspace'],
   setup(props, { emit }) {
@@ -37,7 +38,6 @@ export default {
     const blocklyArea = ref(null)
     const blocklyDiv = ref(null)
     const blocklyToolbox = ref(null)
-    const workplaceState = useSessionStorage(props.project.id, {})
 
     const options = {
       media: '/storage/media/',
@@ -68,15 +68,14 @@ export default {
       },
     }
 
-    const saveWorkplace = () => {
-      workplaceState.value = Blockly.serialization.workspaces.save(workspace)
-      console.log('SAVE WORKSPACE')
-      console.log(workplaceState.value)
-      emit('saveWorkspace', workplaceState.value)
+    const saveWorkspace = () => {
+      const workspaceState = Blockly.serialization.workspaces.save(workspace)
+      const luaCode = luaGenerator.workspaceToCode(workspace)
+      emit('saveWorkspace', workspaceState, luaCode)
     }
 
     const generateCode = () => {
-      saveWorkplace()
+      saveWorkspace()
       code.value = luaGenerator.workspaceToCode(workspace)
       emit('passCodeToMonaco', code.value)
     }
@@ -86,7 +85,7 @@ export default {
     })
 
     watch(() => props.saveWorkspace, () => {
-      saveWorkplace()
+      saveWorkspace()
     })
 
     useResizeObserver(blocklyArea, (entries) => {
@@ -104,7 +103,7 @@ export default {
         options.toolbox = blocklyToolbox.value
       }
       workspace = Blockly.inject(blocklyDiv.value, options)
-      Blockly.serialization.workspaces.load(workplaceState.value, workspace)
+      Blockly.serialization.workspaces.load(props.workspace, workspace)
       const plugin = new ScrollOptions(workspace)
       plugin.init()
     })

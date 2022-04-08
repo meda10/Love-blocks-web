@@ -20,7 +20,7 @@
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { h, ref, computed, watch } from 'vue'
-import { NIcon, NModal, useDialog } from 'naive-ui'
+import { NIcon, NModal, useDialog, useMessage } from 'naive-ui'
 import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
@@ -29,7 +29,6 @@ import {
   ShareOutline as ShareIcon,
   DownloadOutline as DownloadIcon,
 } from '@vicons/ionicons5'
-import useMessaging from '@/messages'
 
 export default {
   name: 'TopPanel',
@@ -42,7 +41,7 @@ export default {
   },
   emits: ['pageLeave'],
   setup(props, { emit }) {
-    const { message } = useMessaging()
+    const message = useMessage()
     const dialog = useDialog()
     const validationErrors = computed(() => usePage().props.value.errors)
     const activeKey = ref(null)

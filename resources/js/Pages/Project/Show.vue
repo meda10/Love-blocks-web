@@ -14,8 +14,8 @@
             </div>
           </div>
           <Blockly v-if="!editorShow" :project="project" :save-code="changeEditorRef"
-                   :save-workspace="saveBlocklyWorkspaceRef" @passCodeToMonaco="passCodeToMonaco"
-                   @saveWorkspace="saveBlocklyWorkspace" />
+                   :save-workspace="saveBlocklyWorkspaceRef" :workspace="project.workspace"
+                   @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
           <editor v-if="editorShow" :code="codeFromBlockly" :save-monaco="changeEditorRef"
                   @saveCode="saveCodeFromMonaco" />
         </div>
@@ -45,6 +45,7 @@ import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
 import useListeners from '@/keyListeners'
 import { useResizeObserver } from '@vueuse/core/index'
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
   name: 'Show',
@@ -62,6 +63,7 @@ export default {
     project: Object,
     owner: Boolean,
     gamePackage: Object,
+    conf: String,
   },
   setup(props) {
     const { keyPressListener } = useListeners()
@@ -78,8 +80,8 @@ export default {
       saveBlocklyWorkspaceRef.value = !saveBlocklyWorkspaceRef.value
     }
 
-    const saveBlocklyWorkspace = () => {
-
+    const saveBlocklyWorkspace = (workspace, code) => {
+      Inertia.post(route('project.update', { project: props.project }), { workspace: workspace, main: code })
     }
 
     const switchEditors = () => {
