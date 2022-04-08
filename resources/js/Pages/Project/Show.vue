@@ -11,14 +11,11 @@
                         style="margin-right: 0.5rem" @click="changeEditor">
                 {{ btnText }}
               </n-button>
-              <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small"
-                        style="margin-right: 0.5rem" @click="saveRef = !saveRef">
-                Save
-              </n-button>
             </div>
           </div>
-          <Blockly v-if="!editorShow" :save-blockly="saveRef" @saveCode="saveCode" />
-          <editor v-if="editorShow" :save-monaco="saveRef" />
+          <Blockly v-if="!editorShow" :save-blockly="changeEditorRef" @saveCode="passCodeToMonaco" />
+          <editor v-if="editorShow" :code="codeFromBlockly" :save-monaco="changeEditorRef"
+                  @saveCode="saveCodeFromMonaco" />
         </div>
       </pane>
       <pane>
@@ -68,13 +65,27 @@ export default {
     const { keyPressListener } = useListeners()
     const title = computed(() => props.project.name)
     const editorShow = ref(false)
-    const saveRef = ref(false)
+    const changeEditorRef = ref(false)
     const editorPane = ref(null)
     const btnEditor = ref(null)
     const btnText = ref('Code')
+    const codeFromBlockly = ref('')
 
-    const saveCode = (code) => {
-      console.log('DO SMTHING')
+    const switchEditors = () => {
+      editorShow.value = !editorShow.value
+      btnText.value === 'Code' ? btnText.value = 'Block' : btnText.value = 'Code'
+    }
+
+    const passCodeToMonaco = (code) => {
+      codeFromBlockly.value = code
+      switchEditors()
+      console.log('Code from blockly:')
+      console.log(codeFromBlockly.value)
+    }
+
+    const saveCodeFromMonaco = (code) => {
+      switchEditors()
+      console.log('Code from monaco:')
       console.log(code)
     }
 
@@ -84,8 +95,7 @@ export default {
     })
 
     const changeEditor = () => {
-      editorShow.value = !editorShow.value
-      btnText.value === 'Code' ? btnText.value = 'Block' : btnText.value = 'Code'
+      changeEditorRef.value = !changeEditorRef.value
     }
 
     onUnmounted(() => {
@@ -101,9 +111,11 @@ export default {
       editorPane,
       btnEditor,
       btnText,
-      saveRef,
+      changeEditorRef,
+      codeFromBlockly,
       changeEditor,
-      saveCode,
+      passCodeToMonaco,
+      saveCodeFromMonaco,
     }
   },
 }

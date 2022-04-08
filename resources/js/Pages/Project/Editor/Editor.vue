@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col flex-nowrap" style="width:100%; height:100%;">
     <Tabs v-model="currentTab" :items="items" />
-    <div id="monaco-container" class="flex-grow" />
+    <div ref="monacoContainer" class="flex-grow" />
   </div>
 </template>
 <script>
@@ -19,9 +19,11 @@ export default {
   },
   props: {
     saveMonaco: Boolean,
+    code: String,
   },
   emits: ['saveCode'],
   setup(props, { emit }) {
+    const monacoContainer = ref(null)
     let editor, monaco, webSocket
     const items = ref([
       { text: 'HTML', value: 'html' },
@@ -29,7 +31,7 @@ export default {
       { text: 'JS', value: 'javascript' },
     ])
     const initialEditorValue = {
-      html: '<div id="app">RANDOM HTML</div> ',
+      html: props.code,
       javascript: 'import { setup as JAVASCRIPT }',
       css: 'width: 875px',
     }
@@ -38,7 +40,7 @@ export default {
     const editorValue = ref(initialEditorValue)
 
     const generateCode = () => {
-      emit('saveCode', '')
+      emit('saveCode', 'TODO')
     }
 
     watch(() => props.saveMonaco, () => {
@@ -61,7 +63,7 @@ export default {
           minimap: { enabled: false },
           automaticLayout: true,
         }
-        editor = result.editor.create(document.getElementById('monaco-container'), editorOptions)
+        editor = result.editor.create(monacoContainer.value, editorOptions)
         MonacoServices.install(result)
         webSocket = connectLanguageServer(`ws://${location.hostname}:8888`)
 
@@ -96,14 +98,15 @@ export default {
     })
 
     onUnmounted(() => {
-      webSocket.close()
       editor.dispose()
+      webSocket.close()
     })
 
     return {
       items,
       currentTab,
       editorValue,
+      monacoContainer,
     }
   },
 }

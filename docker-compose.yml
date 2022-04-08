@@ -25,7 +25,6 @@ services:
     volumes:
       - ./:/var/www/html:delegated
       - nginx_secrets:/etc/letsencrypt
-      #      - ./user_conf.d:/etc/nginx/user_conf.d
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/nginxconfig.io/:/etc/nginx/nginxconfig.io/
       - ./docker/nginx/user_conf.d/:/etc/nginx/user_conf.d/

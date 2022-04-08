@@ -79,7 +79,7 @@ export default {
     const showSpinner = ref(false)
     const show = ref(false)
     const refText = ref('')
-    const refCanvas = ref(false)
+    const refCanvas = ref(null)
     const gameMode = ref(true)
     const user = computed(() => usePage().props.value.user)
     const gamePackage = computed(() => props.gamePackage)

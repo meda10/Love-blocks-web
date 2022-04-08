@@ -53,6 +53,7 @@ export const connectLanguageServer = url => {
       const languageClient = createLanguageClient(connection)
       const disposable = languageClient.start()
       connection.onClose(() => disposable.dispose())
+      connection.onDispose(() => null)
       connection.onError(error => console.log(error))
     },
   })
