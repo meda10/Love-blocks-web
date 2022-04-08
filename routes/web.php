@@ -54,6 +54,7 @@ Route::get('/project/{project}', [ProjectController::class, 'show'])->name('proj
 Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 Route::post('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
 Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
+Route::get('/project/{project}/copy', [ProjectController::class, 'copy'])->name('project.copy');
 
 Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadFile'])->name('file.upload');
 Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');

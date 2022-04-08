@@ -39,6 +39,7 @@ import {
   ShareOutline as ShareIcon,
   DownloadOutline as DownloadIcon,
   SaveOutline as SaveIcon,
+  HomeOutline as HomeIcon,
 } from '@vicons/ionicons5'
 
 export default {
@@ -142,12 +143,30 @@ export default {
       })
     }
 
+    const goHome = () => {
+      emit('pageLeave')
+      dialog.warning({
+        title: 'Confirm',
+        content: 'Do you want to leave this page?',
+        positiveText: 'Yes',
+        negativeText: 'Not Sure',
+        onPositiveClick: () => {
+          Inertia.get(route('home'))
+        },
+      })
+    }
+
     const menuOptions = [
       {
         label: () => h('div', {}, { default: () => user.value === null ? 'Profile' : user.value.name }),
         key: 'profile',
         icon: renderIcon(PersonIcon),
         children: [
+          {
+            label: () => h('div', { onClick: () => goHome() }, { default: () => 'Home' }),
+            key: 'home',
+            icon: renderIcon(HomeIcon),
+          },
           {
             label: () => h('div', { onClick: () => goProfileShow() }, { default: () => 'Edit' }),
             key: 'edit',
