@@ -52,7 +52,7 @@ Route::get('/project/host-project', static fn() => Inertia::render('Project/Host
 Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
 Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
 Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
-Route::get('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
+Route::post('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
 Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
 
 Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadFile'])->name('file.upload');
