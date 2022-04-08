@@ -66,14 +66,21 @@ export default {
           const deleteBtn = h(NButton, {
             type: 'error',
             size: 'small',
+            disabled: !row.owner,
             onClick: () => deleteItem(row.id),
           }, { default: () => 'Delete' })
           const shareBtn = h(NButton, {
             type: 'info',
             size: 'small',
+            disabled: !row.owner,
             onClick: () => shareItem(row.id),
           }, { default: () => 'Share' })
-          return h(NButtonGroup, () => [openBtn, shareBtn, deleteBtn])
+          const copyBtn = h(NButton, {
+            type: 'info',
+            size: 'small',
+            onClick: () => copyItem(row.id),
+          }, { default: () => 'Copy' })
+          return h(NButtonGroup, () => [openBtn, shareBtn, copyBtn, deleteBtn])
         },
       },
     ]
@@ -99,6 +106,10 @@ export default {
       shareEmail.value = null
       showModalRef.value = true
       currentProject.value = id
+    }
+
+    const copyItem = (id) => {
+      Inertia.get(route('project.copy', { project: id }))
     }
 
     const deleteItem = (id) => {

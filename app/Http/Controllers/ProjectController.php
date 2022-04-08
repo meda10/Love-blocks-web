@@ -173,9 +173,34 @@ class ProjectController extends Controller
         return Redirect::back()->with('error', 'Please sign in.');
     }
 
-    public function copy(Project $project)
+    /**
+     * Copy project
+     * @param Project $project
+     * @return RedirectResponse
+     */
+    public function copy(Project $project): RedirectResponse
     {
-//    TODO
+        try {
+            $oldMainContents = Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua');
+            $oldConfContents = Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua');
+        } catch (FileNotFoundException $e) {
+            return Redirect::back()->with('error', 'Something went wrong can\'t copy project');
+        }
+        $projectCopy = Project::create([
+            'directory_name' => Str::random(32),
+            'workspace' => $project['workspace'],
+            'name' => $project['name'] . ' copy',
+        ]);
+
+        $projectCopy->users()->attach(Auth::user(), ['owner' => 1]);
+        Storage::disk('local')->makeDirectory('projects' . DIRECTORY_SEPARATOR . $projectCopy['directory_name']);
+        $copyMainPath = 'projects' . DIRECTORY_SEPARATOR . $projectCopy['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
+        $copyConfPath = 'projects' . DIRECTORY_SEPARATOR . $projectCopy['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
+        Storage::disk('local')->put($copyMainPath, $oldMainContents);
+        Storage::disk('local')->put($copyConfPath, $oldConfContents);
+        ProjectFile::create(['name' => 'main.lua', 'project_id' => $projectCopy['id'], 'file_path' => $copyMainPath]);
+        ProjectFile::create(['name' => 'conf.lua', 'project_id' => $projectCopy['id'], 'file_path' => $copyConfPath]);
+        return Redirect::route('project.show', $projectCopy);
     }
 
     /**
