@@ -17,8 +17,10 @@ class RefreshGameAction
     /**
      * Refresh game shown in browser
      * @param Project $project
+     * @return mixed|null
+     * @throws FileNotFoundException
      */
-    public static function execute(Project $project)
+    public static function execute(Project $project): mixed
     {
         if (Auth::check()) {
             $directoryPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'games' . DIRECTORY_SEPARATOR . Auth::id() . DIRECTORY_SEPARATOR;
@@ -29,14 +31,12 @@ class RefreshGameAction
             $outputFilePath = Storage::disk('public')->path($publicDirectoryPath);
             if (!CreateLoveFileAction::execute($project['directory_name'], $loveFilePath) || !Storage::disk('local')->exists($loveFile)) {
                 return null;
-//                return Redirect::back()->with('error', 'Could not create .love file');
             }
             try {
                 $command = ['npx', 'love.js', '-t', 'title', '-c', $loveFilePath, $outputFilePath];
                 ExecuteShellCommandAction::execute($command);
             } catch (Exception $e) {
                 return null;
-//                return Redirect::back()->with('error', $e);
             }
             $package = Str::of(Storage::disk('public')->get($publicDirectoryPath . 'game.js'))->match('/loadPackage\({".*}/');
             try {
@@ -44,13 +44,10 @@ class RefreshGameAction
                 Storage::disk('public')->delete([$publicDirectoryPath . 'love.js', $publicDirectoryPath . 'game.js', $publicDirectoryPath . 'index.html']);
                 Storage::disk('public')->deleteDirectory($publicDirectoryPath . 'theme');
                 return $json;
-//                return Redirect::back()->with('package', $json);
             } catch (JsonException $e) {
                 return null;
-//                return Redirect::back()->with('error', $e);
             }
         }
         return null;
-//        return Redirect::back()->with('error', 'Please sign in.');
     }
 }
