@@ -13,11 +13,13 @@ class Project extends Model
 
     protected $casts = [
         'id' => 'int',
+        'workspace' => 'array',
     ];
 
     protected $fillable = [
         'name',
-        'directory_name'
+        'directory_name',
+        'workspace',
     ];
 
     public function getProjectsByUser($id)

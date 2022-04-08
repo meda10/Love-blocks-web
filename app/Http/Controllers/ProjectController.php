@@ -9,6 +9,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use App\Models\User;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,6 +43,13 @@ class ProjectController extends Controller
                 return Inertia::render('Project/Show', [
                     'project' => $project,
                     'owner' => $project->isProjectOwner(Auth::user()),
+                    'conf' => Inertia::lazy(static function ($project) {
+                        try {
+                            return Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua');
+                        } catch (FileNotFoundException $e) {
+                            return null;
+                        }
+                    }),
                     'gamePackage' => Inertia::lazy(static fn() => RefreshGameAction::execute($project)),
                 ]);
             }
@@ -66,92 +74,71 @@ class ProjectController extends Controller
         ]);
         if (Auth::check()) {
             $project->users()->attach(Auth::user(), ['owner' => 1]);
+            Storage::disk('local')->makeDirectory('projects' . DIRECTORY_SEPARATOR . $project['directory_name']);
+            $mainPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
+            $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
+            Storage::disk('local')->put($mainPath, '');
+            Storage::disk('local')->put($confPath, ''); //todo add basic conf
+            ProjectFile::create(['name' => 'main.lua', 'project_id' => $project['id'], 'file_path' => $mainPath]);
+            ProjectFile::create(['name' => 'conf.lua', 'project_id' => $project['id'], 'file_path' => $confPath]);
             return Redirect::route('project.show', $project);
         }
         return Inertia::render('Project/Show', ['project' => $project, 'owner' => false]);
     }
 
     /**
-     * Store project + project files
+     * Update project + project files
      * @param Request $request
+     * @param Project $project
      * @return RedirectResponse
      */
-    public function storeFiles(Request $request): RedirectResponse
+    public function update(Request $request, Project $project): RedirectResponse
     {
-        $request->validate([
-            'file_name' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'file_contents' => 'required|string',
-        ]);
         if (!Auth::check()) {
             return Redirect::back()->with('error', 'Couldn\'t save the project, please sign in.');
         }
-        $project = Project::create([
-            'name' => $request['name'],
+        $request->validate([
+            'workspace' => 'required',
+            'main' => 'required',
         ]);
-        $project->users()->attach(Auth::id());
-        $dirName = 'projects/' . Str::random(32);
-        Storage::makeDirectory($dirName);
-        $project->directory_name = $dirName;
+        $project->update(['workspace' => $request['workspace']]);
         $project->save();
 
-
-        //todo save project file from monaco / blockly -> files, file_name, file_contents, name
-
-        foreach ($request['files'] as $fileToSave) {
-            $fileName = $fileToSave['file_name'];
-            $fileContents = $fileToSave['file_contents'];
-            $filePath = $dirName . '/' . $fileName;
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
+        $mainPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
+        if (!$this->storeFiles($project, $mainPath, 'main.lua', $request['main'])) {
+            return Redirect::back()->with('error', 'Could not save project try again');
+        }
+        if ($request['config'] !== null) {
+            $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
+            if (!$this->storeFiles($project, $confPath, 'config.lua', $request['config'])) {
+                return Redirect::back()->with('error', 'Could not save project try again');
             }
-            if (!Storage::put($filePath, $fileContents)) {
-                return Redirect::back()->with('error', 'Couldn\'t save the project. Try again');
-            }
+        }
+        return Redirect::back()->with('success', 'Project was saved');
+    }
+
+    /**
+     * Store project + project files
+     * @param Project $project
+     * @param $filePath
+     * @param $fileName
+     * @param $fileContents
+     * @return bool
+     */
+    private function storeFiles(Project $project, $filePath, $fileName, $fileContents): bool
+    {
+        if (Storage::disk('local')->exists($filePath)) {
+            Storage::disk('local')->delete($filePath);
+        }
+        if (Storage::disk('local')->put($filePath, $fileContents)) {
             ProjectFile::create([
                 'name' => $fileName,
                 'project_id' => $project['id'],
                 'file_path' => $filePath,
             ]);
+            return true;
         }
-
-        return Redirect::back()->with('success', 'Project was saved');
-    }
-
-    /**
-     * Update project + project files
-     * @param Request $request
-     * @param Project $project
-     * @param ProjectFile $projectFile
-     * @return RedirectResponse
-     */
-    public function update(Request $request, Project $project, ProjectFile $projectFile): RedirectResponse
-    {
-        $project->update($request->validate([
-            'name' => 'required|string|max:255',
-        ]));
-
-        $projectFileNames = $projectFile->getProjectFiles($project['id']);
-
-        foreach ($request['files'] as $fileToSave) {
-            $fileName = $fileToSave['file_name'];
-            $fileContents = $fileToSave['file_contents'];
-            $filePath = $projectFileNames[$fileName]['file_path'];
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
-            }
-            if (!Storage::put($filePath, $fileContents)) {
-                return Redirect::back()->with('error', 'Couldn\'t save the project. Try again');
-            }
-            if (!in_array($fileName, $projectFileNames->keys()->toArray(), true)) {
-                ProjectFile::create([
-                    'name' => $fileName,
-                    'project_id' => $project['id'],
-                    'file_path' => $filePath,
-                ]);
-            }
-        }
-        return Redirect::back()->with('success', 'Project was saved');
+        return false;
     }
 
     /**
@@ -185,6 +172,11 @@ class ProjectController extends Controller
             return Inertia::render('Project/Index', ['projects' => ProjectResource::collection($user['projects'])]);
         }
         return Redirect::back()->with('error', 'Please sign in.');
+    }
+
+    public function copy(Project $project)
+    {
+//    TODO
     }
 
     /**

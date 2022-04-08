@@ -26,6 +26,7 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->userName(),
             'directory_name' => Str::random(32),
+            'workspace' => '{}',
             'created_at' => now(),
             'updated_at' => now(),
         ];

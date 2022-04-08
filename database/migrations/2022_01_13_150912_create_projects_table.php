@@ -17,6 +17,7 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('directory_name');
+            $table->text('workspace')->nullable();
             //            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
