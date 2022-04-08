@@ -20,7 +20,7 @@
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { h, ref, computed, watch } from 'vue'
-import { NIcon, NModal, useMessage } from 'naive-ui'
+import { NIcon, NModal, useDialog } from 'naive-ui'
 import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
@@ -29,6 +29,7 @@ import {
   ShareOutline as ShareIcon,
   DownloadOutline as DownloadIcon,
 } from '@vicons/ionicons5'
+import useMessaging from '@/messages'
 
 export default {
   name: 'TopPanel',
@@ -39,8 +40,10 @@ export default {
     project: Object,
     owner: Boolean,
   },
-  setup(props) {
-    const message = useMessage()
+  emits: ['pageLeave'],
+  setup(props, { emit }) {
+    const { message } = useMessaging()
+    const dialog = useDialog()
     const validationErrors = computed(() => usePage().props.value.errors)
     const activeKey = ref(null)
     const activeProfileMenu = ref(null)
@@ -67,7 +70,7 @@ export default {
             icon: renderIcon(DownloadIcon),
           },
           {
-            label: () => h(Link, { href: route('project.files', { project: props.project }) }, { default: () => 'Files' }),
+            label: () => h('div', { onClick: () => goProjectFiles() }, { default: () => 'Files' }),
             key: 'files',
             icon: renderIcon(BookIcon),
           },
@@ -89,6 +92,45 @@ export default {
       },
     ]
 
+    const goProjectFiles = () => {
+      emit('pageLeave')
+      dialog.warning({
+        title: 'Confirm',
+        content: 'Do you want to leave this page?',
+        positiveText: 'Yes',
+        negativeText: 'Not Sure',
+        onPositiveClick: () => {
+          Inertia.get(route('project.files', { project: props.project }))
+        },
+      })
+    }
+
+    const goProfileShow = () => {
+      emit('pageLeave')
+      dialog.warning({
+        title: 'Confirm',
+        content: 'Do you want to leave this page?',
+        positiveText: 'Yes',
+        negativeText: 'Not Sure',
+        onPositiveClick: () => {
+          Inertia.get(route('profile.show'))
+        },
+      })
+    }
+
+    const goProjectUser = () => {
+      emit('pageLeave')
+      dialog.warning({
+        title: 'Confirm',
+        content: 'Do you want to leave this page?',
+        positiveText: 'Yes',
+        negativeText: 'Not Sure',
+        onPositiveClick: () => {
+          Inertia.get(route('project.user'))
+        },
+      })
+    }
+
     const menuOptions = [
       {
         label: () => h('div', {}, { default: () => user.value === null ? 'Profile' : user.value.name }),
@@ -96,12 +138,12 @@ export default {
         icon: renderIcon(PersonIcon),
         children: [
           {
-            label: () => h(Link, { href: route('profile.show') }, { default: () => 'Edit' }),
+            label: () => h('div', { onClick: () => goProfileShow() }, { default: () => 'Edit' }),
             key: 'edit',
             icon: renderIcon(CreateIcon),
           },
           {
-            label: () => h(Link, { href: route('project.user') }, { default: () => 'Projects' }),
+            label: () => h('div', { onClick: () => goProjectUser() }, { default: () => 'Projects' }),
             key: 'projects',
             icon: renderIcon(BookIcon),
           },

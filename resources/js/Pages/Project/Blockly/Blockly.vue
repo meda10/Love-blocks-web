@@ -26,16 +26,18 @@ import { ScrollOptions, ScrollBlockDragger, ScrollMetricsManager } from '@blockl
 export default {
   name: 'Blockly',
   props: {
-    saveBlockly: Boolean,
+    saveCode: Boolean,
+    saveWorkspace: Boolean,
+    project: Object,
   },
-  emits: ['saveCode'],
+  emits: ['passCodeToMonaco', 'saveWorkspace'],
   setup(props, { emit }) {
-    const code = ref(null)
     let workspace
+    const code = ref(null)
     const blocklyArea = ref(null)
     const blocklyDiv = ref(null)
     const blocklyToolbox = ref(null)
-    const workplaceState = useSessionStorage('blocklyState', {})
+    const workplaceState = useSessionStorage(props.project.id, {})
 
     const options = {
       media: '/storage/media/',
@@ -66,14 +68,25 @@ export default {
       },
     }
 
-    const generateCode = () => {
-      code.value = luaGenerator.workspaceToCode(workspace)
+    const saveWorkplace = () => {
       workplaceState.value = Blockly.serialization.workspaces.save(workspace)
-      emit('saveCode', code.value)
+      console.log('SAVE WORKSPACE')
+      console.log(workplaceState.value)
+      emit('saveWorkspace', workplaceState.value)
     }
 
-    watch(() => props.saveBlockly, () => {
+    const generateCode = () => {
+      saveWorkplace()
+      code.value = luaGenerator.workspaceToCode(workspace)
+      emit('passCodeToMonaco', code.value)
+    }
+
+    watch(() => props.saveCode, () => {
       generateCode()
+    })
+
+    watch(() => props.saveWorkspace, () => {
+      saveWorkplace()
     })
 
     useResizeObserver(blocklyArea, (entries) => {

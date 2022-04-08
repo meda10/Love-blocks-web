@@ -40,7 +40,8 @@ export default {
     const editorValue = ref(initialEditorValue)
 
     const generateCode = () => {
-      emit('saveCode', 'TODO')
+      emit('saveCode', '')
+      //  todo save code
     }
 
     watch(() => props.saveMonaco, () => {

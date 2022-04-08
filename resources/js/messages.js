@@ -7,13 +7,11 @@ export default () => {
   const flash = computed(() => usePage().props.value.flash)
 
   onMounted(() => {
-    console.log('OnMounted')
     if (flash.value.success != null) message.success(flash.value.success)
     if (flash.value.error != null) message.error(flash.value.error)
   })
 
   watch(flash, () => {
-    console.log('watch')
     if (flash.value.success != null) message.success(flash.value.success)
     if (flash.value.error != null) message.error(flash.value.error)
   })

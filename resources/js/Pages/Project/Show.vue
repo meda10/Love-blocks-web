@@ -1,6 +1,6 @@
 <template>
   <Head :title="title" />
-  <top-panel :owner="owner" :project="project" />
+  <top-panel :owner="owner" :project="project" @pageLeave="pageLeave" />
   <div class="flex-grow">
     <splitpanes class="default-theme" style="height: 100%">
       <pane>
@@ -13,7 +13,9 @@
               </n-button>
             </div>
           </div>
-          <Blockly v-if="!editorShow" :save-blockly="changeEditorRef" @saveCode="passCodeToMonaco" />
+          <Blockly v-if="!editorShow" :project="project" :save-code="changeEditorRef"
+                   :save-workspace="saveBlocklyWorkspaceRef" @passCodeToMonaco="passCodeToMonaco"
+                   @saveWorkspace="saveBlocklyWorkspace" />
           <editor v-if="editorShow" :code="codeFromBlockly" :save-monaco="changeEditorRef"
                   @saveCode="saveCodeFromMonaco" />
         </div>
@@ -64,12 +66,21 @@ export default {
   setup(props) {
     const { keyPressListener } = useListeners()
     const title = computed(() => props.project.name)
-    const editorShow = ref(false)
     const changeEditorRef = ref(false)
+    const saveBlocklyWorkspaceRef = ref(false)
+    const editorShow = ref(false)
     const editorPane = ref(null)
     const btnEditor = ref(null)
     const btnText = ref('Code')
     const codeFromBlockly = ref('')
+
+    const pageLeave = () => {
+      saveBlocklyWorkspaceRef.value = !saveBlocklyWorkspaceRef.value
+    }
+
+    const saveBlocklyWorkspace = () => {
+
+    }
 
     const switchEditors = () => {
       editorShow.value = !editorShow.value
@@ -85,8 +96,7 @@ export default {
 
     const saveCodeFromMonaco = (code) => {
       switchEditors()
-      console.log('Code from monaco:')
-      console.log(code)
+      //todo
     }
 
     useResizeObserver(editorPane, () => {
@@ -112,10 +122,13 @@ export default {
       btnEditor,
       btnText,
       changeEditorRef,
+      saveBlocklyWorkspaceRef,
       codeFromBlockly,
       changeEditor,
       passCodeToMonaco,
       saveCodeFromMonaco,
+      saveBlocklyWorkspace,
+      pageLeave,
     }
   },
 }
