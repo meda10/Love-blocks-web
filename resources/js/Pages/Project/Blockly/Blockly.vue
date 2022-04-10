@@ -6,12 +6,6 @@
       <slot />
     </xml>
   </div>
-
-  <!--  <BlocklyComponent id="blockly" ref="blockly" :blockly-area="blocklyArea" :options="options" />-->
-  <!--    <div id="code">-->
-  <!--      <ButtonLink :button="true" component-style="btn btn-primary" label="Show code" @click="showCode" />-->
-  <!--      <pre v-html="code" />-->
-  <!--    </div>-->
 </template>
 
 <script>
@@ -103,7 +97,7 @@ export default {
         options.toolbox = blocklyToolbox.value
       }
       workspace = Blockly.inject(blocklyDiv.value, options)
-      Blockly.serialization.workspaces.load(props.workspace, workspace)
+      if (props.workspace !== '{}') Blockly.serialization.workspaces.load(props.workspace, workspace)
       const plugin = new ScrollOptions(workspace)
       plugin.init()
     })

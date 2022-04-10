@@ -62,6 +62,7 @@ export default {
   props: {
     project: Object,
     owner: Boolean,
+    main: String,
     gamePackage: Object,
     config: String,
   },

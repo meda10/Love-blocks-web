@@ -1,7 +1,14 @@
 <template>
   <Head title="My Projects" />
   <n-card title="My projects">
-    <n-data-table ref="tableRef" :columns="columns" :data="projects" :pagination="pagination" />
+    <n-space :size="12" vertical>
+      <n-space>
+        <n-button :strong="true" icon-placement="right" size="small" type="primary" @click="createProject">
+          Create Project
+        </n-button>
+      </n-space>
+      <n-data-table ref="tableRef" :columns="columns" :data="projects" :pagination="pagination" />
+    </n-space>
   </n-card>
   <n-modal
     v-model:show="showModalRef"
@@ -13,6 +20,17 @@
     @positive-click="onPositiveClick"
     @negative-click="onNegativeClick">
     <n-input v-model:value="shareEmail" placeholder="E-mail" />
+  </n-modal>
+  <n-modal
+    v-model:show="showModalProjectRef"
+    :mask-closable="false"
+    negative-text="Cancel"
+    positive-text="Create"
+    preset="dialog"
+    title="Project Name"
+    @positive-click="onPositiveProjectClick"
+    @negative-click="onNegativeProjectClick">
+    <n-input v-model:value="projectName" placeholder="Project name" />
   </n-modal>
 </template>
 
@@ -39,6 +57,8 @@ export default {
     const shareEmail = ref(null)
     const currentProject = ref(null)
     const showModalRef = ref(false)
+    const showModalProjectRef = ref(false)
+    const projectName = ref(null)
     const tableRef = ref(null)
     const pagination = { pageSize: 5 }
     const columns = [
@@ -98,6 +118,15 @@ export default {
       showModalRef.value = false
     }
 
+    const onPositiveProjectClick = () => {
+      Inertia.post(route('project.create'), { name: projectName.value })
+      showModalProjectRef.value = false
+    }
+
+    const onNegativeProjectClick = () => {
+      showModalProjectRef.value = false
+    }
+
     const sortName = () => {
       tableRef.value.sort('name', 'ascend')
     }
@@ -120,15 +149,25 @@ export default {
       Inertia.get(route('project.show', { project: id }))
     }
 
+    const createProject = () => {
+      showModalProjectRef.value = true
+      projectName.value = null
+    }
+
     return {
       columns,
       pagination,
       tableRef,
       shareEmail,
       showModalRef,
+      showModalProjectRef,
+      projectName,
       sortName,
       onNegativeClick,
       onPositiveClick,
+      createProject,
+      onPositiveProjectClick,
+      onNegativeProjectClick,
     }
   },
 }

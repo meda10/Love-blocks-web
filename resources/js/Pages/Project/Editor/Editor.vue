@@ -56,7 +56,6 @@ export default {
       loader.init().then(result => {
         monaco = result
         const editorOptions = {
-          value: 'print("Hello World")',
           language: 'lua',
           theme: 'vs-dark',
           tabSize: 2,
