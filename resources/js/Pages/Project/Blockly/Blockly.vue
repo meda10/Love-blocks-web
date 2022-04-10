@@ -34,7 +34,7 @@ export default {
 
     const options = {
       media: '/storage/media/',
-      // theme: DarkTheme,
+      theme: DarkTheme,
       zoom: {
         controls: true,
         wheel: true,

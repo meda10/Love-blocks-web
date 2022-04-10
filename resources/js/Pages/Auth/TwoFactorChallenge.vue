@@ -6,7 +6,7 @@
       <jet-authentication-card-logo />
     </template>
 
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-white">
       <template v-if="! recovery">
         Please confirm access to your account by entering the authentication code provided by your authenticator
         application.
@@ -22,7 +22,8 @@
     <form @submit.prevent="submit">
       <div v-if="! recovery">
         <jet-label for="code" value="Code" />
-        <jet-input id="code" ref="code" v-model="form.code" autocomplete="one-time-code" autofocus class="mt-1 block w-full"
+        <jet-input id="code" ref="code" v-model="form.code" autocomplete="one-time-code" autofocus
+                   class="mt-1 block w-full"
                    inputmode="numeric" type="text" />
       </div>
 
@@ -33,7 +34,7 @@
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <button class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer" type="button"
+        <button class="text-sm text-white hover:text-gray-900 underline cursor-pointer" type="button"
                 @click.prevent="toggleRecovery">
           <template v-if="! recovery">
             Use a recovery code

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-row items-center justify-between py-4 text-gray-500">
+    <div class="flex flex-row items-center justify-between py-4 text-white">
       <hr class="w-full mr-2" />
       Or
       <hr class="w-full ml-2" />

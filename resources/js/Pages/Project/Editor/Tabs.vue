@@ -1,5 +1,5 @@
 <template>
-  <div class="border-b border-gray-200 text-sm flex justify-start">
+  <div class="border-b bg-light-gray border-dark-gray  text-sm flex justify-start">
     <a
       v-for="item in items"
       :key="item.value"
@@ -33,10 +33,10 @@ export default {
 
 <style>
 .tab-item {
-  @apply inline-block px-4 py-3 text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400;
+  @apply inline-block px-4 py-3 text-white hover:text-light-green;
 }
 
 .tab-item-active {
-  @apply inline-block px-4 py-3 border-t-2 border-indigo-500 text-indigo-500 font-semibold;
+  @apply inline-block bg-dark-gray px-4 py-3 border-t-2 border-light-green text-light-green font-semibold;
 }
 </style>

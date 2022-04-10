@@ -12,6 +12,17 @@ module.exports = {
     './resources/**/*.vue',
   ],
 
+  theme: {
+    extend: {
+      colors: {
+        'dark-dark-gray': '#101014',
+        'dark-gray': '#18181c',
+        'light-gray': '#303033',
+        'light-green': '#63e1b6',
+      },
+      backgroundColor: '#303033',
+    },
+  },
   // theme: {
   //   extend: {
   //     fontFamily: {

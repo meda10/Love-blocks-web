@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row flex-nowrap justify-end">
+  <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
     <n-space align="center">
       <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
                 @click="saveProject">

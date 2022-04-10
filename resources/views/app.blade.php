@@ -12,14 +12,14 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <link href="https://unpkg.com/splitpanes/dist/splitpanes.css" rel="stylesheet">
-    <!-- Scripts -->
+{{--    <link href="https://unpkg.com/splitpanes/dist/splitpanes.css" rel="stylesheet">--}}
+<!-- Scripts -->
     @routes
     <script src="{{ mix('js/manifest.js') }}" defer></script>
     <script src="{{ mix('js/vendor.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
-<body class="font-sans antialiased">
+<body class="h-screen text-white bg-dark-dark-gray font-sans antialiased">
 @inertia
 
 @env ('local')

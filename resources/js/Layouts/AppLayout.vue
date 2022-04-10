@@ -1,5 +1,6 @@
 <template>
-  <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">
+  <!--  <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">-->
+  <n-config-provider :theme="darkTheme">
     <n-dialog-provider>
       <n-message-provider>
         <slot />

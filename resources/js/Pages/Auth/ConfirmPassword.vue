@@ -6,7 +6,7 @@
       <jet-authentication-card-logo />
     </template>
 
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-white">
       This is a secure area of the application. Please confirm your password before continuing.
     </div>
 
@@ -15,7 +15,8 @@
     <form @submit.prevent="submit">
       <div>
         <jet-label for="password" value="Password" />
-        <jet-input id="password" v-model="form.password" autocomplete="current-password" autofocus class="mt-1 block w-full"
+        <jet-input id="password" v-model="form.password" autocomplete="current-password" autofocus
+                   class="mt-1 block w-full"
                    required type="password" />
       </div>
 
