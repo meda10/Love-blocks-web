@@ -23,7 +23,6 @@ export default {
     saveCode: Boolean,
     saveWorkspace: Boolean,
     project: Object,
-    workspace: Object,
   },
   emits: ['passCodeToMonaco', 'saveWorkspace'],
   setup(props, { emit }) {
@@ -68,14 +67,10 @@ export default {
       emit('saveWorkspace', workspaceState, luaCode)
     }
 
-    const generateCode = () => {
+    watch(() => props.saveCode, () => {
       saveWorkspace()
       code.value = luaGenerator.workspaceToCode(workspace)
       emit('passCodeToMonaco', code.value)
-    }
-
-    watch(() => props.saveCode, () => {
-      generateCode()
     })
 
     watch(() => props.saveWorkspace, () => {
@@ -97,7 +92,7 @@ export default {
         options.toolbox = blocklyToolbox.value
       }
       workspace = Blockly.inject(blocklyDiv.value, options)
-      if (props.workspace !== '{}') Blockly.serialization.workspaces.load(props.workspace, workspace)
+      if (props.project.blockly_workspace !== null) Blockly.serialization.workspaces.load(props.project.blockly_workspace, workspace)
       const plugin = new ScrollOptions(workspace)
       plugin.init()
     })
@@ -108,7 +103,6 @@ export default {
       options,
       blocklyArea,
       code,
-      generateCode,
     }
   },
 }

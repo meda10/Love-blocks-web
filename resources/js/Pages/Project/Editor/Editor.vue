@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import { onMounted, ref, onUnmounted, watch } from 'vue'
+import { onMounted, ref, onUnmounted, watch, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { MonacoServices } from 'monaco-languageclient'
 import loader from '@monaco-editor/loader'
@@ -19,32 +19,44 @@ export default {
   },
   props: {
     saveMonaco: Boolean,
-    code: String,
-    config: String,
+    editMonaco: Boolean,
+    mainLua: String,
+    configLua: String,
+    project: Object,
   },
-  emits: ['saveCode'],
+  emits: ['saveCode', 'saveConf'],
   setup(props, { emit }) {
     const monacoContainer = ref(null)
+    const readOnlyRef = ref(!props.editMonaco)
     let editor, monaco, webSocket
     const items = ref([
       { text: 'main.lua', value: 'main' },
       { text: 'conf.lua', value: 'conf' },
     ])
     const initialEditorValue = {
-      main: props.code,
-      conf: props.config,
+      main: props.mainLua,
+      conf: props.configLua,
     }
     const currentTab = ref(items.value[0].value)
     const editorState = ref({})
     const editorValue = ref(initialEditorValue)
 
-    const generateCode = () => {
-      //  todo monaco get code
-      emit('saveCode', '')
+    watch(() => props.saveMonaco, () => {
+      emit('saveCode', editor.saveViewState(), editorValue.value.main, editorValue.value.conf)
+    })
+
+    const readOnly = () => {
+      readOnlyRef.value = true
+      editor.updateOptions({ readOnly: readOnlyRef.value })
     }
 
-    watch(() => props.saveMonaco, () => {
-      generateCode()
+    const readAndWrite = () => {
+      readOnlyRef.value = false
+      editor.updateOptions({ readOnly: readOnlyRef.value })
+    }
+
+    watch(() => props.editMonaco, () => {
+      readAndWrite()
     })
 
     onMounted(() => {
@@ -57,6 +69,7 @@ export default {
         monaco = result
         const editorOptions = {
           language: 'lua',
+          readOnly: readOnlyRef.value,
           theme: 'vs-dark',
           tabSize: 2,
           minimap: { enabled: false },
@@ -67,8 +80,7 @@ export default {
         webSocket = connectLanguageServer(`ws://${location.hostname}:8888`)
 
         editor.getAction('editor.action.formatDocument').run()
-
-        editor.onDidChangeModelContent(useDebounceFn(function () {
+        editor.onDidChangeModelContent(useDebounceFn(() => {
           if (editorValue.value[currentTab.value] !== editor.getValue()) {
             editorValue.value[currentTab.value] = editor.getValue()
           }
@@ -76,20 +88,24 @@ export default {
 
         if (editorValue.value[currentTab.value]) {
           editor.setValue(editorValue.value[currentTab.value])
-          editor.restoreViewState(editorState.value[currentTab.value])
+          if (props.project.monaco_workspace !== null) editor.restoreViewState(props.project.monaco_workspace)
+          else editor.restoreViewState(editorState.value[currentTab.value])
         }
         return result
       }).catch(() => null)
     })
 
     watch(currentTab, function (current, previous) {
-      monaco.editor.setModelLanguage(editor.getModel(), 'lua')
+      if (current === 'conf') readAndWrite()
+      else if (props.editMonaco && current === 'main') readAndWrite()
+      else readOnly()
+
+      if (previous === 'conf') emit('saveConf', editorValue.value.conf)
+
       editorState.value[previous] = editor.saveViewState()
-      if (editorValue.value[current]) {
-        editor.setValue(editorValue.value[current])
-      } else {
-        editor.setValue('')
-      }
+      if (editorValue.value[current]) editor.setValue(editorValue.value[current])
+      else editor.setValue('')
+
       if (editorState.value[current]) {
         editor.restoreViewState(editorState.value[current])
         editor.focus()
