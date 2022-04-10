@@ -42,7 +42,7 @@ class ProjectFileController extends Controller
         if (Auth::check()) {
             $project = Project::findOrFail($projectFile['project_id']);
             if ($project->userHasAccess(Auth::user())) {
-                File::delete(Storage::path('projects' . DIRECTORY_SEPARATOR . $projectFile['file_path']));
+                File::delete(Storage::path($projectFile['file_path']));
                 $projectFile->delete();
                 return Redirect::back()->with('success', 'File was deleted');
             }

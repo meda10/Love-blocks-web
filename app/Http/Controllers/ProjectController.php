@@ -49,6 +49,7 @@ class ProjectController extends Controller
                     'project' => $project,
                     'owner' => $project->isProjectOwner(Auth::user()),
                     'config' => $conf,
+                    'main' => Inertia::lazy(static fn() => $project->getMainLua()),
                     'gamePackage' => Inertia::lazy(static fn() => RefreshGameAction::execute($project)),
                 ]);
             }
@@ -61,6 +62,7 @@ class ProjectController extends Controller
      * Stores Project to DB
      * @param Request $request
      * @return RedirectResponse|\Inertia\Response
+     * @throws \JsonException
      */
     public function store(Request $request): \Inertia\Response|RedirectResponse
     {
@@ -70,6 +72,7 @@ class ProjectController extends Controller
         $project = Project::create([
             'directory_name' => Str::random(32),
             'name' => $request['name'],
+            'workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
         ]);
         if (Auth::check()) {
             $project->users()->attach(Auth::user(), ['owner' => 1]);
@@ -150,6 +153,9 @@ class ProjectController extends Controller
         if (Auth::check()) {
             if (Auth::id() === $project->getProjectOwner()['id']) {
                 File::deleteDirectory(Storage::path('projects' . DIRECTORY_SEPARATOR . $project['directory_name']));
+                if (Storage::disk('public')->exists('download' . DIRECTORY_SEPARATOR . $project['directory_name'])) {
+                    File::deleteDirectory(Storage::disk('public')->path('download' . DIRECTORY_SEPARATOR . $project['directory_name']));
+                }
                 $project->files()->delete();
                 $project->users()->detach();
                 $project->delete();
@@ -245,6 +251,7 @@ class ProjectController extends Controller
     /**
      * For Android -> returns .love file for project
      * @param Request $request
+     * @param FirebaseUserAuthAction $firebaseUserAuthAction
      * @return JsonResponse
      */
     public function getProjectsLoveFile(Request $request, FirebaseUserAuthAction $firebaseUserAuthAction): JsonResponse
@@ -258,8 +265,15 @@ class ProjectController extends Controller
         Storage::disk('public')->makeDirectory($outputDirName);
         $path = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
-        if (Storage::disk('public')->exists($path) && CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
-            return Response::json(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
+        do {
+            File::delete(Storage::disk('public')->path($path));
+        } while (Storage::disk('public')->exists($path));
+
+        if (CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
+            if (Storage::disk('public')->exists($path)) {
+                return Response::json(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
+            }
+            return Response::json(['errors' => ['error' => 'Could not download project']]);
         }
         return Response::json(['errors' => ['error' => 'Could not download project']]);
     }
@@ -288,71 +302,24 @@ class ProjectController extends Controller
             Storage::disk('public')->makeDirectory($outputDirName);
             $path = $outputDirName . DIRECTORY_SEPARATOR . 'project.love';
 
-            if (!Storage::disk('public')->exists($path) || !CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
+            do {
+                File::delete(Storage::disk('public')->path($path));
+            } while (Storage::disk('public')->exists($path));
+
+            if (CreateLoveFileAction::execute($project['directory_name'], Storage::disk('public')->path($path))) {
+                if (Storage::disk('public')->exists($path)) {
+                    $message = CloudMessage::withTarget('token', $user['FCM_token'])
+                        ->withAndroidConfig($config)
+                        ->withNotification(Notification::create('Open project', $project['name']))
+                        ->withData(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
+                    $messaging->send($message);
+                    return Redirect::route('project.show', $project)->with('success', 'Open your android device');
+                }
                 return Redirect::route('project.show', $project)->with('error', 'Something went wrong, can not send message to Android, try again later.');
             }
-            $message = CloudMessage::withTarget('token', $user['FCM_token'])
-                ->withAndroidConfig($config)
-                ->withNotification(Notification::create('Open project', $project['name']))
-                ->withData(['url' => Storage::disk('public')->url($path), 'name' => $project['name'] . '.love']);
-            $messaging->send($message);
+            return Redirect::route('project.show', $project)->with('error', 'Something went wrong, can not send message to Android, try again later.');
         } catch (MessagingException|FirebaseException) {
             return Redirect::route('project.show', $project)->with('error', 'Can not not find valid token. Press refresh token in your application');
         }
-        return Redirect::route('project.show', $project)->with('success', 'Open your android device');
     }
-
-//    public function testDownload()
-//    {
-//        $file_path = 'x.jpg';
-//        try {
-//            if (Storage::exists($file_path)) {
-//                Storage::setVisibility($file_path, 'public');
-//
-//                $file = Storage::get($file_path);
-//                $path = Storage::path($file_path);
-//                $url = Storage::url($file_path);
-//                $visibility = Storage::getVisibility($file_path);
-//                $allFiles = Storage::allFiles('/');
-////                ddd($allFiles);
-//
-////                 return Response::json([
-////                     'url' => $url,
-////                     'name' => $file_path,
-////                 ]);
-//                $headers = ['Content-Type: image/jpg'];
-//                return Response::download($path, 'x.jpg', $headers);
-//            }
-//            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
-//        } catch (FileNotFoundException $e) {
-//            return Response::json(['errors' => ['error' => 'Could not download project']]);
-//        }
-//    }
-
-//    public function projectFile(Request $request): JsonResponse
-//    {
-//        $file_path = 'x.jpg';
-//        try {
-//            if (Storage::exists($file_path)) {
-//                Storage::setVisibility($file_path, 'public');
-//
-//                $file = Storage::get($file_path);
-//                $path = Storage::path($file_path);
-//                $url = Storage::url($file_path);
-//                $visibility = Storage::getVisibility($file_path);
-//                $allFiles = Storage::allFiles('/');
-////                ddd($allFiles);
-//
-//                return Response::json([
-//                    'url' => $url,
-//                    'name' => $file_path,
-//                ]);
-////                 $headers = ['Content-Type: image/jpg'];
-////                 return Response::download($path, 'x.jpg', $headers);
-//            }
-//            return Response::json(['errors' => ['error' => 'Project doesn\'t exist']]);
-//        } catch (FileNotFoundException $e) {
-//            return Response::json(['errors' => ['error' => 'Could not download project']]);
-//        }
-//    }
 }

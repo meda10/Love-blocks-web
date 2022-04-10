@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Project extends Model
 {
@@ -55,5 +57,14 @@ class Project extends Model
             return true;
         }
         return false;
+    }
+
+    public function getMainLua(): ?string
+    {
+        try {
+            return Storage::disk('local')->get('projects' . DIRECTORY_SEPARATOR . $this['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua');
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 }
