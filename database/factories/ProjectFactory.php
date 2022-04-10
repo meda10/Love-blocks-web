@@ -26,9 +26,11 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->userName(),
             'directory_name' => Str::random(32),
-            'workspace' => '{}',
+            'blockly_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
+            'monaco_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
             'created_at' => now(),
             'updated_at' => now(),
+            'editor' => 0,
         ];
     }
 }

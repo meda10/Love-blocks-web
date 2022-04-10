@@ -49,7 +49,7 @@ class ProjectController extends Controller
                     'project' => $project,
                     'owner' => $project->isProjectOwner(Auth::user()),
                     'config' => $conf,
-                    'main' => Inertia::lazy(static fn() => $project->getMainLua()),
+                    'main' => static fn() => $project->getMainLua(),
                     'gamePackage' => Inertia::lazy(static fn() => RefreshGameAction::execute($project)),
                 ]);
             }
@@ -72,7 +72,8 @@ class ProjectController extends Controller
         $project = Project::create([
             'directory_name' => Str::random(32),
             'name' => $request['name'],
-            'workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
+            'blockly_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
+            'monaco_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
         ]);
         if (Auth::check()) {
             $project->users()->attach(Auth::user(), ['owner' => 1]);
@@ -100,22 +101,31 @@ class ProjectController extends Controller
             return Redirect::back()->with('error', 'Couldn\'t save the project, please sign in.');
         }
         $request->validate([
-            'workspace' => 'required',
             'main' => 'required',
+            'editor' => 'required|boolean',
         ]);
-        $project->update(['workspace' => $request['workspace']]);
-        $project->save();
+
+        $project->update(['editor' => $request['editor']]);
+        if ($request['blockly_workspace'] !== null) {
+            $project->update(['blockly_workspace' => $request['blockly_workspace']]);
+            $project->save();
+        } else if ($request['monaco_workspace'] !== null) {
+            $project->update(['monaco_workspace' => $request['monaco_workspace']]);
+            $project->save();
+        }
 
         $mainPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
         if (!$this->storeFiles($project, $mainPath, 'main.lua', $request['main'])) {
             return Redirect::back()->with('error', 'Could not save project try again');
         }
+
         if ($request['config'] !== null) {
             $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
             if (!$this->storeFiles($project, $confPath, 'config.lua', $request['config'])) {
                 return Redirect::back()->with('error', 'Could not save project try again');
             }
         }
+
         return Redirect::back()->with('success', 'Project was saved');
     }
 
@@ -141,6 +151,28 @@ class ProjectController extends Controller
             return true;
         }
         return false;
+    }
+
+    /**
+     * Save config file
+     * @param Request $request
+     * @param Project $project
+     * @return RedirectResponse
+     */
+    public function updateConfig(Request $request, Project $project): RedirectResponse
+    {
+        if (!Auth::check()) {
+            return Redirect::back()->with('error', 'Couldn\'t save the project, please sign in.');
+        }
+        $request->validate([
+            'config' => 'required',
+        ]);
+
+        $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
+        if (!$this->storeFiles($project, $confPath, 'config.lua', $request['config'])) {
+            return Redirect::back()->with('error', 'Could not save project try again');
+        }
+        return Redirect::back()->with('success', 'Config was saved');
     }
 
     /**
@@ -194,7 +226,7 @@ class ProjectController extends Controller
         }
         $projectCopy = Project::create([
             'directory_name' => Str::random(32),
-            'workspace' => $project['workspace'],
+            'blockly_workspace' => $project['blockly_workspace'],
             'name' => $project['name'] . ' copy',
         ]);
 

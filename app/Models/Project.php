@@ -15,13 +15,17 @@ class Project extends Model
 
     protected $casts = [
         'id' => 'int',
-        'workspace' => 'array',
+        'blockly_workspace' => 'array',
+        'monaco_workspace' => 'array',
+        'editor' => 'boolean',
     ];
 
     protected $fillable = [
         'name',
         'directory_name',
-        'workspace',
+        'blockly_workspace',
+        'monaco_workspace',
+        'editor',
     ];
 
     public function getProjectsByUser($id)
