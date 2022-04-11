@@ -46,7 +46,7 @@
 
 <script>
 import { Head, usePage } from '@inertiajs/inertia-vue3'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch, onBeforeUnmount } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import useMessaging from '@/messages'
 import {
@@ -56,7 +56,6 @@ import {
   StopCircleOutline as StopIcon,
 } from '@vicons/ionicons5'
 import { Inertia } from '@inertiajs/inertia'
-import useListeners from '@/keyListeners'
 
 // https://github.com/Davidobot/love.js
 export default {
@@ -72,10 +71,10 @@ export default {
   props: {
     project: Object,
     gamePackage: Object,
+    turnOffGameMode: Boolean,
   },
   setup(props) {
     const { message } = useMessaging()
-    const { keyPressListener } = useListeners()
     const showSpinner = ref(false)
     const show = ref(false)
     const refText = ref('')
@@ -85,22 +84,27 @@ export default {
     const gamePackage = computed(() => props.gamePackage)
     const PACKAGE_PATH = '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/'
     const wasmBinaryFile = window.top.origin + '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/love.wasm'
+    let events, removeAllEventListeners, registerOrRemoveHandler
+
+    watch(() => props.turnOffGameMode, () => {
+      show.value = false
+      refText.value = 'Game is not loaded. Press refresh button.'
+      console.log('Turning off game mode')
+      gameMode.value = true
+      removeAllEventListeners()
+    })
 
     const changeGameMode = () => {
       if (gameMode.value) {
         message.info('Game mode is on. Your keyboard input will be used for the game.')
         console.log('Turning on game mode')
         gameMode.value = false
-        window.removeEventListener('keypress', keyPressListener, true)
-        window.removeEventListener('keydown', keyPressListener, true)
-        window.removeEventListener('keyup', keyPressListener, true)
+        events.forEach(event => registerOrRemoveHandler(event))
       } else {
         message.info('Game mode is off.')
         console.log('Turning off game mode')
         gameMode.value = true
-        window.addEventListener('keypress', keyPressListener, true)
-        window.addEventListener('keydown', keyPressListener, true)
-        window.addEventListener('keyup', keyPressListener, true)
+        removeAllEventListeners()
       }
     }
 
@@ -117,7 +121,10 @@ export default {
     })
 
     const runGame = () => {
-      const love = require('@/love')
+      const loveJS = require('@/love')
+      removeAllEventListeners = loveJS.JSEvents.removeAllEventListeners
+      registerOrRemoveHandler = loveJS.JSEvents.registerOrRemoveHandler
+      events = loveJS.allEventHandlers
 
       window.onload = () => {
         window.focus()
@@ -429,7 +436,7 @@ export default {
       }
 
       loadGame()
-      love(Module, wasmBinaryFile)
+      loveJS.Love(Module, wasmBinaryFile)
     }
 
     const refreshGame = () => {
@@ -448,10 +455,16 @@ export default {
       message.info('Game mode is off.')
       console.log('Turning off game mode')
       gameMode.value = true
-      window.addEventListener('keypress', keyPressListener, true)
-      window.addEventListener('keydown', keyPressListener, true)
-      window.addEventListener('keyup', keyPressListener, true)
+      removeAllEventListeners()
     }
+
+    onBeforeUnmount(() => {
+      show.value = false
+      refText.value = 'Game is not loaded. Press refresh button.'
+      console.log('Turning off game mode')
+      gameMode.value = true
+      removeAllEventListeners()
+    })
 
     return {
       show,

@@ -92,7 +92,9 @@ export default {
         options.toolbox = blocklyToolbox.value
       }
       workspace = Blockly.inject(blocklyDiv.value, options)
-      if (props.project.blockly_workspace !== null) Blockly.serialization.workspaces.load(props.project.blockly_workspace, workspace)
+      if (props.project !== null) {
+        if (props.project.blockly_workspace !== null) Blockly.serialization.workspaces.load(props.project.blockly_workspace, workspace)
+      }
       const plugin = new ScrollOptions(workspace)
       plugin.init()
     })

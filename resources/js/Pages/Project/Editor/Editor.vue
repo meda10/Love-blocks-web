@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import { onMounted, ref, onUnmounted, watch, computed } from 'vue'
+import { onMounted, ref, onUnmounted, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { MonacoServices } from 'monaco-languageclient'
 import loader from '@monaco-editor/loader'
@@ -88,8 +88,10 @@ export default {
 
         if (editorValue.value[currentTab.value]) {
           editor.setValue(editorValue.value[currentTab.value])
-          if (props.project.monaco_workspace !== null) editor.restoreViewState(props.project.monaco_workspace)
-          else editor.restoreViewState(editorState.value[currentTab.value])
+          if (props.project !== null) {
+            if (props.project.monaco_workspace !== null) editor.restoreViewState(props.project.monaco_workspace)
+            else editor.restoreViewState(editorState.value[currentTab.value])
+          }
         }
         return result
       }).catch(() => null)

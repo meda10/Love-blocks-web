@@ -29,7 +29,7 @@
       <pane>
         <splitpanes horizontal>
           <pane>
-            <Interpret :game-package="gamePackage" :project="project" />
+            <Interpret :game-package="gamePackage" :project="project" :turn-off-game-mode="turnOffGameModeRef" />
           </pane>
           <pane>
             3
@@ -53,14 +53,13 @@
 
 <script>
 import ProjectLayout from '@/Layouts/ProjectLayout'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onUnmounted, ref } from 'vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import Editor from '@/Pages/Project/Editor/Editor'
 import Blockly from '@/Pages/Project/Blockly/Blockly'
 import { Splitpanes, Pane } from '../../../../node_modules/splitpanes/dist/splitpanes.es'
 import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
-import useListeners from '@/keyListeners'
 import { useResizeObserver } from '@vueuse/core/index'
 import { Inertia } from '@inertiajs/inertia'
 
@@ -84,8 +83,8 @@ export default {
     gamePackage: Object,
   },
   setup(props) {
-    const { keyPressListener } = useListeners()
     const title = computed(() => props.project.name)
+    const turnOffGameModeRef = ref(false)
     const changeEditorRef = ref(false)
     const editMonacoRef = ref(props.project.editor)
     const showModalRef = ref(false)
@@ -130,6 +129,8 @@ export default {
     }
 
     const saveConfFromMonaco = (conf) => {
+      console.log('save config:')
+      console.log(conf)
       Inertia.post(route('project.config', { project: props.project }), { config: conf })
     }
 
@@ -155,17 +156,14 @@ export default {
       btnEditor.value.style.right = position + 'px'
     })
 
-    onUnmounted(() => {
-      console.log('Turning off game mode')
-      window.addEventListener('keypress', keyPressListener, true)
-      window.addEventListener('keydown', keyPressListener, true)
-      window.addEventListener('keyup', keyPressListener, true)
+    onBeforeUnmount(() => {
+      turnOffGameModeRef.value = !turnOffGameModeRef.value
     })
 
     return {
       title,
       editorShow,
-      editorPaneResizeRef: editorPaneResizeRef,
+      editorPaneResizeRef,
       btnEditor,
       btnText,
       changeEditorRef,
@@ -173,6 +171,7 @@ export default {
       showModalRef,
       saveWorkspaceRef,
       mainLuaCode,
+      turnOffGameModeRef,
       onPositiveClick,
       passCodeToMonaco,
       saveCodeFromMonaco,
