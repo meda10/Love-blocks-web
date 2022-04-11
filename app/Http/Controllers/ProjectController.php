@@ -81,7 +81,7 @@ class ProjectController extends Controller
             $mainPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
             $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
             Storage::disk('local')->put($mainPath, '');
-            Storage::disk('local')->put($confPath, ''); //todo add basic conf
+            Storage::disk('local')->put($confPath, ProjectFile::defaultConfig());
             ProjectFile::create(['name' => 'main.lua', 'project_id' => $project['id'], 'file_path' => $mainPath]);
             ProjectFile::create(['name' => 'conf.lua', 'project_id' => $project['id'], 'file_path' => $confPath]);
             return Redirect::route('project.show', $project);
@@ -101,9 +101,11 @@ class ProjectController extends Controller
             return Redirect::back()->with('error', 'Couldn\'t save the project, please sign in.');
         }
         $request->validate([
-            'main' => 'required',
+            'main' => 'required|string',
             'editor' => 'required|boolean',
         ]);
+        $request['config'] === 'EMPTY' ? $fileContentsConfig = '' : $fileContentsConfig = $request['config'];
+        $request['main'] === 'EMPTY' ? $fileContentsMain = '' : $fileContentsMain = $request['main'];
 
         $project->update(['editor' => $request['editor']]);
         if ($request['blockly_workspace'] !== null) {
@@ -115,13 +117,13 @@ class ProjectController extends Controller
         }
 
         $mainPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'main.lua';
-        if (!$this->storeFiles($project, $mainPath, 'main.lua', $request['main'])) {
+        if (!$this->storeFiles($project, $mainPath, 'main.lua', $fileContentsMain)) {
             return Redirect::back()->with('error', 'Could not save project try again');
         }
 
         if ($request['config'] !== null) {
             $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
-            if (!$this->storeFiles($project, $confPath, 'config.lua', $request['config'])) {
+            if (!$this->storeFiles($project, $confPath, 'config.lua', $fileContentsConfig)) {
                 return Redirect::back()->with('error', 'Could not save project try again');
             }
         }
@@ -165,11 +167,12 @@ class ProjectController extends Controller
             return Redirect::back()->with('error', 'Couldn\'t save the project, please sign in.');
         }
         $request->validate([
-            'config' => 'required',
+            'config' => 'required|string',
         ]);
+        $request['config'] === 'EMPTY' ? $fileContents = '' : $fileContents = $request['config'];
 
         $confPath = 'projects' . DIRECTORY_SEPARATOR . $project['directory_name'] . DIRECTORY_SEPARATOR . 'conf.lua';
-        if (!$this->storeFiles($project, $confPath, 'config.lua', $request['config'])) {
+        if (!$this->storeFiles($project, $confPath, 'config.lua', $fileContents)) {
             return Redirect::back()->with('error', 'Could not save project try again');
         }
         return Redirect::back()->with('success', 'Config was saved');

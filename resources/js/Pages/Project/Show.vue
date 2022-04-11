@@ -53,7 +53,7 @@
 
 <script>
 import ProjectLayout from '@/Layouts/ProjectLayout'
-import { computed, onBeforeUnmount, onUnmounted, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import Editor from '@/Pages/Project/Editor/Editor'
 import Blockly from '@/Pages/Project/Blockly/Blockly'
@@ -120,6 +120,8 @@ export default {
     }
 
     const saveCodeFromMonaco = (workspace, code, conf) => {
+      if (conf === '') conf = 'EMPTY'
+      if (code === '') code = 'EMPTY'
       Inertia.post(route('project.update', { project: props.project }), {
         monaco_workspace: workspace,
         main: code,
@@ -129,8 +131,7 @@ export default {
     }
 
     const saveConfFromMonaco = (conf) => {
-      console.log('save config:')
-      console.log(conf)
+      if (conf === '') conf = 'EMPTY'
       Inertia.post(route('project.config', { project: props.project }), { config: conf })
     }
 
