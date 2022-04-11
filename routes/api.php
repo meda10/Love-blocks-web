@@ -19,71 +19,7 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::get('/book', static function (Request $request) {
-    return response()->json(['Message' => 'Hello']);
-});
-
-Route::post('/login', [FirebaseLoginController::class, 'loginAndroidUser'])->name('firebase.login');
-Route::post('/register', [FirebaseLoginController::class, 'registerAndroidUser'])->name('firebase.register');
-Route::post('/token', [FirebaseLoginController::class, 'refreshFCMToken'])->name('firebase.token');
-Route::post('/projects', [ProjectController::class, 'getFirebaseUserProjects'])->name('api.project.user');
-Route::post('/project/love', [ProjectController::class, 'getProjectsLoveFile'])->name('api.project.love');
-//Route::post('/apk', [ProjectController::class, 'getProjectAPK'])->name('api.project.apk');
-
-//Route::post('/login', function (Request $request) {
-//    $validator = Validator::make($request->all(), [
-//        'email' => 'required|email',
-//        'password' => 'required',
-//        'device_name' => 'required',
-//    ]);
-//    if ($validator->fails()) {
-//        return response()->json(['errors' => $validator->errors()]);
-//    }
-//
-//    $user = User::where('email', $request['email'])->first();
-//
-//    if (!$user || !Hash::check($request['password'], $user['password'])) {
-////        throw ValidationException::withMessages([
-////            'email' => ['The provided credentials are incorrect.'],
-////        ]);
-//        return response()->json(['Message' => 'The provided credentials are incorrect.']);
-//    }
-//
-//    return response()->json(['Token' => $user->tokens]);
-////    return $user->createToken($request['device_name'])->plainTextToken;
-//});
-
-//Route::post('/register', function (Request $request) {
-//    $validator = Validator::make($request->all(), [
-//        'name' => 'required',
-//        'email' => 'required|email',
-//        'password' => 'required|confirmed',
-//        'device_name' => 'required',
-//    ]);
-//
-//    if ($validator->fails()) {
-//        return response()->json(['errors' => $validator->errors()]);
-//    }
-//    try {
-//        $user = User::create([
-//            'name' => $request['name'],
-//            'email' => $request['email'],
-//            'password' => Hash::make($request['password']),
-//        ]);
-//
-//    } catch (Exception) {
-//        $user = User::where('email', $request['email'])->first();
-//        return response()->json(['Token' => $user->tokens]);
-//    }
-//
-//    return $user->createToken($request['device_name'])->plainTextToken;
-//});
-
-Route::group(['middleware' => ['auth:sanctum']], function ($route) {
+Route::group(['middleware' => ['auth:sanctum']], static function ($route) {
     $route->get('/user', function (Request $request) {
         return $request->user();
     });
@@ -91,3 +27,9 @@ Route::group(['middleware' => ['auth:sanctum']], function ($route) {
         return $request->user()->currentAccessToken()->delete();
     });
 });
+
+Route::post('/login', [FirebaseLoginController::class, 'loginAndroidUser'])->name('firebase.login');
+Route::post('/register', [FirebaseLoginController::class, 'registerAndroidUser'])->name('firebase.register');
+Route::post('/token', [FirebaseLoginController::class, 'refreshFCMToken'])->name('firebase.token');
+Route::post('/projects', [ProjectController::class, 'getFirebaseUserProjects'])->name('api.project.user');
+Route::post('/project/love', [ProjectController::class, 'getProjectsLoveFile'])->name('api.project.love');

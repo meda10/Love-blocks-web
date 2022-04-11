@@ -7,12 +7,12 @@
         <div ref="editorPaneResizeRef" class="h-full w-full">
           <div ref="btnEditor" class="absolute mt-2 z-50">
             <div class=" flex flex-row flex-nowrap">
-              <n-button v-show="editorShow" :disabled="editMonacoRef" :strong="true"
+              <n-button v-show="editorShow" :disabled="editMonacoRef"
                         class="flex-shrink" size="small" style="margin-right: 0.5rem"
                         type="error" @click="editMonacoRef = !editMonacoRef">
                 Edit
               </n-button>
-              <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small"
+              <n-button :type="'primary'" class="flex-shrink" size="small"
                         style="margin-right: 0.5rem" @click="changeEditor">
                 {{ btnText }}
               </n-button>

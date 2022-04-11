@@ -10,16 +10,16 @@
 </template>
 
 <script>
-import Administration from '@/Layouts/Administration'
 import { Inertia } from '@inertiajs/inertia'
 import { h, ref } from 'vue'
 import { NButton } from 'naive-ui'
 import useMessaging from '@/messages'
+import AppLayout from '@/Layouts/AppLayout'
 
 export default {
   metaInfo: { title: 'Users' },
   name: 'Index',
-  layout: Administration,
+  layout: AppLayout,
   props: {
     filters: Object,
     users: Object,

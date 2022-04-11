@@ -27,7 +27,7 @@
             </n-space>
           </n-form-item>
         </n-form>
-        <n-button :block="true" :strong="true" type="primary" @click="submit">Login</n-button>
+        <n-button :block="true" type="primary" @click="submit">Login</n-button>
         <socialstream-providers v-if="$page.props.socialstream.show" />
       </n-tab-pane>
       <n-tab-pane name="Register">
@@ -56,7 +56,7 @@
                      type="password" />
           </n-form-item>
         </n-form>
-        <n-button :block="true" :strong="true" type="primary" @click="submitReg">Register</n-button>
+        <n-button :block="true" type="primary" @click="submitReg">Register</n-button>
         <socialstream-providers v-if="$page.props.socialstream.show" />
       </n-tab-pane>
     </n-tabs>

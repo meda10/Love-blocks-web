@@ -7,7 +7,7 @@
   </Head>
   <div class="absolute right-0 pr-2 mt-2 z-50">
     <div class=" flex flex-row flex-nowrap">
-      <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
                 @click="refreshGame">
         <template #icon>
           <n-icon>
@@ -15,7 +15,7 @@
           </n-icon>
         </template>
       </n-button>
-      <n-button v-show="show" :strong="true" :type="'error'" class="flex-shrink" size="small"
+      <n-button v-show="show" :type="'error'" class="flex-shrink" size="small"
                 style="margin-right: 0.5rem"
                 @click="stopGame">
         <template #icon>
@@ -24,7 +24,7 @@
           </n-icon>
         </template>
       </n-button>
-      <n-button v-show="show" :strong="true" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
+      <n-button v-show="show" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
                 @click="changeGameMode">
         <template #icon>
           <n-icon>
@@ -463,7 +463,10 @@ export default {
       refText.value = 'Game is not loaded. Press refresh button.'
       console.log('Turning off game mode')
       gameMode.value = true
-      removeAllEventListeners()
+      try {
+        removeAllEventListeners()
+      } catch (e) {
+      }
     })
 
     return {

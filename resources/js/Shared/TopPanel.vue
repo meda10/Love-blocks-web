@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
     <n-space align="center">
-      <n-button :strong="true" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
                 @click="saveProject">
         <template #icon>
           <n-icon>
@@ -86,20 +86,6 @@ export default {
             key: 'files',
             icon: renderIcon(BookIcon),
           },
-          // {
-          //   label: () => h(NUpload, {
-          //       ref: uploadRef.value,
-          //       customRequest: fileUpload,
-          //       // customRequest: () => fileUpload(this),
-          //       // action: route('file.upload', { project: props.project }),
-          //       defaultUpload: true,
-          //       multiple: false,
-          //       showFileList: false,
-          //     },
-          //     { default: () => 'Upload file' }),
-          //   key: 'signOut',
-          //   icon: renderIcon(UploadIcon),
-          // },
         ],
       },
     ]
@@ -249,7 +235,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

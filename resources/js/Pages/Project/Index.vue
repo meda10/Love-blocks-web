@@ -1,9 +1,9 @@
 <template>
   <Head title="My Projects" />
   <n-card title="My projects">
-    <n-space :size="12" vertical>
+    <n-space :size="12" :vertical="true">
       <n-space>
-        <n-button :strong="true" icon-placement="right" size="small" type="primary" @click="createProject">
+        <n-button icon-placement="right" size="small" type="primary" @click="createProject">
           Create Project
         </n-button>
       </n-space>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Administration from '@/Layouts/Administration'
+import AppLayout from '@/Layouts/AppLayout'
 import { Inertia } from '@inertiajs/inertia'
 import { Head, usePage } from '@inertiajs/inertia-vue3'
 import { h, ref, computed, onMounted } from 'vue'
@@ -47,7 +47,7 @@ export default {
   components: {
     Head,
   },
-  layout: Administration,
+  layout: AppLayout,
   props: {
     projects: Object,
   },

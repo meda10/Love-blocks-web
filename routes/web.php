@@ -29,24 +29,23 @@ Route::get('/', static function () {
 
 Route::group(['middleware' => 'auth'], static function () {
 
-    Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
-    Route::get('/blocks', static fn() => Inertia::render('Blockly'))->name('blocks');
+    Route::get('/administration', static fn() => Inertia::render('dashboard'))->name('administration')->middleware('permission:administration');
+    Route::get('/administration/users', [UserController::class, 'index'])->name('user.index')->middleware('permission:show users');
+    Route::get('/administration/user/create', [UserController::class, 'create'])->name('user.create')->middleware('permission:create users');
+    Route::post('/administration/users', [UserController::class, 'store'])->name('user.store')->middleware('permission:create users');
+    Route::get('/administration/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit')->middleware('permission:edit users');
+    Route::patch('/administration/user/{user}', [UserController::class, 'update'])->name('user.update')->middleware('permission:edit users');
+    Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])->name('user.destroy')->middleware('permission:remove users');
+    Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore')->middleware('permission:remove users');
+
     Route::get('/profile', static fn() => Inertia::render('Profile/Show'))->name('profile');
-    Route::get('/index', static fn() => Inertia::render('API/Index'))->name('index');
+    //Route::get('/index', static fn() => Inertia::render('API/Index'))->name('index');
 
     Route::get('/user/projects', [ProjectController::class, 'index'])->name('project.user');
     Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
 });
 
-
-Route::get('/administration', static fn() => Inertia::render('dashboard'))->name('administration');
-Route::get('/administration/users', [UserController::class, 'index'])->name('user.index');
-Route::get('/administration/user/create', [UserController::class, 'create'])->name('user.create');
-Route::post('/administration/users', [UserController::class, 'store'])->name('user.store');
-Route::get('/administration/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-Route::patch('/administration/user/{user}', [UserController::class, 'update'])->name('user.update');
-Route::delete('/administration/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-Route::put('/administration/user/{user}/restore', [UserController::class, 'restore'])->name('user.restore');
+Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
 
 Route::get('/project/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
 Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
@@ -61,12 +60,7 @@ Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadF
 Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
 Route::delete('/file/{projectFile}', [ProjectFileController::class, 'destroy'])->name('file.destroy');
 
-Route::get('/editor', static fn() => Inertia::render('Editor'))->name('editor');
-
 
 Route::get('storage/{file}', static function ($file) {
-//    $path = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $file);
-//    $path = Storage::url($file);
-//    return Response::file($path);
     return Storage::disk('public')->download($file);
 });

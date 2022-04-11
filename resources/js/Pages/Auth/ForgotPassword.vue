@@ -11,7 +11,7 @@
                    label="Email" path="email">
         <n-input v-model:value="form.email" placeholder="Email" />
       </n-form-item>
-      <n-button :block="true" :strong="true" attr-type="submit" type="primary">Email Password Reset Link</n-button>
+      <n-button :block="true" attr-type="submit" type="primary">Email Password Reset Link</n-button>
     </n-form>
   </n-card>
 </template>

@@ -4,7 +4,7 @@
     <n-space :size="12" vertical>
       <n-space>
         <n-upload ref="uploadRef" :custom-request="fileUpload" :default-upload="true" :show-file-list="false">
-          <n-button :strong="true" icon-placement="right" size="small" type="primary">
+          <n-button icon-placement="right" size="small" type="primary">
             <template #icon>
               <n-icon>
                 <upload-icon />
@@ -24,7 +24,7 @@ import { h, ref } from 'vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import { NButton } from 'naive-ui'
 import { Inertia } from '@inertiajs/inertia'
-import Administration from '@/Layouts/Administration'
+import AppLayout from '@/Layouts/AppLayout'
 import useMessaging from '@/messages'
 import {
   CloudUploadOutline as UploadIcon,
@@ -36,7 +36,7 @@ export default {
     UploadIcon,
     Head,
   },
-  layout: Administration,
+  layout: AppLayout,
   props: {
     project: Object,
     files: Object,
