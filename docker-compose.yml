@@ -4,7 +4,7 @@ services:
   language-server:
     build:
       context: .
-      dockerfile: ./docker/workspace/Dockerfile
+      dockerfile: ./docker/language-server/Dockerfile
     restart: always
     container_name: language-server
     ports:
