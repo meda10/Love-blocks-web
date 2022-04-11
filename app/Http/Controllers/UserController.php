@@ -25,12 +25,6 @@ class UserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        User::create(Request::validate([
-            'name' => ['required', 'string', 'max:30'],
-            'surname' => ['required', 'string', 'max:30'],
-            'birth' => ['required', 'date', 'date_format:YYYY-MM-DD'],
-            'description' => ['required', 'string', 'max:250'],
-        ]));
         return Redirect::route('users.index')->with('success', 'User was successfully added');
     }
 

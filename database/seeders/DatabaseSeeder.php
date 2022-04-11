@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,11 +17,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
-        Project::factory(40)->create()->each(function ($project) {
-            $this->attachUsers($project);
-        });
+//        User::factory(10)->create();
+//        Project::factory(40)->create()->each(function ($project) {
+//            $this->attachUsers($project);
+//        });
 
+        User::create(['name' => 'Administrator', 'email' => 'admin@gmail.com', 'email_verified_at' => now(), 'password' => Hash::make('7777777777')]);
+        User::create(['name' => 'User', 'email' => 'user@gmail.com', 'email_verified_at' => now(), 'password' => Hash::make('7777777777')]);
+
+        $this->call(RolePermissionSeeder::class);
     }
 
     private function attachUsers($project): void

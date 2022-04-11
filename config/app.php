@@ -166,7 +166,8 @@ return [
          * Package Service Providers...
          */
         Kreait\Laravel\Firebase\ServiceProvider::class,
-
+        Spatie\Permission\PermissionServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */

@@ -49,6 +49,7 @@ class CreateNewUserFirebase implements CreatesNewUsers
 
         $user->firebaseUID = $customToken->toString();
         $user->save();
+        $user->assignRole('user');
         return ['user' => $user];
     }
 }
