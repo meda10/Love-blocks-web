@@ -77,7 +77,7 @@ export default {
         }
         editor = result.editor.create(monacoContainer.value, editorOptions)
         MonacoServices.install(result)
-        webSocket = connectLanguageServer(`ws://${location.hostname}:8888`)
+        webSocket = connectLanguageServer(`wss://${location.hostname}:8080`)
 
         editor.getAction('editor.action.formatDocument').run()
         editor.onDidChangeModelContent(useDebounceFn(() => {
