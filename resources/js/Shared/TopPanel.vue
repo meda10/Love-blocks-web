@@ -1,8 +1,7 @@
 <template>
   <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
     <n-space align="center">
-      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
-                @click="saveProject">
+      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="saveProject">
         <template #icon>
           <n-icon>
             <save-icon />
@@ -24,6 +23,26 @@
     @negative-click="onNegativeClick">
     <n-input v-model:value="shareEmail" placeholder="E-mail" />
   </n-modal>
+  <n-modal
+    v-model:show="showTutorialModalRef"
+    :mask-closable="false"
+    negative-text="Cancel"
+    preset="dialog"
+    title="Open tutorial"
+    @negative-click="onNegativeTutorialClick">
+    <n-space justify="space-between">
+      <n-h5>Name</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+    </n-space>
+    <n-space justify="space-between">
+      <n-h5>Name 3</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+    </n-space>
+    <n-space justify="space-between">
+      <n-h5>Name 2</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+    </n-space>
+  </n-modal>
 </template>
 
 <script>
@@ -40,6 +59,7 @@ import {
   DownloadOutline as DownloadIcon,
   SaveOutline as SaveIcon,
   HomeOutline as HomeIcon,
+  FileTrayOutline as TutorialIcon,
 } from '@vicons/ionicons5'
 
 export default {
@@ -62,6 +82,7 @@ export default {
     const shareEmail = ref(null)
     const currentProject = ref(null)
     const showShareModalRef = ref(false)
+    const showTutorialModalRef = ref(false)
     const user = computed(() => usePage().props.value.user)
 
     const projectMenuOptions = [
@@ -86,9 +107,22 @@ export default {
             key: 'files',
             icon: renderIcon(BookIcon),
           },
+          {
+            label: () => h('div', { onClick: () => openTutorials() }, { default: () => 'Tutorials' }),
+            key: 'tutorials',
+            icon: renderIcon(TutorialIcon),
+          },
         ],
       },
     ]
+
+    const openTutorials = () => {
+      showTutorialModalRef.value = true
+    }
+
+    const onNegativeTutorialClick = () => {
+      showTutorialModalRef.value = false
+    }
 
     const goProjectFiles = () => {
       emit('pageLeave')
@@ -164,6 +198,11 @@ export default {
             icon: renderIcon(BookIcon),
           },
           {
+            label: () => h('a', { href: route('apk.download') }, { default: () => 'Love block APK' }),
+            key: 'apk',
+            icon: renderIcon(DownloadIcon),
+          },
+          {
             label: () => h(user.value === null ? Link : 'div', user.value === null
               ? { href: route('login') }
               : {
@@ -225,11 +264,13 @@ export default {
       menuOptions,
       projectMenuOptions,
       showShareModalRef,
+      showTutorialModalRef,
       shareEmail,
       share,
       downloadToAndroid,
       onPositiveClick,
       onNegativeClick,
+      onNegativeTutorialClick,
       saveProject,
     }
   },

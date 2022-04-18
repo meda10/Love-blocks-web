@@ -15,6 +15,7 @@ import { ref, onMounted, watch } from 'vue'
 import Blockly from 'blockly'
 import { useResizeObserver } from '@vueuse/core'
 import toolboxOptions from '@/toolbox'
+import registerBlocks from '@/blocklyCusomBlocks'
 import { ScrollOptions, ScrollBlockDragger, ScrollMetricsManager } from '@blockly/plugin-scroll-options'
 
 export default {
@@ -88,6 +89,7 @@ export default {
     })
 
     onMounted(() => {
+      registerBlocks()
       if (!options.toolbox) {
         options.toolbox = blocklyToolbox.value
       }

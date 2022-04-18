@@ -356,6 +356,157 @@ const toolboxOptions = {
       custom: 'PROCEDURE',
       name: 'Functions',
     },
+    {
+      kind: 'SEP',
+    },
+    {
+      kind: 'CATEGORY',
+      contents: [
+        {
+          kind: 'BLOCK',
+          type: 'love_keypressed',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_keyreleased',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_directorydropped',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_displayrotated',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_draw',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_errorhandler',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_filedropped',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_focus',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_gamepadaxis',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_gamepadpressed',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_gamepadreleased',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickadded',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickaxis',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickhat',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickpressed',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickreleased',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_joystickremoved',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_load',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_lowmemory',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_mousefocus',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_mousefocus',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_mousepressed',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_mousereleased',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_quit',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_resize',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_run',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_textedited',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_textinput',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_threaderror',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_touchmoved',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_touchpressed',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_touchreleased',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_update',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_visible',
+        },
+        {
+          kind: 'BLOCK',
+          type: 'love_wheelmoved',
+        },
+      ],
+      id: 'catCallbacks',
+      colour: '80',
+      name: 'loveCallbacks',
+    },
   ],
   id: 'toolbox',
   style: 'display: none',

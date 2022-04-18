@@ -32,7 +32,7 @@
             <Interpret :game-package="gamePackage" :project="project" :turn-off-game-mode="turnOffGameModeRef" />
           </pane>
           <pane>
-            3
+            <Tutorial />
           </pane>
         </splitpanes>
       </pane>
@@ -62,10 +62,12 @@ import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
 import { useResizeObserver } from '@vueuse/core/index'
 import { Inertia } from '@inertiajs/inertia'
+import Tutorial from '@/Pages/Project/Tutorial/Tutorial'
 
 export default {
   name: 'Show',
   components: {
+    Tutorial,
     Interpret,
     Head,
     Splitpanes,

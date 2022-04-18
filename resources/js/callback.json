@@ -1,0 +1,1201 @@
+[
+    {
+        "type": "love_keypressed",
+        "message0": "key pressed %1 %2 %3 %4 %5 %6 %7 %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "key",
+                "variable": "key"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "scancode",
+                "variable": "scancode"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "isrepeat",
+                "variable": "isrepeat"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a key is pressed.",
+        "helpUrl": "https://love2d.org/wiki/love.keypressed"
+    },
+    {
+        "type": "love_keyreleased",
+        "message0": "key released %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "key",
+                "variable": "key"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "scancode",
+                "variable": "scancode"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a keyboard key is released.",
+        "helpUrl": "https://love2d.org/wiki/love.keyreleased"
+    },
+    {
+        "type": "love_directorydropped",
+        "message0": "directory dropped %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "path",
+                "variable": "path"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a directory is dragged and dropped onto the window.",
+        "helpUrl": "https://love2d.org/wiki/love.directorydropped"
+    },
+    {
+        "type": "love_displayrotated",
+        "message0": "display rotated %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "index",
+                "variable": "index"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "orientation",
+                "variable": "orientation"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "  Called when the device display orientation changed.",
+        "helpUrl": "https://love2d.org/wiki/love.displayrotated"
+    },
+    {
+        "type": "love_draw",
+        "message0": "draw game %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "colour": 230,
+        "tooltip": "Callback function used to draw on the screen every frame.",
+        "helpUrl": "https://love2d.org/wiki/love.draw"
+    },
+    {
+        "type": "love_errorhandler",
+        "message0": "error handler %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "msg",
+                "variable": "msg"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "The error handler, used to display error messages.",
+        "helpUrl": "https://love2d.org/wiki/love.errorhandler"
+    },
+    {
+        "type": "love_filedropped",
+        "message0": "file dropped %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "file",
+                "variable": "file"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a file is dragged and dropped onto the window.",
+        "helpUrl": "https://love2d.org/wiki/love.filedropped"
+    },
+    {
+        "type": "love_focus",
+        "message0": "focus %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "focus",
+                "variable": "focus"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when window receives or loses focus.",
+        "helpUrl": "https://love2d.org/wiki/love.focus"
+    },
+    {
+        "type": "love_gamepadaxis",
+        "message0": "gamepad axis %1 %2 %3 %4 %5 %6 %7 %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "axis",
+                "variable": "axis"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "value",
+                "variable": "value"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a Joystick's virtual gamepad axis is moved.",
+        "helpUrl": "https://love2d.org/wiki/love.gamepadaxis"
+    },
+    {
+        "type": "love_gamepadpressed",
+        "message0": "gamepad pressed %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a Joystick's virtual gamepad button is pressed.",
+        "helpUrl": "https://love2d.org/wiki/love.gamepadpressed"
+    },
+    {
+        "type": "love_gamepadreleased",
+        "message0": "gamepad released %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a Joystick's virtual gamepad button is released.",
+        "helpUrl": "https://love2d.org/wiki/love.gamepadreleased"
+    },
+    {
+        "type": "love_joystickadded",
+        "message0": "joystick added %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a Joystick is connected.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickadded"
+    },
+    {
+        "type": "love_joystickaxis",
+        "message0": "joystick axis %1 %2 %3 %4 %5 %6 %7 %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "axis",
+                "variable": "axis"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "value",
+                "variable": "value"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a joystick axis moves.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickaxis"
+    },
+    {
+        "type": "love_joystickhat",
+        "message0": "joystick hat %1 %2 %3 %4 %5 %6 %7 %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "hat",
+                "variable": "hat"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "direction",
+                "variable": "direction"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a joystick hat direction changes.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickhat"
+    },
+    {
+        "type": "love_joystickpressed",
+        "message0": "joystick pressed %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a joystick button is pressed.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickpressed"
+    },
+    {
+        "type": "love_joystickreleased",
+        "message0": "joystick released %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a joystick button is released.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickreleased"
+    },
+    {
+        "type": "love_joystickremoved",
+        "message0": "joystick removed %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "joystick",
+                "variable": "joystick"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when a Joystick is disconnected.",
+        "helpUrl": "https://love2d.org/wiki/love.joystickremoved"
+    },
+    {
+        "type": "love_load",
+        "message0": "load game %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "This function is called exactly once at the beginning of the game.",
+        "helpUrl": "https://love2d.org/wiki/love.load"
+    },
+    {
+        "type": "love_lowmemory",
+        "message0": "low memory %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "colour": 230,
+        "tooltip": "Callback function triggered when the system is running out of memory on mobile devices.",
+        "helpUrl": "https://love2d.org/wiki/love.lowmemory"
+    },
+    {
+        "type": "love_mousefocus",
+        "message0": "mouse focus %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "focus",
+                "variable": "focus"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when window receives or loses mouse focus.",
+        "helpUrl": "https://love2d.org/wiki/love.mousefocus"
+    },
+    {
+        "type": "love_mousemoved",
+        "message0": "mouse moved %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dx",
+                "variable": "dx"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dy",
+                "variable": "dy"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "istouch",
+                "variable": "istouch"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when the mouse is moved.",
+        "helpUrl": "https://love2d.org/wiki/love.mousemoved"
+    },
+    {
+        "type": "love_mousepressed",
+        "message0": "mouse pressed %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "istouch",
+                "variable": "istouch"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "presses",
+                "variable": "presses"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a mouse button is pressed.",
+        "helpUrl": "https://love2d.org/wiki/love.mousepressed"
+    },
+    {
+        "type": "love_mousereleased",
+        "message0": "mouse released %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "button",
+                "variable": "button"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "istouchy",
+                "variable": "istouchy"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "presses",
+                "variable": "presses"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a mouse button is released.",
+        "helpUrl": "https://love2d.org/wiki/love.mousereleased"
+    },
+    {
+        "type": "love_quit",
+        "message0": "quit game %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "colour": 230,
+        "tooltip": "Callback function triggered when the game is closed.",
+        "helpUrl": "https://love2d.org/wiki/love.quit"
+    },
+    {
+        "type": "love_resize",
+        "message0": "resize %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "width",
+                "variable": "width"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "height",
+                "variable": "height"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when the window is resized.",
+        "helpUrl": "https://love2d.org/wiki/love.resize"
+    },
+    {
+        "type": "love_run",
+        "message0": "run game %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "colour": 230,
+        "tooltip": "The main function, containing the main loop. A sensible default is used when left out.",
+        "helpUrl": "https://love2d.org/wiki/love.run"
+    },
+    {
+        "type": "love_textedited",
+        "message0": "text edited %1 %2 %3 %4 %5 %6 %7 %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "text",
+                "variable": "text"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "start",
+                "variable": "start"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "length",
+                "variable": "length"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when the candidate text for an IME (Input Method Editor) has changed.",
+        "helpUrl": "https://love2d.org/wiki/love.textedited"
+    },
+    {
+        "type": "love_textinput",
+        "message0": "text input %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "text",
+                "variable": "text"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Called when text has been entered by the user.",
+        "helpUrl": "https://love2d.org/wiki/love.textinput"
+    },
+    {
+        "type": "love_threaderror",
+        "message0": "thread error %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "thread",
+                "variable": "thread"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "errorstr",
+                "variable": "errorstr"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a Thread encounters an error.",
+        "helpUrl": "https://love2d.org/wiki/love.threaderror"
+    },
+    {
+        "type": "love_touchmoved",
+        "message0": "touch moved %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "id",
+                "variable": "id"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dx",
+                "variable": "dx"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dy",
+                "variable": "dy"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "pressure",
+                "variable": "pressure"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when a touch press moves inside the touch screen.",
+        "helpUrl": "https://love2d.org/wiki/love.touchmoved"
+    },
+    {
+        "type": "love_touchpressed",
+        "message0": "touch pressed %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "id",
+                "variable": "id"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dx",
+                "variable": "dx"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dy",
+                "variable": "dy"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "pressure",
+                "variable": "pressure"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when the touch screen is touched.",
+        "helpUrl": "https://love2d.org/wiki/love.touchpressed"
+    },
+    {
+        "type": "love_touchreleased",
+        "message0": "touch released %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "id",
+                "variable": "id"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dx",
+                "variable": "dx"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dy",
+                "variable": "dy"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "pressure",
+                "variable": "pressure"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when the touch screen stops being touched.",
+        "helpUrl": "https://love2d.org/wiki/love.touchreleased"
+    },
+    {
+        "type": "love_update",
+        "message0": "update game %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "dt",
+                "variable": "dt"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function used to update the state of the game every frame.",
+        "helpUrl": "https://love2d.org/wiki/love.update"
+    },
+    {
+        "type": "love_visible",
+        "message0": "visible %1 %2 %3 %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "visible",
+                "variable": "visible"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when window is minimized/hidden or unminimized by the user.",
+        "helpUrl": "https://love2d.org/wiki/love.visible"
+    },
+    {
+        "type": "love_wheelmoved",
+        "message0": "wheel moved %1 %2 %3 %4 %5 %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "x",
+                "variable": "x"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_variable",
+                "name": "y",
+                "variable": "y"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "colour": 230,
+        "tooltip": "Callback function triggered when the mouse wheel is moved.",
+        "helpUrl": "https://love2d.org/wiki/love.wheelmoved"
+    }
+]

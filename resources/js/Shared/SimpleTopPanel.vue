@@ -29,6 +29,7 @@ import {
   PersonOutline as PersonIcon,
   CreateOutline as CreateIcon,
   LogOutOutline as LogOutIcon,
+  DownloadOutline as DownloadIcon,
   BookOutline as BookIcon,
   HomeOutline as HomeIcon,
 } from '@vicons/ionicons5'
@@ -66,6 +67,11 @@ export default {
             label: () => h('div', { onClick: () => Inertia.get(route('project.user')) }, { default: () => 'Projects' }),
             key: 'projects',
             icon: renderIcon(BookIcon),
+          },
+          {
+            label: () => h('a', { href: route('apk.download') }, { default: () => 'Love block APK' }),
+            key: 'apk',
+            icon: renderIcon(DownloadIcon),
           },
           {
             label: () => h(user.value === null ? Link : 'div', user.value === null

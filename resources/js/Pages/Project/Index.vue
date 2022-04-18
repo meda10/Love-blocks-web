@@ -69,6 +69,10 @@ export default {
         sorter: 'default',
       },
       {
+        title: 'Path',
+        key: 'path',
+      },
+      {
         title: 'Created at',
         key: 'created_at',
         // sorter: 'default',
@@ -82,7 +86,7 @@ export default {
             type: 'info',
             size: 'small',
             onClick: () => openItem(row.id),
-          }, { default: () => 'open' })
+          }, { default: () => 'Open' })
           const deleteBtn = h(NButton, {
             type: 'error',
             size: 'small',

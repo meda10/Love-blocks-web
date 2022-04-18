@@ -74,9 +74,16 @@ export default {
           tabSize: 2,
           minimap: { enabled: false },
           automaticLayout: true,
+          lightbulb: {
+            enabled: true,
+          },
         }
         editor = result.editor.create(monacoContainer.value, editorOptions)
         MonacoServices.install(result)
+        // monaco.languages.register({ id: 'lua', extensions: ['.lua'], aliases: ['Lua', 'lua'] })
+        // monaco.languages.setMonarchTokensProvider('lua', language)
+        // monaco.languages.setLanguageConfiguration('lua', conf)
+
         webSocket = connectLanguageServer(`wss://${location.hostname}:8080`)
 
         editor.getAction('editor.action.formatDocument').run()
