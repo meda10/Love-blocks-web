@@ -29,7 +29,10 @@ class RefreshGameAction
             $loveFile = $directoryPath . 'project.love';
             $loveFilePath = Storage::disk('local')->path($loveFile);
             $outputFilePath = Storage::disk('public')->path($publicDirectoryPath);
-            if (!CreateLoveFileAction::execute($project['directory_name'], $loveFilePath) || !Storage::disk('local')->exists($loveFile)) {
+            if (!CreateLoveFileAction::execute($project['directory_name'], $loveFilePath)) {
+                if (!Storage::disk('local')->exists($loveFile)) {
+                    return null;
+                }
                 return null;
             }
             try {

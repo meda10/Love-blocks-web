@@ -18,6 +18,7 @@ services:
     container_name: nginx
     environment:
       CERTBOT_EMAIL: info@loveblocks.tk
+      DHPARAM_SIZE: 2048
       USE_LOCAL_CA: ${USE_LOCAL_CA}
     ports:
       - "80:80"
@@ -29,6 +30,7 @@ services:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/nginxconfig.io/:/etc/nginx/nginxconfig.io/
       - ./docker/nginx/user_conf.d/:/etc/nginx/user_conf.d/
+    #      - ./docker/nginx/user_conf.d/:/etc/nginx/conf.d/
     depends_on:
       - php
       - mysql
@@ -70,6 +72,7 @@ services:
       - ./:/var/www/html:delegated
       #      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    #      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     ports:
       - "9000:9000"
     #      - "3000:3000" # BROWSERSYNC_HOST_PORT
@@ -130,8 +133,4 @@ volumes:
   dbdata:
     driver: local
   nginx_secrets:
-    driver: local
-  redisdata:
-    driver: local
-  meilisearchdata:
     driver: local

@@ -60,7 +60,10 @@ Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadF
 Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
 Route::delete('/file/{projectFile}', [ProjectFileController::class, 'destroy'])->name('file.destroy');
 
+Route::get('/download/love/blocks', static function () {
+    return Storage::disk('public')->download('download' . DIRECTORY_SEPARATOR . 'loveBlocks' . DIRECTORY_SEPARATOR . 'loveBlocks.apk');
+})->name('apk.download');
 
-Route::get('storage/{file}', static function ($file) {
+Route::get('/storage/{file}', static function ($file) {
     return Storage::disk('public')->download($file);
 });

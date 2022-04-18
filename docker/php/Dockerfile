@@ -1,6 +1,6 @@
 FROM node:16 AS node
 
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 COPY --from=node /usr/local/share /usr/local/share
 COPY --from=node /usr/local/lib /usr/local/lib
@@ -12,6 +12,9 @@ ADD ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Set working directory
 WORKDIR /var/www/html
+
+# Install love.js
+RUN npm install -g love.js
 
 # Add docker php ext repo
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/

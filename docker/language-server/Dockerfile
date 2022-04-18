@@ -11,5 +11,7 @@ ADD ./docker/language-server/language-server /language-server
 RUN cd /language-server && npm install
 
 COPY ./docker/language-server/run.sh /tmp
-RUN chmod +x  /tmp/run.sh
+RUN chmod +x /language-server/lua-language-server/bin/lua-language-server
+RUN chmod +x /tmp/run.sh
+WORKDIR /language-server
 ENTRYPOINT ["/tmp/run.sh"]

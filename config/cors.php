@@ -15,19 +15,19 @@ return [
     |
     */
 
-//    'paths' => ['api/*', 'sanctum/csrf-cookie'],
-    'paths' => [
-        'api/*',
-        'login',
-        'logout',
-        'register',
-        'user/password',
-        'forgot-password',
-        'reset-password',
-        'sanctum/csrf-cookie',
-        'user/profile-information',
-        'email/verification-notification',
-    ],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+//    'paths' => [
+//        'api/*',
+//        'login',
+//        'logout',
+//        'register',
+//        'user/password',
+//        'forgot-password',
+//        'reset-password',
+//        'sanctum/csrf-cookie',
+//        'user/profile-information',
+//        'email/verification-notification',
+//    ],
 
     'allowed_methods' => ['*'],
 

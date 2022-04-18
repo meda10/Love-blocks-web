@@ -13,8 +13,6 @@ const launch = socket => {
   const writer = new rpc.WebSocketMessageWriter(socket)
   const socketConnection = server.createConnection(reader, writer, () => socket.dispose())
 
-  console.log(resolve(process.cwd(), 'lua-language-server/bin/lua-language-server'))
-
   const serverConnection = server.createServerProcess(
     'Lua',
     resolve(process.cwd(), 'lua-language-server/bin/lua-language-server'),
