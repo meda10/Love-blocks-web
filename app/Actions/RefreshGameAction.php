@@ -36,7 +36,7 @@ class RefreshGameAction
                 return null;
             }
             try {
-                $command = ['npx', 'love.js', '-t', 'title', '-c', $loveFilePath, $outputFilePath];
+                $command = ['npx', 'love.js', '-t', 'title', '-m', '25165824', '-c', $loveFilePath, $outputFilePath];
                 ExecuteShellCommandAction::execute($command);
             } catch (Exception $e) {
                 return null;
