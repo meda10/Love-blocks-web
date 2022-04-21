@@ -2,39 +2,39 @@
   <Head :title="title" />
   <top-panel />
   <div class="flex-grow">
-    <splitpanes class="default-theme" style="height: 100%">
+    <splitpanes class="default-theme flex-grow max-h-screen, h-4/5">
       <pane>
         <div ref="editorPaneResizeRef" class="h-full w-full">
           <div ref="btnEditor" class="absolute mt-2 z-50">
             <div class=" flex flex-row flex-nowrap">
-              <n-button v-show="editorShow" :disabled="editMonacoRef"
-                        class="flex-shrink" size="small" style="margin-right: 0.5rem"
-                        type="error" @click="editMonacoRef = !editMonacoRef">
+              <n-button v-show="editorShow" :disabled="editMonacoRef" class="flex-shrink" size="small"
+                        style="margin-right: 0.5rem" type="error" @click="editMonacoRef = !editMonacoRef">
                 Edit
               </n-button>
-              <n-button :type="'primary'" class="flex-shrink" size="small"
-                        style="margin-right: 0.5rem" @click="changeEditor">
+              <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                        @click="changeEditor">
                 {{ btnText }}
               </n-button>
             </div>
           </div>
-          <Blockly v-if="!editorShow" :project="null"
-                   :save-code="changeEditorRef" :save-workspace="saveWorkspaceRef"
-                   @passCodeToMonaco="passCodeToMonaco" />
+          <Blockly v-if="!editorShow" :project="blocklyProject" :save-code="changeEditorRef"
+                   :save-workspace="saveWorkspaceRef"
+                   @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
           <editor v-if="editorShow" :config-lua="'config'" :edit-monaco="editMonacoRef" :main-lua="mainLuaCode"
-                  :project="null"
-                  :save-monaco="saveWorkspaceRef" />
+                  :project="null" :save-monaco="saveWorkspaceRef" />
         </div>
       </pane>
       <pane>
-        <splitpanes horizontal>
-          <pane>
+        <splitpanes horizontal class="h-full">
+          <pane size="40">
             <n-space align="center" class="h-full w-full" justify="center">
               <n-p>Interpret will not work, you need to Sign in</n-p>
             </n-space>
           </pane>
-          <pane>
-            3
+          <pane size="60">
+            <n-scrollbar>
+              <Tutorial />
+            </n-scrollbar>
           </pane>
         </splitpanes>
       </pane>
@@ -64,6 +64,7 @@ import useMessaging from '@/messages'
 import { onUnmounted, ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core/index'
 import Blockly from '@/Pages/Project/Blockly/Blockly'
+import Tutorial from '@/Pages/Project/Tutorial/Tutorial'
 
 export default {
   name: 'Show',
@@ -72,6 +73,7 @@ export default {
     Head,
     Splitpanes,
     Pane,
+    Tutorial,
     TopPanel,
     Blockly,
   },
@@ -89,6 +91,7 @@ export default {
     const btnEditor = ref(null)
     const btnText = ref('Code')
     const mainLuaCode = ref('')
+    const blocklyProject = { blockly_workspace: null }
 
     const projectNotSaved = () => {
       dialog.warning({
@@ -131,6 +134,14 @@ export default {
       btnEditor.value.style.right = position + 'px'
     })
 
+    const saveBlocklyWorkspace = (workspace) => {
+      blocklyProject.blockly_workspace = workspace
+    }
+
+    onUnmounted(() => {
+      blocklyProject.blockly_workspace = null
+    })
+
     return {
       title,
       editorShow,
@@ -142,6 +153,8 @@ export default {
       showModalRef,
       saveWorkspaceRef,
       mainLuaCode,
+      blocklyProject,
+      saveBlocklyWorkspace,
       onPositiveClick,
       passCodeToMonaco,
       changeEditor,

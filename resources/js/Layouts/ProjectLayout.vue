@@ -1,9 +1,8 @@
 <template>
-  <!--  <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">-->
-  <n-config-provider :theme="darkTheme">
+  <n-config-provider :theme="darkTheme" :hljs="hljs">
     <n-dialog-provider>
       <n-message-provider>
-        <div class="h-screen flex flex-col flex-nowrap">
+        <div class="max-h-screen h-screen flex flex-col flex-nowrap">
           <slot />
         </div>
       </n-message-provider>
@@ -13,13 +12,17 @@
 
 <script>
 import { darkTheme } from 'naive-ui'
+import hljs from 'highlight.js/lib/core'
+import lua from 'highlight.js/lib/languages/lua'
 
 export default {
   name: 'ProjetLayout',
   components: {},
   setup() {
+    hljs.registerLanguage('lua', lua)
     return {
       darkTheme,
+      hljs,
     }
   },
 }

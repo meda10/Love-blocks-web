@@ -94,17 +94,19 @@ export default {
           {
             label: () => h('div', { onClick: () => share() }, { default: () => 'Share' }),
             key: 'share',
-            disabled: !props.owner,
+            disabled: !props.owner || user.value === null,
             icon: renderIcon(ShareIcon),
           },
           {
             label: () => h('div', { onClick: () => downloadToAndroid() }, { default: () => 'Download to Android' }),
             key: 'download',
+            disabled: user.value === null,
             icon: renderIcon(DownloadIcon),
           },
           {
             label: () => h('div', { onClick: () => goProjectFiles() }, { default: () => 'Files' }),
             key: 'files',
+            disabled: user.value === null,
             icon: renderIcon(BookIcon),
           },
           {
@@ -125,16 +127,18 @@ export default {
     }
 
     const goProjectFiles = () => {
-      emit('pageLeave')
-      dialog.warning({
-        title: 'Confirm',
-        content: 'Do you want to leave this page?',
-        positiveText: 'Yes',
-        negativeText: 'Not Sure',
-        onPositiveClick: () => {
-          Inertia.get(route('project.files', { project: props.project }))
-        },
-      })
+      if (user.value != null) {
+        emit('pageLeave')
+        dialog.warning({
+          title: 'Confirm',
+          content: 'Do you want to leave this page?',
+          positiveText: 'Yes',
+          negativeText: 'Not Sure',
+          onPositiveClick: () => {
+            Inertia.get(route('project.files', { project: props.project }))
+          },
+        })
+      } else message.error('Please Sign in.')
     }
 
     const goProfileShow = () => {
@@ -241,7 +245,7 @@ export default {
         shareEmail.value = null
         showShareModalRef.value = true
         currentProject.value = props.project.id
-      } else message.error('Please Sign In')
+      } else message.error('Please Sign in.')
     }
 
     function renderIcon(icon) {
@@ -255,7 +259,7 @@ export default {
           preserveScroll: true,
           replace: true,
         })
-      } else message.error('Please Sign In')
+      } else message.error('Please Sign in.')
     }
 
     return {

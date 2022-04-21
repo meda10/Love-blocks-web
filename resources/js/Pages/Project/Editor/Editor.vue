@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-nowrap" style="width:100%; height:100%;">
+  <div class="flex flex-col flex-nowrap h-full w-full">
     <Tabs v-model="currentTab" :items="items" />
     <div ref="monacoContainer" class="flex-grow" />
   </div>

@@ -1,43 +1,43 @@
 <template>
   <Head :title="title" />
   <top-panel :owner="owner" :project="project" @pageLeave="pageLeaveSaveProject" />
-  <div class="flex-grow">
-    <splitpanes class="default-theme" style="height: 100%">
-      <pane>
-        <div ref="editorPaneResizeRef" class="h-full w-full">
-          <div ref="btnEditor" class="absolute mt-2 z-50">
-            <div class=" flex flex-row flex-nowrap">
-              <n-button v-show="editorShow" :disabled="editMonacoRef"
-                        class="flex-shrink" size="small" style="margin-right: 0.5rem"
-                        type="error" @click="editMonacoRef = !editMonacoRef">
-                Edit
-              </n-button>
-              <n-button :type="'primary'" class="flex-shrink" size="small"
-                        style="margin-right: 0.5rem" @click="changeEditor">
-                {{ btnText }}
-              </n-button>
-            </div>
+  <splitpanes class="default-theme flex-grow max-h-screen, h-4/5">
+    <pane>
+      <div ref="editorPaneResizeRef" class="h-full w-full">
+        <div ref="btnEditor" class="absolute mt-2 z-50">
+          <div class=" flex flex-row flex-nowrap">
+            <n-button v-show="editorShow" :disabled="editMonacoRef"
+                      class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                      type="error" @click="editMonacoRef = !editMonacoRef">
+              Edit
+            </n-button>
+            <n-button :type="'primary'" class="flex-shrink" size="small"
+                      style="margin-right: 0.5rem" @click="changeEditor">
+              {{ btnText }}
+            </n-button>
           </div>
-          <Blockly v-if="!editorShow" :project="project" :save-code="changeEditorRef"
-                   :save-workspace="saveWorkspaceRef"
-                   @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
-          <editor v-if="editorShow" :config-lua="config" :edit-monaco="editMonacoRef" :main-lua="mainLuaCode"
-                  :project="project" :save-monaco="saveWorkspaceRef"
-                  @saveCode="saveCodeFromMonaco" @saveConf="saveConfFromMonaco" />
         </div>
-      </pane>
-      <pane>
-        <splitpanes horizontal>
-          <pane>
-            <Interpret :game-package="gamePackage" :project="project" :turn-off-game-mode="turnOffGameModeRef" />
-          </pane>
-          <pane>
+        <Blockly v-if="!editorShow" :project="project" :save-code="changeEditorRef"
+                 :save-workspace="saveWorkspaceRef"
+                 @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
+        <editor v-if="editorShow" :config-lua="config" :edit-monaco="editMonacoRef" :main-lua="mainLuaCode"
+                :project="project" :save-monaco="saveWorkspaceRef"
+                @saveCode="saveCodeFromMonaco" @saveConf="saveConfFromMonaco" />
+      </div>
+    </pane>
+    <pane>
+      <splitpanes horizontal class="h-full">
+        <pane size="40">
+          <Interpret :game-package="gamePackage" :project="project" :turn-off-game-mode="turnOffGameModeRef" />
+        </pane>
+        <pane size="60">
+          <n-scrollbar>
             <Tutorial />
-          </pane>
-        </splitpanes>
-      </pane>
-    </splitpanes>
-  </div>
+          </n-scrollbar>
+        </pane>
+      </splitpanes>
+    </pane>
+  </splitpanes>
   <n-modal
     v-model:show="showModalRef"
     :mask-closable="false"
