@@ -3,6 +3,7 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress'
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
+import registerBlocks from '@/blocklyCusomBlocks'
 
 // [Native UI]
 const meta = document.createElement('meta')
@@ -26,5 +27,5 @@ createInertiaApp({
 })
 
 InertiaProgress.init({ color: '#4B5563' })
-
+registerBlocks()
 document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'))

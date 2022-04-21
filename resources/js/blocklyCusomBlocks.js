@@ -670,9 +670,8 @@ const registerBlocks = () => {
   }
 
   Blockly.Lua.window_getdisplayorientation = function (block) {
-    // TODO: Assemble Lua into code variable.
-    const code = '...'
-    // TODO: Change ORDER_NONE to the correct strength.
+    const valueDisplayindex = Blockly.Lua.valueToCode(block, 'displayindex', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.window.getDisplayOrientation( ' + valueDisplayindex + ' )'
     return [code, Blockly.Lua.ORDER_NONE]
   }
 

@@ -309,36 +309,36 @@ const toolboxOptions = {
       colour: '260',
       name: 'Lists',
     },
-    {
-      kind: 'CATEGORY',
-      contents: [
-        {
-          kind: 'BLOCK',
-          blockxml: '<block type="colour_picker"></block>',
-          type: 'colour_picker',
-        },
-        {
-          kind: 'BLOCK',
-          blockxml: '<block type="colour_random"></block>',
-          type: 'colour_random',
-        },
-        {
-          kind: 'BLOCK',
-          blockxml:
-            '<block type="colour_rgb">\n          <value name="RED">\n            <shadow type="math_number">\n              <field name="NUM">100</field>\n            </shadow>\n          </value>\n          <value name="GREEN">\n            <shadow type="math_number">\n              <field name="NUM">50</field>\n            </shadow>\n          </value>\n          <value name="BLUE">\n            <shadow type="math_number">\n              <field name="NUM">0</field>\n            </shadow>\n          </value>\n        </block>',
-          type: 'colour_rgb',
-        },
-        {
-          kind: 'BLOCK',
-          blockxml:
-            '<block type="colour_blend">\n          <value name="COLOUR1">\n            <shadow type="colour_picker">\n              <field name="COLOUR">#ff0000</field>\n            </shadow>\n          </value>\n          <value name="COLOUR2">\n            <shadow type="colour_picker">\n              <field name="COLOUR">#3333ff</field>\n            </shadow>\n          </value>\n          <value name="RATIO">\n            <shadow type="math_number">\n              <field name="NUM">0.5</field>\n            </shadow>\n          </value>\n        </block>',
-          type: 'colour_blend',
-        },
-      ],
-      id: 'catColour',
-      colour: '20',
-      name: 'Color',
-    },
+    // {
+    //   kind: 'CATEGORY',
+    //   contents: [
+    //     {
+    //       kind: 'BLOCK',
+    //       blockxml: '<block type="colour_picker"></block>',
+    //       type: 'colour_picker',
+    //     },
+    //     {
+    //       kind: 'BLOCK',
+    //       blockxml: '<block type="colour_random"></block>',
+    //       type: 'colour_random',
+    //     },
+    //     {
+    //       kind: 'BLOCK',
+    //       blockxml:
+    //         '<block type="colour_rgb">\n          <value name="RED">\n            <shadow type="math_number">\n              <field name="NUM">100</field>\n            </shadow>\n          </value>\n          <value name="GREEN">\n            <shadow type="math_number">\n              <field name="NUM">50</field>\n            </shadow>\n          </value>\n          <value name="BLUE">\n            <shadow type="math_number">\n              <field name="NUM">0</field>\n            </shadow>\n          </value>\n        </block>',
+    //       type: 'colour_rgb',
+    //     },
+    //     {
+    //       kind: 'BLOCK',
+    //       blockxml:
+    //         '<block type="colour_blend">\n          <value name="COLOUR1">\n            <shadow type="colour_picker">\n              <field name="COLOUR">#ff0000</field>\n            </shadow>\n          </value>\n          <value name="COLOUR2">\n            <shadow type="colour_picker">\n              <field name="COLOUR">#3333ff</field>\n            </shadow>\n          </value>\n          <value name="RATIO">\n            <shadow type="math_number">\n              <field name="NUM">0.5</field>\n            </shadow>\n          </value>\n        </block>',
+    //       type: 'colour_blend',
+    //     },
+    //   ],
+    //   id: 'catColour',
+    //   colour: '20',
+    //   name: 'Color',
+    // },
     {
       kind: 'SEP',
     },
@@ -398,8 +398,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'love_wheelmoved' },
       ],
       id: 'catCallbacks',
-      colour: '80',
-      name: 'loveCallbacks',
+      colour: '230',
+      name: 'Callbacks',
     },
     {
       kind: 'CATEGORY',
@@ -456,8 +456,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'graphics_setlinejoin' },
       ],
       id: 'catGraphics',
-      colour: '80',
-      name: 'loveGraphics',
+      colour: '290',
+      name: 'Graphics',
     },
     {
       kind: 'CATEGORY',
@@ -473,8 +473,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'keyboard_getkeyfromscancode' },
       ],
       id: 'catKeyboard',
-      colour: '80',
-      name: 'loveKeyboard',
+      colour: '30',
+      name: 'Keyboard',
     },
     {
       kind: 'CATEGORY',
@@ -484,8 +484,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'touch_getposition' },
       ],
       id: 'catTouch',
-      colour: '80',
-      name: 'loveTouch',
+      colour: '60',
+      name: 'Touch',
     },
     {
       kind: 'CATEGORY',
@@ -513,8 +513,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'window_getdisplaycount' },
       ],
       id: 'catWindow',
-      colour: '80',
-      name: 'loveWindow',
+      colour: '90',
+      name: 'Window',
     },
     {
       kind: 'CATEGORY',
@@ -528,8 +528,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'system_hasbackgroundmusic' },
       ],
       id: 'catSystem',
-      colour: '80',
-      name: 'loveSystem',
+      colour: '120',
+      name: 'System',
     },
     {
       kind: 'CATEGORY',
@@ -542,8 +542,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'timer_getaveragedelta' },
       ],
       id: 'catTimer',
-      colour: '80',
-      name: 'loveTimer',
+      colour: '150',
+      name: 'Timer',
     },
     {
       kind: 'CATEGORY',
@@ -560,8 +560,8 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'math_newrandomgenerator' },
       ],
       id: 'catMath',
-      colour: '80',
-      name: 'loveMath',
+      colour: '180',
+      name: 'Math',
     },
   ],
   id: 'toolbox',
