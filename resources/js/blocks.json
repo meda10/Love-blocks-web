@@ -3794,5 +3794,1259 @@
         "colour": 230,
         "tooltip": "cosinus",
         "helpUrl": ""
+    },
+    {
+        "type": "physics_setmeter",
+        "message0": "set meter %1 scale %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "scale",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 270,
+        "tooltip": "Sets the pixels to meter scale factor. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.setMeter"
+    },
+    {
+        "type": "physics_newworld",
+        "message0": "create new world %1 xg %2 yg %3 sleep %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "xg",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "yg",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "sleep",
+                "check": "Boolean"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new World. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newWorld"
+    },
+    {
+        "type": "physics_newwheeljoint",
+        "message0": "create wheel joint %1 body1 %2 body2 %3 x %4 y %5 ax %6 ay %7 collideConnected %8",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "body1"
+            },
+            {
+                "type": "input_value",
+                "name": "body2"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "ax",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "ay",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "collideConnected",
+                "check": "Boolean"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a wheel joint. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newWheelJoint"
+    },
+    {
+        "type": "physics_newweldjoint",
+        "message0": "creates a constraint joint %1 body1 %2 body2 %3 x %4 y %5 collideConnected %6",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "body1",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "body2",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "collideConnected",
+                "check": "Boolean"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a constraint joint between two bodies.",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newWeldJoint"
+    },
+    {
+        "type": "physics_newrectangleshape",
+        "message0": "new rectangle shape %1 width %2 height %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "width",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "height",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 270,
+        "tooltip": "Shorthand for creating rectangular PolygonShapes. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newRectangleShape"
+    },
+    {
+        "type": "physics_newpolygonshape",
+        "message0": "create new polygon shape %1 vertices %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "vertices",
+                "check": "Array"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new PolygonShape. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newPolygonShape"
+    },
+    {
+        "type": "physics_newmousejoint",
+        "message0": "create bew mouse joint %1 body %2 x %3 y %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "body"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Create a joint between a body and the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newMouseJoint"
+    },
+    {
+        "type": "physics_getdistance",
+        "message0": "distance between two fixtures %1 fixture1 %2 fixture2 %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "fixture1"
+            },
+            {
+                "type": "input_value",
+                "name": "fixture2"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Returns the two closest points between two fixtures and their distance. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.getDistance"
+    },
+    {
+        "type": "physics_getmeter",
+        "message0": "get meter scale factor",
+        "inputsInline": true,
+        "output": "Number",
+        "colour": 270,
+        "tooltip": "Returns the meter scale factor. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.getMeter"
+    },
+    {
+        "type": "physics_newbody",
+        "message0": "create new body %1 world %2 x %3 y %4 type %5",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "world"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "type",
+                "options": [
+                    [
+                        "static",
+                        "static"
+                    ],
+                    [
+                        "dynamic",
+                        "dynamic"
+                    ],
+                    [
+                        "kinematic",
+                        "kinematic"
+                    ]
+                ]
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new body. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newBody"
+    },
+    {
+        "type": "physics_newcircleshape",
+        "message0": "create new circle shape %1 radius %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "radius",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new CircleShape. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newCircleShape"
+    },
+    {
+        "type": "physics_newchainshape",
+        "message0": "create new chain shape %1 loop %2 points %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "loop",
+                "check": "Boolean"
+            },
+            {
+                "type": "input_value",
+                "name": "points",
+                "check": "Array"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new ChainShape. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newChainShape"
+    },
+    {
+        "type": "physics_newedgeshape",
+        "message0": "create new edge shape %1 x1 %2 x2 %3 x3 %4 x4 %5",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "x1",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "x2",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "x3",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "x4",
+                "check": "Number"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates a new EdgeShape.",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newEdgeShape"
+    },
+    {
+        "type": "physics_newfixture",
+        "message0": "create new fixture %1 body %2 shape %3 density %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "body"
+            },
+            {
+                "type": "input_value",
+                "name": "shape"
+            },
+            {
+                "type": "input_value",
+                "name": "density",
+                "check": "Number"
+            }
+        ],
+        "output": null,
+        "colour": 270,
+        "tooltip": "Creates and attaches a Fixture to a body. ",
+        "helpUrl": "https://love2d.org/wiki/love.physics.newFixture"
+    },
+    {
+        "type": "audio_setdistancemodel",
+        "message0": "set distance attenuation model %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "model",
+                "options": [
+                    [
+                        "none",
+                        "none"
+                    ],
+                    [
+                        "inverse",
+                        "inverse"
+                    ],
+                    [
+                        "inverseclamped",
+                        "inverseclamped"
+                    ],
+                    [
+                        "linear",
+                        "linear"
+                    ],
+                    [
+                        "linearclamped",
+                        "linearclamped"
+                    ],
+                    [
+                        "exponent",
+                        "exponent"
+                    ],
+                    [
+                        "exponentclamped",
+                        "exponentclamped"
+                    ]
+                ]
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets the distance attenuation model. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setDistanceModel"
+    },
+    {
+        "type": "audio_getdistancemodel",
+        "message0": "get distance model",
+        "output": "String",
+        "colour": 0,
+        "tooltip": "Returns the distance attenuation model.",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getDistanceModel"
+    },
+    {
+        "type": "audio_setdopplerscale",
+        "message0": "set doppler scale %1 scale %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "scale",
+                "check": "Number"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets a global scale factor for velocity-based doppler effects. The default scale value is 1. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setDopplerScale"
+    },
+    {
+        "type": "audio_seteffect",
+        "message0": "set audio effect %1 name %2 settings %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "name",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "settings",
+                "check": "Array"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Defines an effect that can be applied to a Source. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setEffect"
+    },
+    {
+        "type": "audio_setmixwithsystem",
+        "message0": "mix the audio with system's audio %1 mix %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "mix",
+                "check": "Boolean"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 0,
+        "tooltip": "Sets whether the system should mix the audio with the system's audio. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setMixWithSystem"
+    },
+    {
+        "type": "audio_setorientation",
+        "message0": "set orientation of the listener %1 fx %2 fy %3 fz %4 ux %5 uy %6 uz %7",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "fx",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "fy",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "fz",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "ux",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "uy",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "uz",
+                "check": "Number"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets the orientation of the listener. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setOrientation"
+    },
+    {
+        "type": "audio_setposition",
+        "message0": "setposition of the listener %1 x %2 y %3 z %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "z",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets the position of the listener, which determines how sounds play. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setPosition"
+    },
+    {
+        "type": "audio_setvelocity",
+        "message0": "set velocity of the listener %1 x %2 y %3 z %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "z",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets the velocity of the listener. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setVelocity"
+    },
+    {
+        "type": "audio_setvolume",
+        "message0": "set volume %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_number",
+                "name": "volume",
+                "value": 0,
+                "min": 0,
+                "max": 1
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Sets the master volume. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.setVolume"
+    },
+    {
+        "type": "audio_stop",
+        "message0": "stop audio",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 0,
+        "tooltip": "Stops specific or all currently played sources. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.stop"
+    },
+    {
+        "type": "audio_pause",
+        "message0": "pause audio",
+        "output": null,
+        "colour": 0,
+        "tooltip": "Pauses specific or all currently played Sources. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.pause"
+    },
+    {
+        "type": "audio_newsource",
+        "message0": "create new audio source %1 file path %2 %3 type %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "filename",
+                "text": ""
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "type",
+                "options": [
+                    [
+                        "static",
+                        "static"
+                    ],
+                    [
+                        "stream",
+                        "stream"
+                    ]
+                ]
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 0,
+        "tooltip": "https://love2d.org/wiki/love.audio.newSource",
+        "helpUrl": "Creates a new Source from a filepath, File, Decoder or SoundData. Sources created from SoundData are always static. "
+    },
+    {
+        "type": "audio_iseffectssupported",
+        "message0": "is effects supported",
+        "output": "Boolean",
+        "colour": 0,
+        "tooltip": "Gets whether audio effects are supported in the system. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.isEffectsSupported"
+    },
+    {
+        "type": "audio_getvolume",
+        "message0": "get audio volume",
+        "output": "Number",
+        "colour": 0,
+        "tooltip": "Returns the master volume. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getVolume"
+    },
+    {
+        "type": "audio_getvelocity",
+        "message0": "get audio velocity",
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Returns the velocity of the listener. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getVelocity"
+    },
+    {
+        "type": "audio_getrecordingdevices",
+        "message0": "get recording devices",
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Gets a list of RecordingDevices on the system. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getRecordingDevices"
+    },
+    {
+        "type": "audio_getposition",
+        "message0": "get listener position ",
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Returns the position of the listener. Please note that positional audio only works for mono (i.e. non-stereo) sources. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getPosition"
+    },
+    {
+        "type": "audio_getorientation",
+        "message0": "get listener orientation",
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Returns the orientation of the listener. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getOrientation"
+    },
+    {
+        "type": "audio_getmaxsourceeffects",
+        "message0": "get maximum number of active effects",
+        "output": "Number",
+        "colour": 0,
+        "tooltip": "Gets the maximum number of active Effects in a single Source object, that the system can support. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getMaxSourceEffects"
+    },
+    {
+        "type": "audio_getmaxsceneeffects",
+        "message0": "get maximum number of active effects",
+        "output": "Number",
+        "colour": 0,
+        "tooltip": "Gets the maximum number of active effects supported by the system. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getMaxSceneEffects"
+    },
+    {
+        "type": "audio_geteffect",
+        "message0": "get settings associated with an effect %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "name",
+                "check": "String"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Gets the settings associated with an effect. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getEffect"
+    },
+    {
+        "type": "audio_getdopplerscale",
+        "message0": "get scale factor for doppler effects",
+        "output": "Number",
+        "colour": 0,
+        "tooltip": "Gets the current global scale factor for velocity-based doppler effects. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getDopplerScale"
+    },
+    {
+        "type": "audio_getactivesourcecount",
+        "message0": "get number of simultaneously playing sources",
+        "output": "Number",
+        "colour": 0,
+        "tooltip": "Gets the current number of simultaneously playing sources. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getActiveSourceCount"
+    },
+    {
+        "type": "audio_getactiveeffects",
+        "message0": "get active effects",
+        "output": "Array",
+        "colour": 0,
+        "tooltip": "Gets a list of the names of the currently enabled effects. ",
+        "helpUrl": "https://love2d.org/wiki/love.audio.getActiveEffects"
+    },
+    {
+        "type": "filesystem_append",
+        "message0": "append data to file %1 name %2 data %3 size %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "name",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "data",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "size",
+                "check": "Number"
+            }
+        ],
+        "output": "Array",
+        "colour": 140,
+        "tooltip": "Append data to an existing file. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.append"
+    },
+    {
+        "type": "filesystem_aresymlinksenabled",
+        "message0": "are symlinks enabled",
+        "output": "Boolean",
+        "colour": 140,
+        "tooltip": "Gets whether love.filesystem follows symbolic links. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.areSymlinksEnabled"
+    },
+    {
+        "type": "filesystem_createdirectory",
+        "message0": "create directory %1 name %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "name",
+                "check": "String"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 140,
+        "tooltip": "Recursively creates a directory. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.createDirectory"
+    },
+    {
+        "type": "filesystem_getdirectoryitems",
+        "message0": "get directory items %1 directory name %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "name",
+                "check": "String"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Array",
+        "colour": 140,
+        "tooltip": " Returns a table with the names of files and subdirectories in the specified path.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getDirectoryItems"
+    },
+    {
+        "type": "filesystem_getidentity",
+        "message0": "get directory name for your game",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Gets the write directory name for your game.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getIdentity"
+    },
+    {
+        "type": "filesystem_getinfo",
+        "message0": "get info abut directory %1 path %2 %3 filter type %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "path",
+                "text": ""
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "filtertype",
+                "options": [
+                    [
+                        "file",
+                        "file"
+                    ],
+                    [
+                        "directory",
+                        "directory"
+                    ],
+                    [
+                        "symlink",
+                        "symlink"
+                    ],
+                    [
+                        "other",
+                        "other"
+                    ]
+                ]
+            }
+        ],
+        "inputsInline": true,
+        "output": "Array",
+        "colour": 140,
+        "tooltip": "Gets information about the specified file or directory. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getInfo"
+    },
+    {
+        "type": "filesystem_getrequirepath",
+        "message0": "get filesystem paths from where require is called",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Gets the filesystem paths that will be searched when require is called. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getRequirePath"
+    },
+    {
+        "type": "filesystem_getrealdirectory",
+        "message0": "get absolute path of the directory containing %1 file path %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "filepath",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Gets the platform-specific absolute path of the directory containing a filepath. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getRealDirectory"
+    },
+    {
+        "type": "filesystem_getsavedirectory",
+        "message0": "get save directory",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Gets the full path to the designated save directory.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getSaveDirectory"
+    },
+    {
+        "type": "filesystem_getsource",
+        "message0": "get path to the the .love file or directory",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Returns the full path to the the .love file or directory.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getSource"
+    },
+    {
+        "type": "filesystem_getuserdirectory",
+        "message0": "get user directory",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Returns the path of the user's directory ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getUserDirectory"
+    },
+    {
+        "type": "filesystem_getworkingdirectory",
+        "message0": "get current workong directory",
+        "output": "String",
+        "colour": 140,
+        "tooltip": "Gets the current working directory. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.getWorkingDirectory"
+    },
+    {
+        "type": "filesystem_init",
+        "message0": "initializes love filesystem %1 apliaction name %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "appname",
+                "check": "String"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 140,
+        "tooltip": "Initializes love.filesystem,",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.init"
+    },
+    {
+        "type": "filesystem_lines",
+        "message0": "loop over lines in a file %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 140,
+        "tooltip": "Iterate over the lines in a file. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.lines"
+    },
+    {
+        "type": "filesystem_load",
+        "message0": "load Lua file %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": "Array",
+        "colour": 140,
+        "tooltip": "Loads a Lua file (but does not run it). ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.load"
+    },
+    {
+        "type": "filesystem_mount",
+        "message0": "mount zip file or folder %1 archive %2 mountpoint %3 appendToPath %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "archive",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "mountpoint",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "appendToPath",
+                "check": "Boolean"
+            }
+        ],
+        "output": "Boolean",
+        "colour": 140,
+        "tooltip": "Mounts a zip file or folder in the game's save directory for reading.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.mount"
+    },
+    {
+        "type": "filesystem_newfile",
+        "message0": "create file object %1 filename %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 140,
+        "tooltip": "Creates a new File object. It needs to be opened before it can be accessed. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.newFile"
+    },
+    {
+        "type": "filesystem_read",
+        "message0": "read file %1 name %2 %3 size %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "size",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Array",
+        "colour": 140,
+        "tooltip": "Read the contents of a file. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.read"
+    },
+    {
+        "type": "filesystem_remove",
+        "message0": "femove file or directory %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 140,
+        "tooltip": "Removes a file or empty directory. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.remove"
+    },
+    {
+        "type": "filesystem_setidentity",
+        "message0": "set write directory for game %1 name %2 %3 appendToPath %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "appendToPath",
+                "check": "Boolean"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 140,
+        "tooltip": "Sets the write directory for your game.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.setIdentity"
+    },
+    {
+        "type": "filesystem_setrequirepath",
+        "message0": "set paths from where require is called %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "paths",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 140,
+        "tooltip": "Sets the filesystem paths that will be searched when require is called. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.setRequirePath"
+    },
+    {
+        "type": "filesystem_setsource",
+        "message0": "set source of the game %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "path",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 140,
+        "tooltip": "Sets the source of the game, where the code is present.",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.setSource"
+    },
+    {
+        "type": "filesystem_setsymlinksenabled",
+        "message0": "enable symbolic links %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "enable",
+                "check": "Boolean"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 140,
+        "tooltip": "Sets whether love.filesystem follows symbolic links. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.setSymlinksEnabled"
+    },
+    {
+        "type": "filesystem_unmount",
+        "message0": "unmount zip file or folder %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "archive",
+                "text": ""
+            }
+        ],
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 140,
+        "tooltip": "Unmounts a zip file or folder previously mounted for reading with love.filesystem.mount. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.unmount"
+    },
+    {
+        "type": "filesystem_write",
+        "message0": "write data to file %1 file name %2 %3 data %4 size %5",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "field_input",
+                "name": "name",
+                "text": ""
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "data",
+                "check": "String"
+            },
+            {
+                "type": "input_value",
+                "name": "size",
+                "check": "Number"
+            }
+        ],
+        "output": "Array",
+        "colour": 140,
+        "tooltip": "Write data to a file in the save directory. If the file existed already, it will be completely replaced by the new contents. ",
+        "helpUrl": "https://love2d.org/wiki/love.filesystem.write"
     }
 ]

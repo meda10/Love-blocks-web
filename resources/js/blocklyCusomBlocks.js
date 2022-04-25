@@ -1010,6 +1010,393 @@ const registerBlocks = () => {
     const code = 'love.mouse.getCursor()'
     return [code, Blockly.Lua.ORDER_NONE]
   }
+
+  Blockly.Lua.physics_setmeter = function (block) {
+    const valueScale = Blockly.Lua.valueToCode(block, 'scale', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.physics.setMeter( ' + valueScale + ' )\n'
+  }
+
+  Blockly.Lua.physics_newworld = function (block) {
+    const valueXg = Blockly.Lua.valueToCode(block, 'xg', Blockly.Lua.ORDER_ATOMIC)
+    const valueYg = Blockly.Lua.valueToCode(block, 'yg', Blockly.Lua.ORDER_ATOMIC)
+    const valueSleep = Blockly.Lua.valueToCode(block, 'sleep', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newWorld( ' + valueXg + ', ' + valueYg + ', ' + valueSleep + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newwheeljoint = function (block) {
+    const valueBody1 = Blockly.Lua.valueToCode(block, 'body1', Blockly.Lua.ORDER_ATOMIC)
+    const valueBody2 = Blockly.Lua.valueToCode(block, 'body2', Blockly.Lua.ORDER_ATOMIC)
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueAx = Blockly.Lua.valueToCode(block, 'ax', Blockly.Lua.ORDER_ATOMIC)
+    const valueAy = Blockly.Lua.valueToCode(block, 'ay', Blockly.Lua.ORDER_ATOMIC)
+    const valueCollideconnected = Blockly.Lua.valueToCode(block, 'collideConnected', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newWheelJoint( ' + valueBody1 + ', ' + valueBody2 + ', ' + valueX + ', ' + valueY + ', ' + valueAx + ', ' + valueAy + ', ' + valueCollideconnected + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newweldjoint = function (block) {
+    const valueBody1 = Blockly.Lua.valueToCode(block, 'body1', Blockly.Lua.ORDER_ATOMIC)
+    const valueBody2 = Blockly.Lua.valueToCode(block, 'body2', Blockly.Lua.ORDER_ATOMIC)
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueCollideconnected = Blockly.Lua.valueToCode(block, 'collideConnected', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newWeldJoint( ' + valueBody1 + ', ' + valueBody2 + ', ' + valueX + ', ' + valueY + ', ' + valueCollideconnected + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newrectangleshape = function (block) {
+    const valueWidth = Blockly.Lua.valueToCode(block, 'width', Blockly.Lua.ORDER_ATOMIC)
+    const valueHeight = Blockly.Lua.valueToCode(block, 'height', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newRectangleShape( ' + valueWidth + ', ' + valueHeight + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newpolygonshape = function (block) {
+    const valueVertices = Blockly.Lua.valueToCode(block, 'vertices', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newPolygonShape( ' + valueVertices + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newmousejoint = function (block) {
+    const valueBody = Blockly.Lua.valueToCode(block, 'body', Blockly.Lua.ORDER_ATOMIC)
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newMouseJoint( ' + valueBody + ', ' + valueX + ', ' + valueY + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_getdistance = function (block) {
+    const valueFixture1 = Blockly.Lua.valueToCode(block, 'fixture1', Blockly.Lua.ORDER_ATOMIC)
+    const valueFixture2 = Blockly.Lua.valueToCode(block, 'fixture2', Blockly.Lua.ORDER_ATOMIC)
+    const code = '{ love.physics.getDistance( ' + valueFixture1 + ', ' + valueFixture2 + ' ) }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_getmeter = function () {
+    const code = 'love.physics.getMeter()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newbody = function (block) {
+    const valueWorld = Blockly.Lua.valueToCode(block, 'world', Blockly.Lua.ORDER_ATOMIC)
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const dropdownType = block.getFieldValue('type')
+    const code = 'love.physics.newBody( ' + valueWorld + ', ' + valueX + ', ' + valueY + ', "' + dropdownType + '" )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newcircleshape = function (block) {
+    const valueRadius = Blockly.Lua.valueToCode(block, 'radius', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newCircleShape( ' + valueRadius + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newchainshape = function (block) {
+    const valueLoop = Blockly.Lua.valueToCode(block, 'loop', Blockly.Lua.ORDER_ATOMIC)
+    const valuePoints = Blockly.Lua.valueToCode(block, 'points', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newChainShape( ' + valueLoop + ', ' + valuePoints + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newedgeshape = function (block) {
+    const valueX1 = Blockly.Lua.valueToCode(block, 'x1', Blockly.Lua.ORDER_ATOMIC)
+    const valueX2 = Blockly.Lua.valueToCode(block, 'x2', Blockly.Lua.ORDER_ATOMIC)
+    const valueX3 = Blockly.Lua.valueToCode(block, 'x3', Blockly.Lua.ORDER_ATOMIC)
+    const valueX4 = Blockly.Lua.valueToCode(block, 'x4', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newEdgeShape( ' + valueX1 + ', ' + valueX2 + ', ' + valueX3 + ', ' + valueX4 + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.physics_newfixture = function (block) {
+    const valueBody = Blockly.Lua.valueToCode(block, 'body', Blockly.Lua.ORDER_ATOMIC)
+    const valueShape = Blockly.Lua.valueToCode(block, 'shape', Blockly.Lua.ORDER_ATOMIC)
+    const valueDensity = Blockly.Lua.valueToCode(block, 'density', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.physics.newFixture( ' + valueBody + ', ' + valueShape + ', ' + valueDensity + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_setdistancemodel = function (block) {
+    const dropdownModel = block.getFieldValue('model')
+    return 'love.audio.setDistanceModel( "' + dropdownModel + '" )\n'
+  }
+
+  Blockly.Lua.audio_getdistancemodel = function () {
+    const code = 'love.audio.getDistanceModel()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_setdopplerscale = function (block) {
+    const valueScale = Blockly.Lua.valueToCode(block, 'scale', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.audio.setDopplerScale( ' + valueScale + ' )\n'
+  }
+
+  Blockly.Lua.audio_seteffect = function (block) {
+    const valueName = Blockly.Lua.valueToCode(block, 'name', Blockly.Lua.ORDER_ATOMIC)
+    const valueSettings = Blockly.Lua.valueToCode(block, 'settings', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.audio.setEffect(' + valueName + ', ' + valueSettings + ')\n'
+  }
+
+  Blockly.Lua.audio_setmixwithsystem = function (block) {
+    const valueMix = Blockly.Lua.valueToCode(block, 'mix', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.audio.setMixWithSystem( ' + valueMix + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_setorientation = function (block) {
+    const valueFx = Blockly.Lua.valueToCode(block, 'fx', Blockly.Lua.ORDER_ATOMIC)
+    const valueFy = Blockly.Lua.valueToCode(block, 'fy', Blockly.Lua.ORDER_ATOMIC)
+    const valueFz = Blockly.Lua.valueToCode(block, 'fz', Blockly.Lua.ORDER_ATOMIC)
+    const valueUx = Blockly.Lua.valueToCode(block, 'ux', Blockly.Lua.ORDER_ATOMIC)
+    const valueUy = Blockly.Lua.valueToCode(block, 'uy', Blockly.Lua.ORDER_ATOMIC)
+    const valueUz = Blockly.Lua.valueToCode(block, 'uz', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.audio.setOrientation( ' + valueFx + ', ' + valueFy + ', ' + valueFz + ', ' + valueUx + ', ' + valueUy + ', ' + valueUz + ' )\n'
+  }
+
+  Blockly.Lua.audio_setposition = function (block) {
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueZ = Blockly.Lua.valueToCode(block, 'z', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.audio.setPosition( ' + valueX + ', ' + valueY + ', ' + valueZ + ' )\n'
+  }
+
+  Blockly.Lua.audio_setvelocity = function (block) {
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueZ = Blockly.Lua.valueToCode(block, 'z', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.audio.setVelocity( ' + valueX + ', ' + valueY + ', ' + valueZ + ' )\n'
+  }
+
+  Blockly.Lua.audio_setvolume = function (block) {
+    const numberVolume = block.getFieldValue('volume')
+    return 'love.audio.setVolume( ' + numberVolume + ' )\n'
+  }
+
+  Blockly.Lua.audio_stop = function () {
+    return 'love.audio.stop()\n'
+  }
+
+  Blockly.Lua.audio_pause = function () {
+    const code = 'love.audio.pause()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_newsource = function (block) {
+    const textFilename = block.getFieldValue('filename')
+    const dropdownType = block.getFieldValue('type')
+    const code = 'love.audio.newSource( ' + textFilename + ', "' + dropdownType + '" )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_iseffectssupported = function () {
+    const code = 'love.audio.isEffectsSupported()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getvolume = function () {
+    const code = 'love.audio.getVolume()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getvelocity = function () {
+    const code = '{ love.audio.getVelocity() }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getrecordingdevices = function () {
+    const code = 'love.audio.getRecordingDevices()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getposition = function () {
+    const code = '{ love.audio.getPosition() }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getorientation = function () {
+    const code = '{ love.audio.getOrientation() }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getmaxsourceeffects = function () {
+    const code = 'love.audio.getMaxSourceEffects()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getmaxsceneeffects = function () {
+    const code = 'love.audio.getMaxSceneEffects()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_geteffect = function (block) {
+    const valueName = Blockly.Lua.valueToCode(block, 'name', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.audio.getEffect(' + valueName + ')'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getdopplerscale = function () {
+    const code = 'love.audio.getDopplerScale()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getactivesourcecount = function () {
+    const code = 'love.audio.getActiveSourceCount()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.audio_getactiveeffects = function () {
+    const code = 'love.audio.getActiveEffects()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_append = function (block) {
+    const valueName = Blockly.Lua.valueToCode(block, 'name', Blockly.Lua.ORDER_ATOMIC)
+    const valueData = Blockly.Lua.valueToCode(block, 'data', Blockly.Lua.ORDER_ATOMIC)
+    const valueSize = Blockly.Lua.valueToCode(block, 'size', Blockly.Lua.ORDER_ATOMIC)
+    const code = '{ love.filesystem.append( ' + valueName + ', ' + valueData + ', ' + valueSize + ' ) }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_aresymlinksenabled = function () {
+    const code = 'love.filesystem.areSymlinksEnabled()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_createdirectory = function (block) {
+    const valueName = Blockly.Lua.valueToCode(block, 'name', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.filesystem.createDirectory( ' + valueName + ' )\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getdirectoryitems = function (block) {
+    const valueName = Blockly.Lua.valueToCode(block, 'name', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.filesystem.getDirectoryItems( ' + valueName + ' )\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getidentity = function () {
+    const code = 'love.filesystem.getIdentity()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getinfo = function (block) {
+    const textPath = block.getFieldValue('path')
+    const dropdownFiltertype = block.getFieldValue('filtertype')
+    const code = 'love.filesystem.getInfo( ' + textPath + ', "' + dropdownFiltertype + '" )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getrequirepath = function () {
+    const code = 'love.filesystem.getRequirePath()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getrealdirectory = function (block) {
+    const textFilepath = block.getFieldValue('filepath')
+    const code = 'love.filesystem.getRealDirectory( ' + textFilepath + ' )\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getsavedirectory = function () {
+    const code = 'love.filesystem.getSaveDirectory()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getsource = function () {
+    const code = 'love.filesystem.getSource()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getuserdirectory = function () {
+    const code = 'love.filesystem.getUserDirectory()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_getworkingdirectory = function () {
+    const code = 'love.filesystem.getWorkingDirectory()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_init = function (block) {
+    const valueAppname = Blockly.Lua.valueToCode(block, 'appname', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.filesystem.init( ' + valueAppname + ' )\n'
+  }
+
+  Blockly.Lua.filesystem_lines = function (block) {
+    const textName = block.getFieldValue('name')
+    const code = 'love.filesystem.lines( ' + textName + ' )\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_load = function (block) {
+    const textName = block.getFieldValue('name')
+    const code = '{ love.filesystem.load( ' + textName + ' ) }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_mount = function (block) {
+    const valueArchive = Blockly.Lua.valueToCode(block, 'archive', Blockly.Lua.ORDER_ATOMIC)
+    const valueMountpoint = Blockly.Lua.valueToCode(block, 'mountpoint', Blockly.Lua.ORDER_ATOMIC)
+    const valueAppendtopath = Blockly.Lua.valueToCode(block, 'appendToPath', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.filesystem.mount( ' + valueArchive + ', ' + valueMountpoint + ', ' + valueAppendtopath + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_newfile = function (block) {
+    const textName = block.getFieldValue('name')
+    const code = 'love.filesystem.newFile( ' + textName + ' )\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_read = function (block) {
+    const textName = block.getFieldValue('name')
+    const valueSize = Blockly.Lua.valueToCode(block, 'size', Blockly.Lua.ORDER_ATOMIC)
+    const code = '{ love.filesystem.read( ' + textName + ', ' + valueSize + ' ) }\n'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_remove = function (block) {
+    const textName = block.getFieldValue('name')
+    const code = 'love.filesystem.remove( ' + textName + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_setidentity = function (block) {
+    const textName = block.getFieldValue('name')
+    const valueAppendtopath = Blockly.Lua.valueToCode(block, 'appendToPath', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.filesystem.setIdentity( ' + textName + ', ' + valueAppendtopath + ' )\n'
+  }
+
+  Blockly.Lua.filesystem_setrequirepath = function (block) {
+    const textPaths = block.getFieldValue('paths')
+    return 'love.filesystem.setRequirePath( ' + textPaths + ' )\n'
+  }
+
+  Blockly.Lua.filesystem_setsource = function (block) {
+    const textPath = block.getFieldValue('path')
+    return 'love.filesystem.setSource( ' + textPath + ' )\n'
+  }
+
+  Blockly.Lua.filesystem_setsymlinksenabled = function (block) {
+    const valueEnable = Blockly.Lua.valueToCode(block, 'enable', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.filesystem.setSymlinksEnabled( ' + valueEnable + ' )\n'
+  }
+
+  Blockly.Lua.filesystem_unmount = function (block) {
+    const textArchive = block.getFieldValue('archive')
+    const code = 'love.filesystem.unmount( ' + textArchive + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.filesystem_write = function (block) {
+    const textName = block.getFieldValue('name')
+    const valueData = Blockly.Lua.valueToCode(block, 'data', Blockly.Lua.ORDER_ATOMIC)
+    const valueSize = Blockly.Lua.valueToCode(block, 'size', Blockly.Lua.ORDER_ATOMIC)
+    const code = '{ love.filesystem.write( ' + textName + ', ' + valueData + ', ' + valueSize + ' ) }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
 }
 
 export default registerBlocks
