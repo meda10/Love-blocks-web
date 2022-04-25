@@ -1,6 +1,5 @@
 <template>
-  <div class="h-full w-full">
-    <div ref="blocklyArea" class="h-full w-full" />
+  <div ref="blocklyArea" class="h-full w-full">
     <div ref="blocklyDiv" style="position: absolute" />
     <xml ref="blocklyToolbox" style="display:none">
       <slot />
@@ -15,7 +14,8 @@ import { ref, onMounted, watch } from 'vue'
 import Blockly from 'blockly'
 import { useResizeObserver } from '@vueuse/core'
 import toolboxOptions from '@/toolbox'
-import { ScrollOptions, ScrollBlockDragger, ScrollMetricsManager } from '@blockly/plugin-scroll-options'
+import { ScrollOptions, ScrollMetricsManager } from '@blockly/plugin-scroll-options'
+import { CrossTabCopyPaste } from '@blockly/plugin-cross-tab-copy-paste'
 
 export default {
   name: 'Blockly',
@@ -53,7 +53,6 @@ export default {
       trashcan: true,
       toolbox: toolboxOptions,
       plugins: {
-        blockDragger: ScrollBlockDragger,
         metricsManager: ScrollMetricsManager,
       },
       move: {
@@ -93,9 +92,19 @@ export default {
       }
       workspace = Blockly.inject(blocklyDiv.value, options)
       if (props.project !== null) {
-        if (props.project.blockly_workspace !== null) Blockly.serialization.workspaces.load(props.project.blockly_workspace, workspace)
+        try {
+          if (props.project.blockly_workspace !== null) Blockly.serialization.workspaces.load(props.project.blockly_workspace, workspace)
+        } catch (e) {
+        }
       }
+
       const plugin = new ScrollOptions(workspace)
+      const pluginCopy = new CrossTabCopyPaste()
+      const optionsPluginCopy = { contextMenu: true, shortcut: true }
+      try {
+        pluginCopy.init(optionsPluginCopy)
+      } catch (e) {
+      }
       plugin.init()
     })
 

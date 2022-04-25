@@ -2,7 +2,7 @@
   <n-config-provider :theme="darkTheme" :hljs="hljs">
     <n-dialog-provider>
       <n-message-provider>
-        <div class="max-h-screen h-screen flex flex-col flex-nowrap">
+        <div class="max-h-screen w-full h-screen flex flex-col flex-nowrap">
           <slot />
         </div>
       </n-message-provider>

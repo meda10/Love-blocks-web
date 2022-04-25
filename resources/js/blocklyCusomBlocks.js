@@ -1,9 +1,48 @@
 'use strict'
 import Blockly from 'blockly'
+import 'blockly/lua'
 import blocks from '@/blocks.json'
 
 const registerBlocks = () => {
   Blockly.common.defineBlocksWithJsonArray(blocks)
+
+  Blockly.Lua.math_atan2 = function (block) {
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'math.atan2 (' + valueY + ', ' + valueX + ')'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.math_sin = function (block) {
+    const valueValue = Blockly.Lua.valueToCode(block, 'value', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'math.sin(' + valueValue + ')'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.math_cos = function (block) {
+    const valueVal = Blockly.Lua.valueToCode(block, 'val', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'math.cos(' + valueVal + ')'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.for_index_item = function (block) {
+    const variableIndex = Blockly.Lua.nameDB_.getName(block.getFieldValue('index'), 'VARIABLE')
+    const variableItem = Blockly.Lua.nameDB_.getName(block.getFieldValue('item'), 'VARIABLE')
+    const valueArray = Blockly.Lua.valueToCode(block, 'array', Blockly.Lua.ORDER_ATOMIC)
+    const statementsInput = Blockly.Lua.statementToCode(block, 'input')
+    return 'for ' + variableIndex + ', ' + variableItem + ' in ipairs(' + valueArray + ') do\n' + statementsInput + 'end\n'
+  }
+
+  Blockly.Lua.teble_remove = function (block) {
+    const valueTable = Blockly.Lua.valueToCode(block, 'table', Blockly.Lua.ORDER_ATOMIC)
+    const valueIndex = Blockly.Lua.valueToCode(block, 'index', Blockly.Lua.ORDER_ATOMIC)
+    return 'table.remove(' + valueTable + ', ' + valueIndex + ')\n'
+  }
+
+  Blockly.Lua.graphics_setnewfont = function (block) {
+    const valueSize = Blockly.Lua.valueToCode(block, 'size', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.graphics.setNewFont( ' + valueSize + ' )\n'
+  }
 
   Blockly.Lua.love_mousereleased = function (block) {
     const variableX = Blockly.Lua.nameDB_.getName(block.getFieldValue('x'), 'VARIABLE')
@@ -294,16 +333,16 @@ const registerBlocks = () => {
 
   Blockly.Lua.graphics_print = function (block) {
     const valueText = Blockly.Lua.valueToCode(block, 'text', Blockly.Lua.ORDER_ATOMIC)
-    const numberX = block.getFieldValue('x')
-    const numberY = block.getFieldValue('y')
-    const numberR = block.getFieldValue('r')
-    const numberSx = block.getFieldValue('sx')
-    const numberSy = block.getFieldValue('sy')
-    const numberOx = block.getFieldValue('ox')
-    const numberOy = block.getFieldValue('oy')
-    const numberKx = block.getFieldValue('kx')
-    const numberKy = block.getFieldValue('ky')
-    return 'love.graphics.print(' + valueText + ', ' + numberX + ', ' + numberY + ', ' + numberR + ', ' + numberSx + ', ' + numberSy + ' , ' + numberOx + ', ' + numberOy + ', ' + numberKx + ', ' + numberKy + ')\n'
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueR = Blockly.Lua.valueToCode(block, 'r', Blockly.Lua.ORDER_ATOMIC)
+    const valueSx = Blockly.Lua.valueToCode(block, 'sx', Blockly.Lua.ORDER_ATOMIC)
+    const valueSy = Blockly.Lua.valueToCode(block, 'sy', Blockly.Lua.ORDER_ATOMIC)
+    const valueOx = Blockly.Lua.valueToCode(block, 'ox', Blockly.Lua.ORDER_ATOMIC)
+    const valueOy = Blockly.Lua.valueToCode(block, 'oy', Blockly.Lua.ORDER_ATOMIC)
+    const valueKx = Blockly.Lua.valueToCode(block, 'kx', Blockly.Lua.ORDER_ATOMIC)
+    const valueKy = Blockly.Lua.valueToCode(block, 'ky', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.graphics.print(' + valueText + ', ' + valueX + ', ' + valueY + ', ' + valueR + ', ' + valueSx + ', ' + valueSy + ' , ' + valueOx + ', ' + valueOy + ', ' + valueKx + ', ' + valueKy + ')\n'
   }
 
   Blockly.Lua.graphics_present = function () {
@@ -380,11 +419,11 @@ const registerBlocks = () => {
   }
 
   Blockly.Lua.graphics_circle = function (block) {
-    const dropdownDrawmode = block.getFieldValue('DrawMode')
-    const numberX = block.getFieldValue('x')
-    const numberY = block.getFieldValue('y')
-    const numberRadius = block.getFieldValue('radius')
-    return 'love.graphics.draw("' + dropdownDrawmode + '", ' + numberX + ', ' + numberY + ', ' + numberRadius + ')\n'
+    const dropdownMode = block.getFieldValue('mode')
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    const valueRadius = Blockly.Lua.valueToCode(block, 'radius', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.graphics.circle("' + dropdownMode + '", ' + valueX + ', ' + valueY + ', ' + valueRadius + ')\n'
   }
 
   Blockly.Lua.graphics_arc = function (block) {
@@ -601,7 +640,7 @@ const registerBlocks = () => {
 
   Blockly.Lua.keyboard_isdown = function (block) {
     const textKey = block.getFieldValue('key')
-    const code = 'love.keyboard.isDown(' + textKey + ')'
+    const code = 'love.keyboard.isDown("' + textKey + '")'
     return [code, Blockly.Lua.ORDER_NONE]
   }
 
@@ -847,8 +886,10 @@ const registerBlocks = () => {
     return [code, Blockly.Lua.ORDER_NONE]
   }
 
-  Blockly.Lua.math_random = function () {
-    const code = 'love.math.random()'
+  Blockly.Lua.math_random = function (block) {
+    const valueMin = Blockly.Lua.valueToCode(block, 'min', Blockly.Lua.ORDER_ATOMIC)
+    const valueMax = Blockly.Lua.valueToCode(block, 'max', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.math.random(' + valueMin + ', ' + valueMax + ')'
     return [code, Blockly.Lua.ORDER_NONE]
   }
 
@@ -876,6 +917,97 @@ const registerBlocks = () => {
 
   Blockly.Lua.math_newrandomgenerator = function () {
     const code = 'love.math.newRandomGenerator()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_sety = function (block) {
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setY( ' + valueY + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setx = function (block) {
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setX( ' + valueX + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setvisible = function (block) {
+    const valueVisible = Blockly.Lua.valueToCode(block, 'visible', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setVisible( ' + valueVisible + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setrelativemode = function (block) {
+    const valueEnable = Blockly.Lua.valueToCode(block, 'enable', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setRelativeMode( ' + valueEnable + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setposition = function (block) {
+    const valueX = Blockly.Lua.valueToCode(block, 'x', Blockly.Lua.ORDER_ATOMIC)
+    const valueY = Blockly.Lua.valueToCode(block, 'y', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setPosition( ' + valueX + ', ' + valueY + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setgrabbed = function (block) {
+    const valueGrab = Blockly.Lua.valueToCode(block, 'grab', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setGrabbed( ' + valueGrab + ' )\n'
+  }
+
+  Blockly.Lua.mouse_setcursor = function (block) {
+    const valueCursor = Blockly.Lua.valueToCode(block, 'cursor', Blockly.Lua.ORDER_ATOMIC)
+    return 'love.mouse.setCursor( ' + valueCursor + ' )\n'
+  }
+
+  Blockly.Lua.mouse_newcursor = function (block) {
+    const valueImagedata = Blockly.Lua.valueToCode(block, 'imageData', Blockly.Lua.ORDER_ATOMIC)
+    const valueHotx = Blockly.Lua.valueToCode(block, 'hotx', Blockly.Lua.ORDER_ATOMIC)
+    const valueHoty = Blockly.Lua.valueToCode(block, 'hoty', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.mouse.newCursor( ' + valueImagedata + ', ' + valueHotx + ', ' + valueHoty + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_isvisible = function () {
+    const code = 'love.mouse.isVisible()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_isgrabbed = function () {
+    const code = 'love.mouse.isGrabbed()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_isdown = function (block) {
+    const valueButton = Blockly.Lua.valueToCode(block, 'button', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.mouse.isDown( ' + valueButton + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_gety = function () {
+    const code = 'love.mouse.getY()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_getx = function () {
+    const code = 'love.mouse.getX()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_getsystemcursor = function (block) {
+    const valueCtype = Blockly.Lua.valueToCode(block, 'ctype', Blockly.Lua.ORDER_ATOMIC)
+    const code = 'love.mouse.getSystemCursor( ' + valueCtype + ' )'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_getrelativemode = function () {
+    const code = 'love.mouse.getRelativeMode()'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_getposition = function () {
+    const code = '{ love.mouse.getPosition() }'
+    return [code, Blockly.Lua.ORDER_NONE]
+  }
+
+  Blockly.Lua.mouse_getcursor = function () {
+    const code = 'love.mouse.getCursor()'
     return [code, Blockly.Lua.ORDER_NONE]
   }
 }

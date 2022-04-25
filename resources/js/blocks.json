@@ -1,5 +1,84 @@
 [
     {
+        "type": "teble_remove",
+        "message0": "remove from list %1 %2 element %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "table",
+                "check": "Array"
+            },
+            {
+                "type": "input_value",
+                "name": "index",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 260,
+        "tooltip": "The table.remove function removes an element from a given position in an array,",
+        "helpUrl": "https://www.lua.org/pil/19.2.html"
+    },
+    {
+        "type": "graphics_setnewfont",
+        "message0": "set font size %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "size",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 290,
+        "tooltip": "Creates and sets a new Font. ",
+        "helpUrl": "https://love2d.org/wiki/love.graphics.setNewFont"
+    },
+    {
+        "type": "for_index_item",
+        "message0": "for each %1 %2 in list %3 %4 %5",
+        "args0": [
+            {
+                "type": "field_variable",
+                "name": "index",
+                "variable": "index"
+            },
+            {
+                "type": "field_variable",
+                "name": "item",
+                "variable": "item"
+            },
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "array",
+                "check": "Array"
+            },
+            {
+                "type": "input_statement",
+                "name": "input"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Loop with index and item.",
+        "helpUrl": ""
+    },
+    {
         "type": "love_mousereleased",
         "message0": "mouse released %1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12",
         "args0": [
@@ -40,8 +119,8 @@
             },
             {
                 "type": "field_variable",
-                "name": "presses ",
-                "variable": "presses "
+                "name": "presses",
+                "variable": "presses"
             },
             {
                 "type": "input_dummy"
@@ -1454,84 +1533,62 @@
     },
     {
         "type": "graphics_print",
-        "message0": "print text %1 x %2 %3 y %4 %5 r %6 %7 sx %8 %9 sy %10 %11 ox %12 %13 oy %14 %15 kx %16 %17 ky %18",
+        "message0": "print text %1 text %2 x %3 y %4 r %5 sx %6 sy %7 ox %8 oy %9 kx %10 ky %11",
         "args0": [
+            {
+                "type": "input_dummy"
+            },
             {
                 "type": "input_value",
                 "name": "text",
                 "check": "String"
             },
             {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "x",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "y",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "r",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "sx",
-                "value": 1
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "sy",
-                "value": 1
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "ox",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "oy",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "kx",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "ky",
-                "value": 0
+                "check": "Number"
             }
         ],
-        "inputsInline": false,
         "previousStatement": null,
         "nextStatement": null,
         "colour": 290,
@@ -1923,14 +1980,14 @@
     },
     {
         "type": "graphics_circle",
-        "message0": "draw circle %1 mode %2 %3 x %4 %5 y %6 %7 radius %8",
+        "message0": "draw circle %1 mode %2 %3 x %4 y %5 radius %6",
         "args0": [
             {
                 "type": "input_dummy"
             },
             {
                 "type": "field_dropdown",
-                "name": "DrawMode",
+                "name": "mode",
                 "options": [
                     [
                         "fill",
@@ -1946,28 +2003,21 @@
                 "type": "input_dummy"
             },
             {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "x",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "y",
-                "value": 0
+                "check": "Number"
             },
             {
-                "type": "input_dummy"
-            },
-            {
-                "type": "field_number",
+                "type": "input_value",
                 "name": "radius",
-                "value": 0
+                "check": "Number"
             }
         ],
-        "inputsInline": true,
         "previousStatement": null,
         "nextStatement": null,
         "colour": 290,
@@ -2476,8 +2526,8 @@
         "previousStatement": null,
         "nextStatement": null,
         "colour": 290,
-        "tooltip": "https://love2d.org/wiki/love.graphics.setColor",
-        "helpUrl": "Sets the color used for drawing. "
+        "tooltip": "Sets the color used for drawing.",
+        "helpUrl": "https://love2d.org/wiki/love.graphics.setColor"
     },
     {
         "type": "graphics_setwireframe",
@@ -3335,8 +3385,22 @@
     },
     {
         "type": "math_random",
-        "message0": "random number",
-        "inputsInline": true,
+        "message0": "random number %1 min value %2 max value %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "min",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "max",
+                "check": "Number"
+            }
+        ],
         "output": "Number",
         "colour": 180,
         "tooltip": "Generates a pseudo-random number in a platform independent manner.",
@@ -3402,5 +3466,333 @@
         "colour": 180,
         "tooltip": "Creates a new RandomGenerator object which is completely independent of other RandomGenerator objects and random functions. ",
         "helpUrl": "https://love2d.org/wiki/love.math.newRandomGenerator"
+    },
+    {
+        "type": "mouse_sety",
+        "message0": "mouse set  %1 y %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets the current Y position of the mouse. Non-integer values are floored. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setY"
+    },
+    {
+        "type": "mouse_setx",
+        "message0": "mouse set x %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets the current X position of the mouse. Non-integer values are floored. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setX"
+    },
+    {
+        "type": "mouse_setvisible",
+        "message0": "mouse set visible %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "visible",
+                "check": "Boolean"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets the current visibility of the cursor. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setVisible"
+    },
+    {
+        "type": "mouse_setrelativemode",
+        "message0": "mouse set relative mode %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "enable",
+                "check": "Boolean"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets whether relative mode is enabled for the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setRelativeMode"
+    },
+    {
+        "type": "mouse_setposition",
+        "message0": "mouse set position %1 x %2 y %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets the current position of the mouse. Non-integer values are floored. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setPosition"
+    },
+    {
+        "type": "mouse_setgrabbed",
+        "message0": "mouse set grab %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "grab",
+                "check": "Boolean"
+            }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Grabs the mouse and confines it to the window. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setGrabbed"
+    },
+    {
+        "type": "mouse_setcursor",
+        "message0": "set mouse cursor %1 cursor %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "cursor"
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 210,
+        "tooltip": "Sets the current mouse cursor. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.setCursor"
+    },
+    {
+        "type": "mouse_newcursor",
+        "message0": "create cursor %1 image %2 hotx %3 hoty %4",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "imageData"
+            },
+            {
+                "type": "input_value",
+                "name": "hotx",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "hoty",
+                "check": "Number"
+            }
+        ],
+        "output": null,
+        "colour": 210,
+        "tooltip": "Creates a new hardware Cursor object from an image file or ImageData. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.newCursor"
+    },
+    {
+        "type": "mouse_isvisible",
+        "message0": "is cursor visible",
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Checks if the cursor is visible. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.isVisible"
+    },
+    {
+        "type": "mouse_isgrabbed",
+        "message0": "is mouse grabbed",
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Checks if the mouse is grabbed. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.isGrabbed"
+    },
+    {
+        "type": "mouse_isdown",
+        "message0": "is mouse button down %1 button %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "button",
+                "check": "Number"
+            }
+        ],
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Checks whether a certain mouse button is down. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.isDown"
+    },
+    {
+        "type": "mouse_gety",
+        "message0": "get mouse y position",
+        "inputsInline": true,
+        "output": "Number",
+        "colour": 210,
+        "tooltip": "Returns the current y-position of the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getY"
+    },
+    {
+        "type": "mouse_getx",
+        "message0": "get mouse x position",
+        "inputsInline": true,
+        "output": "Number",
+        "colour": 210,
+        "tooltip": "Returns the current x-position of the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getX"
+    },
+    {
+        "type": "mouse_getsystemcursor",
+        "message0": "get systam cursor %1 ctype %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "ctype"
+            }
+        ],
+        "inputsInline": false,
+        "output": null,
+        "colour": 210,
+        "tooltip": "Gets a Cursor object representing a system-native hardware cursor. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getSystemCursor"
+    },
+    {
+        "type": "mouse_getrelativemode",
+        "message0": "is relative mode enabled",
+        "inputsInline": true,
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Gets whether relative mode is enabled for the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getRelativeMode"
+    },
+    {
+        "type": "mouse_getposition",
+        "message0": "get mouse position",
+        "output": "Array",
+        "colour": 210,
+        "tooltip": "Returns the current position of the mouse. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getPosition"
+    },
+    {
+        "type": "mouse_getcursor",
+        "message0": "get cursor",
+        "inputsInline": true,
+        "output": null,
+        "colour": 210,
+        "tooltip": "Gets the current Cursor. ",
+        "helpUrl": "https://love2d.org/wiki/love.mouse.getCursor"
+    },
+    {
+        "type": "math_atan2",
+        "message0": "math arc tangent %1 y %2 x %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "y",
+                "check": "Number"
+            },
+            {
+                "type": "input_value",
+                "name": "x",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": false,
+        "output": "Number",
+        "colour": 230,
+        "tooltip": "Returns the arc tangent of y/x (in radians)",
+        "helpUrl": "https://pgl.yoyo.org/luai/i/math.atan2"
+    },
+    {
+        "type": "math_sin",
+        "message0": "sin %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "value"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Number",
+        "colour": 230,
+        "tooltip": "sinus",
+        "helpUrl": ""
+    },
+    {
+        "type": "math_cos",
+        "message0": "cos %1 %2",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },
+            {
+                "type": "input_value",
+                "name": "val",
+                "check": "Number"
+            }
+        ],
+        "inputsInline": true,
+        "output": "Number",
+        "colour": 230,
+        "tooltip": "cosinus",
+        "helpUrl": ""
     }
 ]
