@@ -1,16 +1,21 @@
 <template>
-  <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
-    <n-space align="center">
-      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="saveProject">
-        <template #icon>
-          <n-icon>
-            <save-icon />
-          </n-icon>
-        </template>
-      </n-button>
+  <div class="bg-dark-gray flex flex-row flex-nowrap justify-between">
+    <n-space align="center" justify="center">
+      <h5 class="mb-0 ml-6 font-bold">{{ project.name }}</h5>
     </n-space>
-    <n-menu v-model:value="activeProfileMenu" :options="projectMenuOptions" mode="horizontal" />
-    <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
+    <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
+      <n-space align="center">
+        <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="saveProject">
+          <template #icon>
+            <n-icon>
+              <save-icon />
+            </n-icon>
+          </template>
+        </n-button>
+      </n-space>
+      <n-menu v-model:value="activeProfileMenu" :options="projectMenuOptions" mode="horizontal" />
+      <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
+    </div>
   </div>
   <n-modal
     v-model:show="showShareModalRef"
@@ -31,16 +36,20 @@
     title="Open tutorial"
     @negative-click="onNegativeTutorialClick">
     <n-space justify="space-between">
-      <n-h5>Name</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+      <n-h5>Load image to the game</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(1)">Open</n-button>
     </n-space>
     <n-space justify="space-between">
-      <n-h5>Name 3</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+      <n-h5>Check if key is presed</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(2)">Open</n-button>
     </n-space>
     <n-space justify="space-between">
-      <n-h5>Name 2</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="">Open</n-button>
+      <n-h5>Move object</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(3)">Open</n-button>
+    </n-space>
+    <n-space justify="space-between">
+      <n-h5>How to shoot</n-h5>
+      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(4)">Open</n-button>
     </n-space>
   </n-modal>
 </template>
@@ -72,7 +81,7 @@ export default {
     project: Object,
     owner: Boolean,
   },
-  emits: ['pageLeave'],
+  emits: ['pageLeave', 'loadTutorial'],
   setup(props, { emit }) {
     const message = useMessage()
     const dialog = useDialog()
@@ -123,6 +132,11 @@ export default {
     }
 
     const onNegativeTutorialClick = () => {
+      showTutorialModalRef.value = false
+    }
+
+    const loadTutorial = (code) => {
+      emit('loadTutorial', code)
       showTutorialModalRef.value = false
     }
 
@@ -276,6 +290,7 @@ export default {
       onNegativeClick,
       onNegativeTutorialClick,
       saveProject,
+      loadTutorial,
     }
   },
 }

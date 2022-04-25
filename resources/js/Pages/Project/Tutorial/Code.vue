@@ -1,20 +1,26 @@
 <template>
-  <n-card>
-    <div class="absolute right-0 pr-2 mt-2 z-50">
+  <n-card class="min-h-fit">
+    <div class="absolute right-0 pr-2 z-20">
       <div class=" flex flex-row flex-nowrap">
         <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="switchCode">
-          {{ btnCode.value === false ? 'Code' : 'Blocks' }}
+          {{ btnCode === false ? 'Code' : 'Blocks' }}
         </n-button>
       </div>
     </div>
-    <n-code v-show="btnCode" :code="code" language="lua" />
-    <div v-show="!btnCode" ref="blocklyDiv" />
+    <div class="mt-8  overflow-auto">
+      <n-code v-show="btnCode" :code="code" language="lua" />
+    </div>
+    <div v-show="!btnCode" ref="blocklyArea" class="w-full h-fit mt-2">
+      <div v-show="!btnCode" ref="blocklyDiv" />
+    </div>
   </n-card>
 </template>
 
 <script>
 import { onMounted, ref } from 'vue'
 import Blockly from 'blockly'
+import { useResizeObserver } from '@vueuse/core/index'
+import DarkTheme from '@blockly/theme-dark'
 
 export default {
   name: 'Code',
@@ -24,49 +30,57 @@ export default {
   },
   setup(props) {
     let workspace
+    const blocklyArea = ref(null)
     const blocklyDiv = ref(null)
     const options = {
       comments: false,
       toolbox: false,
       trashcan: false,
-      readOnly: true,
-      scrollbars: false,
-      zoom: false,
+      // readOnly: true,
+      scrollbars: true,
+      theme: DarkTheme,
+      zoom: {
+        startScale: 1.0,
+        maxScale: 1.0,
+        minScale: 1.0,
+      },
     }
     const btnCode = ref(true)
 
     const switchCode = () => {
       btnCode.value = !btnCode.value
+      resizeBlockly()
     }
+
+    const resizeBlockly = () => {
+      try {
+        if (props.blocks !== null) Blockly.serialization.workspaces.load(props.blocks, workspace)
+      } catch (e) {
+      }
+      const metrics = workspace.getMetrics()
+      blocklyDiv.value.style.height = metrics.contentHeight + 'px'
+      blocklyDiv.value.style.width = '100%'
+      Blockly.svgResize(workspace)
+    }
+
+    useResizeObserver(blocklyArea, (entries) => {
+      const entry = entries[0]
+      const { width, height } = entry.contentRect
+      blocklyDiv.value.style.left = blocklyArea.value.getBoundingClientRect().left + 'px'
+      blocklyDiv.value.style.top = blocklyArea.value.getBoundingClientRect().top + 'px'
+      blocklyDiv.value.style.width = width + 'px'
+      blocklyDiv.value.style.height = height + 'px'
+      Blockly.svgResize(workspace)
+    })
 
     onMounted(() => {
       workspace = Blockly.inject(blocklyDiv.value, options)
-
-      if (props.blocks !== null) Blockly.serialization.workspaces.load(props.blocks, workspace)
-
-      // // add blocks
-      // const parentBlock = workspace.newBlock('text_print')
-      // parentBlock.initSvg()
-      // parentBlock.render()
-      //
-      // const childBlock = workspace.newBlock('text')
-      //
-      // childBlock.setFieldValue('Hello', 'TEXT')
-      // childBlock.initSvg()
-      // childBlock.render()
-      //
-      // const parentConnection = parentBlock.getInput('TEXT').connection
-      // const childConnection = childBlock.outputConnection
-      // parentConnection.connect(childConnection)
-
-      // Fit the container exactly around the blocks.
-      const metrics = workspace.getMetrics()
-      blocklyDiv.value.style.height = metrics.contentHeight + 'px'
-      blocklyDiv.value.style.width = metrics.contentWidth + 'px'
-      Blockly.svgResize(workspace)
+      resizeBlockly()
     })
+
     return {
       blocklyDiv,
+      blocklyArea,
       btnCode,
       switchCode,
     }

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         User::create(['name' => 'User', 'email' => 'user@gmail.com', 'email_verified_at' => now(), 'password' => Hash::make('7777777777')]);
 
         $this->call(RolePermissionSeeder::class);
+        $this->call(TutorialSeeder::class);
     }
 
     private function attachUsers($project): void
