@@ -1,6 +1,6 @@
 <template>
   <Head :title="title" />
-  <n-card :title="title">
+  <n-card title="Project Files">
     <n-space :size="12" vertical>
       <n-space>
         <n-upload ref="uploadRef" :custom-request="fileUpload" :default-upload="true" :show-file-list="false">
@@ -55,6 +55,12 @@ export default {
         sorter: 'default',
       },
       {
+        title: 'Image path',
+        key: 'path',
+        // sorter: 'default',
+        // sorter: (row1, row2) => row1.age - row2.age,
+      },
+      {
         title: 'Created at',
         key: 'created_at',
         // sorter: 'default',
@@ -97,7 +103,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
