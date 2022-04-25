@@ -15,12 +15,13 @@ class FileResource extends JsonResource
      * @param Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'created_at' => $this->created_at !== null ? $this->created_at->format('d M Y, H:i a') : '',
+            'id' => $this['id'],
+            'name' => $this['name'],
+            'path' => 'resources/' . $this['name'],
+            'created_at' => $this['created_at'] !== null ? $this['created_at']->format('d M Y, H:i a') : '',
         ];
     }
 }

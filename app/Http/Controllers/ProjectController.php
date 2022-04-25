@@ -6,6 +6,7 @@ use App\Actions\CreateLoveFileAction;
 use App\Actions\FirebaseUserAuthAction;
 use App\Actions\RefreshGameAction;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\TutorialResource;
 use App\Models\Project;
 use App\Models\ProjectFile;
 use App\Models\User;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use JsonException;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Messaging\AndroidConfig;
@@ -62,7 +64,7 @@ class ProjectController extends Controller
      * Stores Project to DB
      * @param Request $request
      * @return RedirectResponse|\Inertia\Response
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function store(Request $request): \Inertia\Response|RedirectResponse
     {
@@ -72,7 +74,8 @@ class ProjectController extends Controller
         $project = Project::create([
             'directory_name' => Str::random(32),
             'name' => $request['name'],
-            'blockly_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
+            'blockly_workspace' => json_decode('{"blocks":{"languageVersion":0,"blocks":[{"type":"love_draw","id":"#,^Bz1J+EGM*RQ3.\/3FE","x":88,"y":413},{"type":"love_load","id":"Ht:*\/+=hj?GU#4Cc?glI","x":88,"y":263},{"type":"love_update","id":"P|cN#nYCgZS,VlZg$mIa","x":88,"y":338,"fields":{"dt":{"id":"~yyeQE:X,}]nh;!S@!y8"}}}]},"variables":[{"name":"dt","id":"~yyeQE:X,}]nh;!S@!y8"}]}',
+                false, 512, JSON_THROW_ON_ERROR),
             'monaco_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
         ]);
         if (Auth::check()) {
@@ -145,7 +148,7 @@ class ProjectController extends Controller
             Storage::disk('local')->delete($filePath);
         }
         if (Storage::disk('local')->put($filePath, $fileContents)) {
-            ProjectFile::create([
+            ProjectFile::updateOrCreate([
                 'name' => $fileName,
                 'project_id' => $project['id'],
                 'file_path' => $filePath,
@@ -209,7 +212,10 @@ class ProjectController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            return Inertia::render('Project/Index', ['projects' => ProjectResource::collection($user['projects'])]);
+            return Inertia::render('Project/Index', [
+                'projects' => ProjectResource::collection($user['projects']),
+                'tutorials' => TutorialResource::collection((new Project)->getTutorials()),
+            ]);
         }
         return Redirect::back()->with('error', 'Please sign in.');
     }
@@ -320,7 +326,9 @@ class ProjectController extends Controller
      */
     public function sendMessageToAndroid(Project $project): RedirectResponse
     {
-        $user = $project->users()->wherePivot('owner', 1)->first();
+        //todo change to normal user
+//        $user = $project->users()->wherePivot('owner', 1)->first();
+        $user = Auth::user();
         if ($user['FCM_token'] === null) {
             return Redirect::route('project.show', $project)->with('error', 'Can not find android device. Did you downloaded Love Block application?');
         }

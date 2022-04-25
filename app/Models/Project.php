@@ -63,6 +63,11 @@ class Project extends Model
         return false;
     }
 
+    public function getTutorials()
+    {
+        return $this->whereBetween('id', [1, 6])->get();
+    }
+
     public function getMainLua(): ?string
     {
         try {

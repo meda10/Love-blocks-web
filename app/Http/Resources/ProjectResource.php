@@ -16,10 +16,10 @@ class ProjectResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'owner' => !($this->pivot->owner === 0),
-            'created_at' => $this->created_at->format('d M Y, H:i a'),
+            'id' => $this['id'],
+            'name' => $this['name'],
+            'owner' => !($this['pivot']->owner === 0),
+            'created_at' => $this['created_at']->format('d M Y, H:i a'),
         ];
     }
 }
