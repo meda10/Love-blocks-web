@@ -10,6 +10,11 @@
       <n-data-table ref="tableRef" :columns="columns" :data="projects" :pagination="pagination" />
     </n-space>
   </n-card>
+  <n-card title="Tutorials" class="mt-16">
+    <n-space :size="12" :vertical="true">
+      <n-data-table ref="tableRef" :columns="columnsTutorials" :data="tutorials" :pagination="pagination" />
+    </n-space>
+  </n-card>
   <n-modal
     v-model:show="showModalRef"
     :mask-closable="false"
@@ -50,6 +55,7 @@ export default {
   layout: AppLayout,
   props: {
     projects: Object,
+    tutorials: Object,
   },
   setup() {
     const { message } = useMessaging()
@@ -61,6 +67,26 @@ export default {
     const projectName = ref(null)
     const tableRef = ref(null)
     const pagination = { pageSize: 5 }
+    const columnsTutorials = [
+      {
+        title: 'Name',
+        key: 'name',
+        defaultSortOrder: 'ascend',
+        sorter: 'default',
+      },
+      {
+        title: 'Action',
+        key: 'actions',
+        render(row) {
+          return h(NButton, {
+            type: 'info',
+            size: 'small',
+            onClick: () => copyItem(row.id),
+          }, { default: () => 'Copy to my projects' })
+        },
+      },
+    ]
+
     const columns = [
       {
         title: 'Name',
@@ -160,6 +186,7 @@ export default {
 
     return {
       columns,
+      columnsTutorials,
       pagination,
       tableRef,
       shareEmail,

@@ -6,6 +6,15 @@ var __ATEXIT__ = [];
 var __ATPOSTRUN__ = [];
 var runtimeInitialized = false;
 var runtimeExited = false;
+var memoryPtr = [];
+
+const getMemoryArray = () => {
+  return memoryPtr
+}
+const getMemoryFix = (memory) => {
+  memoryPtr.push(memory)
+  console.log(memoryPtr)
+}
 let allEventHandlers = []
 const JSEvents = {
   inEventHandler: 0,
@@ -454,6 +463,7 @@ var Love = (function () {
         }
       }
 
+      // todo var wasmMemory;
       var wasmMemory;
       var wasmTable = new WebAssembly.Table({ "initial": 5384, "maximum": 5384, "element": "anyfunc" });
       var ABORT = false;
@@ -724,14 +734,19 @@ var Love = (function () {
       var INITIAL_INITIAL_MEMORY = Module["INITIAL_MEMORY"] || 16777216;
       if (Module["wasmMemory"]) {
         wasmMemory = Module["wasmMemory"]
+        // console.log(wasmMemory)
       } else {
         wasmMemory = new WebAssembly.Memory({
           "initial": INITIAL_INITIAL_MEMORY / WASM_PAGE_SIZE,
           "maximum": 2147483648 / WASM_PAGE_SIZE,
         })
+        // console.log(wasmMemory)
       }
       if (wasmMemory) {
         buffer = wasmMemory.buffer
+        // memoryPtr = wasmMemory
+        // console.log(memoryPtr)
+        getMemoryFix(wasmMemory)
       }
       INITIAL_INITIAL_MEMORY = buffer.byteLength;
       updateGlobalBufferAndViews(buffer);
@@ -13741,17 +13756,21 @@ var Love = (function () {
   );
 })();
 if (typeof exports === 'object' && typeof module === 'object') {
-  module.exports = { Love, JSEvents, allEventHandlers };
+  module.exports = { Love, JSEvents, allEventHandlers, memoryPtr, getMemoryArray };
 } else if (typeof define === 'function' && define['amd']) {
   define([], function () {
     return {
       Love,
       JSEvents,
       allEventHandlers,
+      memoryPtr,
+      getMemoryArray,
     };
   });
 } else if (typeof exports === 'object') {
   exports["Love"] = Love;
   exports["JSEvents"] = JSEvents;
   exports["allEventHandlers"] = allEventHandlers;
+  exports["memoryPtr"] = memoryPtr;
+  exports["getMemoryArray"] = getMemoryArray;
 }

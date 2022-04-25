@@ -1,6 +1,6 @@
 <template>
   <Head :title="title" />
-  <top-panel :owner="owner" :project="project" @pageLeave="pageLeaveSaveProject" />
+  <top-panel :owner="owner" :project="project" @pageLeave="pageLeaveSaveProject" @loadTutorial="loadTutorial" />
   <splitpanes class="default-theme flex-grow max-h-screen, h-4/5">
     <pane>
       <div ref="editorPaneResizeRef" class="h-full w-full">
@@ -28,11 +28,12 @@
     <pane>
       <splitpanes horizontal class="h-full">
         <pane size="40">
-          <Interpret :game-package="gamePackage" :project="project" :turn-off-game-mode="turnOffGameModeRef" />
+          <Interpret :refresh-game="refreshGameRef" :game-package="gamePackage" :project="project"
+                     :turn-off-game-mode="turnOffGameModeRef" @saveAndRefresh="saveGameRefreshInterpret" />
         </pane>
         <pane size="60">
           <n-scrollbar>
-            <Tutorial />
+            <Tutorial :tutorial="tutorialRef" />
           </n-scrollbar>
         </pane>
       </splitpanes>
@@ -91,6 +92,9 @@ export default {
     const editMonacoRef = ref(props.project.editor)
     const showModalRef = ref(false)
     const saveWorkspaceRef = ref(false)
+    const refreshRef = ref(false)
+    const refreshGameRef = ref(false)
+    const tutorialRef = ref(1)
     const editorShow = ref(props.project.editor)
     const editorPaneResizeRef = ref(null)
     const btnEditor = ref(null)
@@ -101,11 +105,26 @@ export default {
       saveWorkspaceRef.value = !saveWorkspaceRef.value
     }
 
+    const loadTutorial = (tutorial) => {
+      tutorialRef.value = tutorial
+    }
+
     const saveBlocklyWorkspace = (workspace, code) => {
       Inertia.post(route('project.update', { project: props.project }), {
         blockly_workspace: workspace,
         main: code,
         editor: false,
+        gameRefresh: refreshRef.value,
+      }, {
+        onSuccess: () => {
+          if (refreshRef.value) {
+            refreshGameRef.value = true
+            refreshRef.value = false
+          }
+        },
+        onFinish: () => {
+          refreshGameRef.value = false
+        },
       })
     }
 
@@ -115,8 +134,6 @@ export default {
     }
 
     const passCodeToMonaco = (code) => {
-      console.log('Blockly code')
-      console.log(code)
       mainLuaCode.value = code
       switchEditors()
     }
@@ -129,7 +146,23 @@ export default {
         main: code,
         config: conf,
         editor: true,
+        gameRefresh: refreshRef.value,
+      }, {
+        onSuccess: () => {
+          if (refreshRef.value) {
+            refreshGameRef.value = true
+            refreshRef.value = false
+          }
+        },
+        onFinish: () => {
+          refreshGameRef.value = false
+        },
       })
+    }
+
+    const saveGameRefreshInterpret = () => {
+      refreshRef.value = true
+      saveWorkspaceRef.value = !saveWorkspaceRef.value
     }
 
     const saveConfFromMonaco = (conf) => {
@@ -175,6 +208,8 @@ export default {
       saveWorkspaceRef,
       mainLuaCode,
       turnOffGameModeRef,
+      refreshGameRef,
+      tutorialRef,
       onPositiveClick,
       passCodeToMonaco,
       saveCodeFromMonaco,
@@ -182,6 +217,8 @@ export default {
       saveBlocklyWorkspace,
       pageLeaveSaveProject,
       changeEditor,
+      saveGameRefreshInterpret,
+      loadTutorial,
     }
   },
 }

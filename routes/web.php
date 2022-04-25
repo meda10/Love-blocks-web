@@ -43,22 +43,23 @@ Route::group(['middleware' => 'auth'], static function () {
 
     Route::get('/user/projects', [ProjectController::class, 'index'])->name('project.user');
     Route::get('/project/{project}/download', [ProjectController::class, 'sendMessageToAndroid'])->name('project.download');
+
+    Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
+    Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
+    Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
+    Route::post('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
+    Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
+    Route::get('/project/{project}/copy', [ProjectController::class, 'copy'])->name('project.copy');
+    Route::post('/project/{project}/config', [ProjectController::class, 'updateConfig'])->name('project.config');
+
+    Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadFile'])->name('file.upload');
+    Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
+    Route::delete('/file/{projectFile}', [ProjectFileController::class, 'destroy'])->name('file.destroy');
+
 });
 
 Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
-
 Route::get('/project/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
-Route::post('/project/create', [ProjectController::class, 'store'])->name('project.create');
-Route::get('/project/{project}', [ProjectController::class, 'show'])->name('project.show');
-Route::delete('/project/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
-Route::post('/project/{project}/update', [ProjectController::class, 'update'])->name('project.update');
-Route::post('/project/{project}/share', [ProjectController::class, 'projectShare'])->name('project.share');
-Route::get('/project/{project}/copy', [ProjectController::class, 'copy'])->name('project.copy');
-Route::post('/project/{project}/config', [ProjectController::class, 'updateConfig'])->name('project.config');
-
-Route::post('/project/{project}/upload', [ProjectFileController::class, 'uploadFile'])->name('file.upload');
-Route::get('/project/{project}/files', [ProjectFileController::class, 'index'])->name('project.files');
-Route::delete('/file/{projectFile}', [ProjectFileController::class, 'destroy'])->name('file.destroy');
 
 Route::get('/download/love/blocks', static function () {
     return Storage::disk('public')->download('download' . DIRECTORY_SEPARATOR . 'loveBlocks' . DIRECTORY_SEPARATOR . 'loveBlocks.apk');

@@ -5,34 +5,36 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no, minimum-scale=1, maximum-scale=1"
           name="viewport" />
   </Head>
-  <div class="absolute right-0 pr-2 mt-2 z-50">
-    <div class=" flex flex-row flex-nowrap">
-      <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
-                @click="refreshGame">
-        <template #icon>
-          <n-icon>
-            <refresh-icon />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-button v-show="show" :type="'error'" class="flex-shrink" size="small"
-                style="margin-right: 0.5rem"
-                @click="stopGame">
-        <template #icon>
-          <n-icon>
-            <stop-icon />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-button v-show="show" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
-                @click="changeGameMode">
-        <template #icon>
-          <n-icon>
-            <play-icon v-show="gameMode" />
-            <pause-icon v-show="!gameMode" />
-          </n-icon>
-        </template>
-      </n-button>
+  <div class="relative">
+    <div class="absolute right-0 pr-2 mt-2 z-20">
+      <div class=" flex flex-row flex-nowrap">
+        <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                  @click="saveAndRefreshGame">
+          <template #icon>
+            <n-icon>
+              <refresh-icon />
+            </n-icon>
+          </template>
+        </n-button>
+        <n-button v-show="show" :type="'error'" class="flex-shrink" size="small"
+                  style="margin-right: 0.5rem"
+                  @click="stopGame">
+          <template #icon>
+            <n-icon>
+              <stop-icon />
+            </n-icon>
+          </template>
+        </n-button>
+        <n-button v-show="show" :type="gameMode ? 'primary' : 'error'" class="flex-shrink" size="small"
+                  @click="changeGameMode">
+          <template #icon>
+            <n-icon>
+              <play-icon v-show="gameMode" />
+              <pause-icon v-show="!gameMode" />
+            </n-icon>
+          </template>
+        </n-button>
+      </div>
     </div>
   </div>
   <n-space :vertical="true" :wrap="false" align="center" class="h-full" justify="center">
@@ -49,6 +51,7 @@ import { Head, usePage } from '@inertiajs/inertia-vue3'
 import { onMounted, ref, computed, watch, onBeforeUnmount } from 'vue'
 import ProjectLayout from '@/Layouts/ProjectLayout'
 import useMessaging from '@/messages'
+import loveJS from '@/love'
 import {
   RefreshOutline as RefreshIcon,
   PlayOutline as PlayIcon,
@@ -72,8 +75,10 @@ export default {
     project: Object,
     gamePackage: Object,
     turnOffGameMode: Boolean,
+    refreshGame: Boolean,
   },
-  setup(props) {
+  emits: ['saveAndRefresh'],
+  setup(props, { emit }) {
     const { message } = useMessaging()
     const showSpinner = ref(false)
     const show = ref(false)
@@ -85,6 +90,7 @@ export default {
     const PACKAGE_PATH = '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/'
     const wasmBinaryFile = window.top.origin + '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/love.wasm'
     let events, removeAllEventListeners, registerOrRemoveHandler
+    // const loveJS = require('@/love')
 
     watch(() => props.turnOffGameMode, () => {
       show.value = false
@@ -92,6 +98,45 @@ export default {
       console.log('Turning off game mode')
       gameMode.value = true
       removeAllEventListeners()
+    })
+
+    watch(() => props.refreshGame, () => {
+      if (props.refreshGame === true) {
+        console.log('Game refresh')
+        Inertia.reload({
+          only: ['gamePackage'],
+          onFinish: () => {
+            console.log('reload finish')
+            gameMode.value = false
+            if (gamePackage.value !== undefined) runGame()
+          },
+        })
+      }
+    })
+
+    onMounted(() => {
+      console.log('On Mounted')
+      if (gamePackage.value === null || typeof gamePackage.value === 'undefined') {
+        refText.value = 'Game is not loaded. Press refresh button.'
+        show.value = false
+        showSpinner.value = false
+      } else if (user.value.id === null) {
+        show.value = false
+        showSpinner.value = false
+        refText.value = 'Interpret only works if you sign in'
+      }
+    })
+
+    onBeforeUnmount(() => {
+      show.value = false
+      refText.value = 'Game is not loaded. Press refresh button.'
+      console.log('Turning off game mode')
+      gameMode.value = true
+      try {
+        removeAllEventListeners()
+        cleanup()
+      } catch (e) {
+      }
     })
 
     const changeGameMode = () => {
@@ -108,20 +153,8 @@ export default {
       }
     }
 
-    onMounted(() => {
-      if (gamePackage.value === null || typeof gamePackage.value === 'undefined') {
-        refText.value = 'Game is not loaded. Press refresh button.'
-        show.value = false
-        showSpinner.value = false
-      } else if (user.value.id === null) {
-        show.value = false
-        showSpinner.value = false
-        refText.value = 'Interpret only works if you sign in'
-      }
-    })
-
     const runGame = () => {
-      const loveJS = require('@/love')
+      console.log('Run game')
       removeAllEventListeners = loveJS.JSEvents.removeAllEventListeners
       registerOrRemoveHandler = loveJS.JSEvents.registerOrRemoveHandler
       events = loveJS.allEventHandlers
@@ -169,9 +202,11 @@ export default {
       Module.setStatus('Downloading...')
       window.onerror = () => {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
-        Module.setStatus('Exception thrown, see JavaScript console')
-        Module.setStatus = text => {
-          if (text) Module.printErr('[post-exception status] ' + text)
+        if (gamePackage.value !== null || typeof gamePackage.value !== 'undefined') {
+          Module.setStatus('Exception thrown, see JavaScript console')
+          Module.setStatus = text => {
+            if (text) Module.printErr('[post-exception status] ' + text)
+          }
         }
       }
 
@@ -265,7 +300,7 @@ export default {
               },
               finish: function (byteArray) {
                 const that = this
-                Module.FS_createDataFile(this.name, null, byteArray, true, true, true) // canOwn this data in the filesystem, it is a slide into the heap that will never change
+                Module.FS_createDataFile(this.name, null, byteArray, true, true, true)
                 Module.removeRunDependency('fp ' + that.name)
                 this.requests[this.name] = null
               },
@@ -439,16 +474,6 @@ export default {
       loveJS.Love(Module, wasmBinaryFile)
     }
 
-    const refreshGame = () => {
-      Inertia.reload({
-        only: ['gamePackage'],
-        onFinish: () => {
-          gameMode.value = false
-          runGame()
-        },
-      })
-    }
-
     const stopGame = () => {
       show.value = false
       refText.value = 'Game is not loaded. Press refresh button.'
@@ -456,18 +481,27 @@ export default {
       console.log('Turning off game mode')
       gameMode.value = true
       removeAllEventListeners()
+      cleanup()
     }
 
-    onBeforeUnmount(() => {
-      show.value = false
-      refText.value = 'Game is not loaded. Press refresh button.'
-      console.log('Turning off game mode')
-      gameMode.value = true
-      try {
-        removeAllEventListeners()
-      } catch (e) {
-      }
-    })
+    const saveAndRefreshGame = () => {
+      emit('saveAndRefresh')
+    }
+
+    const cleanup = () => {
+      console.log('cleanup')
+      const memory = loveJS.getMemoryArray()
+      // console.log(memory[0])
+      // console.log(memory[0].buffer)
+      // delete memory[0].buffer
+      // memory[0].buffer = null
+      delete memory[0]
+      memory[0] = null
+      // console.log(memory[0])
+      // console.log(memory[0].buffer)
+      // delete require.cache[require.resolve('@/love')]
+      // location.reload()
+    }
 
     return {
       show,
@@ -475,7 +509,7 @@ export default {
       refCanvas,
       refText,
       gameMode,
-      refreshGame,
+      saveAndRefreshGame,
       changeGameMode,
       stopGame,
     }
