@@ -25,7 +25,7 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->userName(),
+            'name' => "",
             'directory_name' => Str::random(32),
             'blockly_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),
             'monaco_workspace' => json_decode('{}', false, 512, JSON_THROW_ON_ERROR),

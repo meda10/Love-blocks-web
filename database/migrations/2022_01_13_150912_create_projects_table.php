@@ -17,8 +17,8 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('directory_name');
-            $table->text('blockly_workspace')->nullable();
-            $table->text('monaco_workspace')->nullable();
+            $table->longText('blockly_workspace')->nullable();
+            $table->longText('monaco_workspace')->nullable();
             $table->boolean('editor')->default('0');
             //            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();

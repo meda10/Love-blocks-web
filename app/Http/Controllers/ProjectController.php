@@ -236,7 +236,9 @@ class ProjectController extends Controller
         $projectCopy = Project::create([
             'directory_name' => Str::random(32),
             'blockly_workspace' => $project['blockly_workspace'],
+            'monaco_workspace' => $project['monaco_workspace'],
             'name' => $project['name'] . ' copy',
+            'editor' => $project['editor'],
         ]);
 
         $projectCopy->users()->attach(Auth::user(), ['owner' => 1]);
