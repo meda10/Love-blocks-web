@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], static function () {
 });
 
 Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
-Route::get('/project/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
+Route::get('/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
 
 Route::get('/download/love/blocks', static function () {
     return Storage::disk('public')->download('download' . DIRECTORY_SEPARATOR . 'loveBlocks' . DIRECTORY_SEPARATOR . 'loveBlocks.apk');

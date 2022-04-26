@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark-gray flex flex-row flex-nowrap justify-between">
     <n-space align="center" justify="center">
-      <h5 class="mb-0 ml-6 font-bold">{{ project.name }}</h5>
+      <h5 class="mb-0 ml-6 font-bold">{{ user != null ? project.name : 'Host project' }}</h5>
     </n-space>
     <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
       <n-space align="center">
@@ -284,6 +284,7 @@ export default {
       showShareModalRef,
       showTutorialModalRef,
       shareEmail,
+      user,
       share,
       downloadToAndroid,
       onPositiveClick,
