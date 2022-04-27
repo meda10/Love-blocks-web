@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], static function () {
 });
 
 Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
+Route::get('/tutorials', static fn() => Inertia::render('Tutorials/Show'))->name('tutorials');
 Route::get('/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
 
 Route::get('/download/love/blocks', static function () {

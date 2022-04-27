@@ -1,6 +1,6 @@
 <template>
   <!--  <n-config-provider :theme-overrides="{ common: { fontWeightStrong: '600' } } ">-->
-  <n-config-provider :theme="darkTheme">
+  <n-config-provider :theme="darkTheme" :hljs="hljs">
     <n-dialog-provider>
       <n-message-provider>
         <simple-top-panel />
@@ -19,6 +19,8 @@
 import { defineComponent } from 'vue'
 import { darkTheme } from 'naive-ui'
 import SimpleTopPanel from '@/Shared/SimpleTopPanel'
+import hljs from 'highlight.js/lib/core'
+import lua from 'highlight.js/lib/languages/lua'
 
 export default defineComponent({
   name: 'AppLayout',
@@ -29,8 +31,10 @@ export default defineComponent({
     title: String,
   },
   setup() {
+    hljs.registerLanguage('lua', lua)
     return {
       darkTheme,
+      hljs,
     }
   },
 })

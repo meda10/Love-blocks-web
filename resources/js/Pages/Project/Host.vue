@@ -62,7 +62,7 @@ import useMessaging from '@/messages'
 import { onUnmounted, ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core/index'
 import Blockly from '@/Pages/Project/Blockly/Blockly'
-import Tutorial from '@/Pages/Project/Tutorial/Tutorial'
+import Tutorial from '@/Pages/Tutorials/Tutorial/Tutorial'
 
 export default {
   name: 'Show',

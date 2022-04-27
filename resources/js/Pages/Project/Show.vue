@@ -63,7 +63,7 @@ import TopPanel from '@/Shared/TopPanel'
 import Interpret from '@/Pages/Project/Interpret/Interpret'
 import { useResizeObserver } from '@vueuse/core/index'
 import { Inertia } from '@inertiajs/inertia'
-import Tutorial from '@/Pages/Project/Tutorial/Tutorial'
+import Tutorial from '@/Pages/Tutorials/Tutorial/Tutorial'
 
 export default {
   name: 'Show',

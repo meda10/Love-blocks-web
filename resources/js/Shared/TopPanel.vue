@@ -28,30 +28,30 @@
     @negative-click="onNegativeClick">
     <n-input v-model:value="shareEmail" placeholder="E-mail" />
   </n-modal>
-  <n-modal
-    v-model:show="showTutorialModalRef"
-    :mask-closable="false"
-    negative-text="Cancel"
-    preset="dialog"
-    title="Open tutorial"
-    @negative-click="onNegativeTutorialClick">
-    <n-space justify="space-between">
-      <n-h5>Load image to the game</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(1)">Open</n-button>
-    </n-space>
-    <n-space justify="space-between">
-      <n-h5>Check if key is presed</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(2)">Open</n-button>
-    </n-space>
-    <n-space justify="space-between">
-      <n-h5>Move object</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(3)">Open</n-button>
-    </n-space>
-    <n-space justify="space-between">
-      <n-h5>How to shoot</n-h5>
-      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(4)">Open</n-button>
-    </n-space>
-  </n-modal>
+  <!--  <n-modal-->
+  <!--    v-model:show="showTutorialModalRef"-->
+  <!--    :mask-closable="false"-->
+  <!--    negative-text="Cancel"-->
+  <!--    preset="dialog"-->
+  <!--    title="Open tutorial"-->
+  <!--    @negative-click="onNegativeTutorialClick">-->
+  <!--    <n-space justify="space-between">-->
+  <!--      <n-h5>Load image to the game</n-h5>-->
+  <!--      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(1)">Open</n-button>-->
+  <!--    </n-space>-->
+  <!--    <n-space justify="space-between">-->
+  <!--      <n-h5>Check if key is presed</n-h5>-->
+  <!--      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(2)">Open</n-button>-->
+  <!--    </n-space>-->
+  <!--    <n-space justify="space-between">-->
+  <!--      <n-h5>Move object</n-h5>-->
+  <!--      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(3)">Open</n-button>-->
+  <!--    </n-space>-->
+  <!--    <n-space justify="space-between">-->
+  <!--      <n-h5>How to shoot</n-h5>-->
+  <!--      <n-button :type="'primary'" class="flex-shrink" size="small" @click="loadTutorial(4)">Open</n-button>-->
+  <!--    </n-space>-->
+  <!--  </n-modal>-->
 </template>
 
 <script>
@@ -128,7 +128,8 @@ export default {
     ]
 
     const openTutorials = () => {
-      showTutorialModalRef.value = true
+      Inertia.get(route('tutorials'))
+      // showTutorialModalRef.value = true
     }
 
     const onNegativeTutorialClick = () => {

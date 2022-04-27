@@ -17,7 +17,6 @@ import useMessaging from '@/messages'
 import AppLayout from '@/Layouts/AppLayout'
 
 export default {
-  metaInfo: { title: 'Users' },
   name: 'Index',
   layout: AppLayout,
   props: {

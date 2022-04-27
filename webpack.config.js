@@ -1,4 +1,5 @@
 const path = require('path')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = {
   resolve: {
@@ -25,5 +26,28 @@ module.exports = {
   },
   output: {
     chunkFilename: 'js/[name].js?id=[chunkhash]',
+  },
+  plugins: [
+    new LodashModuleReplacementPlugin(),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        include: [path.resolve(__dirname, 'src', 'client')],
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              [
+                'import',
+                { libraryName: 'antd', style: true },
+                'antd',
+              ],
+            ],
+          },
+        }],
+      },
+    ],
   },
 }

@@ -1,6 +1,7 @@
 const mix = require('laravel-mix')
 const Components = require('unplugin-vue-components/webpack')
 const { NaiveUiResolver } = require('unplugin-vue-components/resolvers')
+require('laravel-mix-bundle-analyzer')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,7 +12,6 @@ const { NaiveUiResolver } = require('unplugin-vue-components/resolvers')
  | file for the application as well as bundling up all the JS files.
  |
  */
-
 mix.js('resources/js/app.js', 'public/js')
   .vue({ version: 3 }) //, extractStyles: 'css/vue-styles.css'
   .webpackConfig((webpack) => {
@@ -57,6 +57,10 @@ mix.options({
 mix.babelConfig({
   plugins: ['@babel/plugin-syntax-dynamic-import'],
 })
+
+// if (!mix.inProduction()) {
+//   mix.bundleAnalyzer({ analyzerPort: 8000 })
+// }
 
 if (mix.inProduction()) {
   mix.version()

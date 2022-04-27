@@ -4,6 +4,9 @@
       <n-button :block="true" size="small" type="primary" @click="createProject">
         Create Project
       </n-button>
+      <n-button :block="true" size="small" type="primary" @click="openTutorials">
+        Tutorials
+      </n-button>
     </n-space>
     <n-menu v-model:value="activeKey" :options="menuOptions" mode="horizontal" />
   </div>
@@ -128,6 +131,10 @@ export default {
       user.value === null ? createProjectNotSignedIn() : createProjectSignedIn()
     }
 
+    const openTutorials = () => {
+      Inertia.get(route('tutorials'))
+    }
+
     return {
       activeKey,
       menuOptions,
@@ -136,6 +143,7 @@ export default {
       onNegativeClick,
       onPositiveClick,
       createProject,
+      openTutorials,
     }
   },
 }
