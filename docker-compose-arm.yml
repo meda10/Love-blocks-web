@@ -1,0 +1,136 @@
+version: '3'
+
+services:
+  language-server:
+    build:
+      context: .
+      dockerfile: ./docker/language-server/Dockerfile
+    restart: always
+    container_name: language-server
+    ports:
+      - "8888:8888"
+    networks:
+      - laravel
+
+  nginx:
+    image: jonasal/nginx-certbot:latest
+    restart: always
+    container_name: nginx
+    environment:
+      CERTBOT_EMAIL: info@loveblocks.tk
+      DHPARAM_SIZE: 2048
+      USE_LOCAL_CA: ${USE_LOCAL_CA}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - ./:/var/www/html:delegated
+      - nginx_secrets:/etc/letsencrypt
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/nginxconfig.io/:/etc/nginx/nginxconfig.io/
+      - ./docker/nginx/user_conf.d/:/etc/nginx/user_conf.d/
+    #      - ./docker/nginx/user_conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql/mysql-server:8.0
+    container_name: mysql
+    restart: always
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+      retries: 3
+      timeout: 5s
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: php
+    restart: always
+    volumes:
+      - ./:/var/www/html:delegated
+      #      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    #      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    ports:
+      - "9000:9000"
+    #      - "3000:3000" # BROWSERSYNC_HOST_PORT
+    #      - "3001:3001" # BROWSERSYNC_HOST_PORT
+    depends_on:
+      - mysql
+      - language-server
+    networks:
+      - laravel
+  #    environment:
+  #      PHP_IDE_CONFIG: "serverName=Docker_xdebug"
+  #      PHP_XDEBUG_ENABLED: 1
+  #      XDEBUG_CONFIG: "remote_host=10.254.254.254"
+
+  composer:
+    build:
+      context: .
+      dockerfile: ./docker/php/composer/Dockerfile
+    container_name: composer
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - php
+    user: laravel
+    networks:
+      - laravel
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+
+  npm:
+    image: node:16
+    container_name: npm
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: [ 'npm' ]
+
+  artisan:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: artisan
+    volumes:
+      - ./:/var/www/html:delegated
+    depends_on:
+      - mysql
+    working_dir: /var/www/html
+    user: laravel
+    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+  nginx_secrets:
+    driver: local
