@@ -77,7 +77,7 @@ export default {
     turnOffGameMode: Boolean,
     refreshGame: Boolean,
   },
-  emits: ['saveAndRefresh'],
+  emits: ['saveAndRefresh', 'heapSize'],
   setup(props, { emit }) {
     const { message } = useMessaging()
     const showSpinner = ref(false)
@@ -89,8 +89,13 @@ export default {
     const gamePackage = computed(() => props.gamePackage)
     const PACKAGE_PATH = '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/'
     const wasmBinaryFile = window.top.origin + '/storage/download/' + props.project.directory_name + '/games/' + user.value.id + '/love.wasm'
-    let events, removeAllEventListeners, registerOrRemoveHandler
-    // const loveJS = require('@/love')
+    let events, removeAllEventListeners, registerOrRemoveHandler, heapSize, heapSizeEstimated
+
+    try {
+      heapSize = ref(performance.memory.usedJSHeapSize)
+    } catch (e) {
+      heapSizeEstimated = ref(73400320)
+    }
 
     watch(() => props.turnOffGameMode, () => {
       show.value = false
@@ -100,13 +105,37 @@ export default {
       removeAllEventListeners()
     })
 
+    const updateUsage = setInterval(function () {
+      try {
+        heapSize.value = ref(performance.memory.usedJSHeapSize)
+        emitHeapSize()
+      } catch (e) {
+        clearInterval(updateUsage)
+      }
+    }, 5000)
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return 0
+      const k = 1024
+      return parseFloat((bytes / Math.pow(k, 2)).toFixed(2))
+    }
+
+    const emitHeapSize = () => {
+      console.log('EMIT')
+      try {
+        emit('heapSize', formatBytes(heapSize.value))
+      } catch (e) {
+        heapSizeEstimated.value += 16777216
+        emit('heapSize', formatBytes(heapSizeEstimated.value))
+      }
+    }
+    emitHeapSize()
+
     watch(() => props.refreshGame, () => {
       if (props.refreshGame === true) {
-        console.log('Game refresh')
         Inertia.reload({
           only: ['gamePackage'],
           onFinish: () => {
-            console.log('reload finish')
             gameMode.value = false
             if (gamePackage.value !== undefined) runGame()
           },
@@ -115,7 +144,6 @@ export default {
     })
 
     onMounted(() => {
-      console.log('On Mounted')
       if (gamePackage.value === null || typeof gamePackage.value === 'undefined') {
         refText.value = 'Game is not loaded. Press refresh button.'
         show.value = false
@@ -472,6 +500,7 @@ export default {
 
       loadGame()
       loveJS.Love(Module, wasmBinaryFile)
+      emitHeapSize()
     }
 
     const stopGame = () => {
@@ -489,18 +518,11 @@ export default {
     }
 
     const cleanup = () => {
-      console.log('cleanup')
       const memory = loveJS.getMemoryArray()
-      // console.log(memory[0])
-      // console.log(memory[0].buffer)
-      // delete memory[0].buffer
-      // memory[0].buffer = null
       delete memory[0]
       memory[0] = null
-      // console.log(memory[0])
-      // console.log(memory[0].buffer)
-      // delete require.cache[require.resolve('@/love')]
-      // location.reload()
+
+      clearInterval(updateUsage)
     }
 
     return {
@@ -516,7 +538,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

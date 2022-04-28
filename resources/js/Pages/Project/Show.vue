@@ -1,6 +1,7 @@
 <template>
   <Head :title="title" />
-  <top-panel :owner="owner" :project="project" @pageLeave="pageLeaveSaveProject" @loadTutorial="loadTutorial" />
+  <top-panel :owner="owner" :heap-size="heapSizeRef" :project="project" @pageLeave="pageLeaveSaveProject"
+             @loadTutorial="loadTutorial" />
   <splitpanes class="default-theme flex-grow max-h-screen, h-4/5">
     <pane>
       <div ref="editorPaneResizeRef" class="h-full w-full">
@@ -29,7 +30,8 @@
       <splitpanes horizontal class="h-full">
         <pane size="40">
           <Interpret :refresh-game="refreshGameRef" :game-package="gamePackage" :project="project"
-                     :turn-off-game-mode="turnOffGameModeRef" @saveAndRefresh="saveGameRefreshInterpret" />
+                     :turn-off-game-mode="turnOffGameModeRef" @saveAndRefresh="saveGameRefreshInterpret"
+                     @heapSize="displayHeapSize" />
         </pane>
         <pane size="60">
           <n-scrollbar>
@@ -95,6 +97,7 @@ export default {
     const refreshRef = ref(false)
     const refreshGameRef = ref(false)
     const tutorialRef = ref(1)
+    const heapSizeRef = ref(30)
     const editorShow = ref(props.project.editor)
     const editorPaneResizeRef = ref(null)
     const btnEditor = ref(null)
@@ -107,6 +110,10 @@ export default {
 
     const loadTutorial = (tutorial) => {
       tutorialRef.value = tutorial
+    }
+
+    const displayHeapSize = (heapSize) => {
+      heapSizeRef.value = heapSize
     }
 
     const saveBlocklyWorkspace = (workspace, code) => {
@@ -210,6 +217,7 @@ export default {
       turnOffGameModeRef,
       refreshGameRef,
       tutorialRef,
+      heapSizeRef,
       onPositiveClick,
       passCodeToMonaco,
       saveCodeFromMonaco,
@@ -219,6 +227,7 @@ export default {
       changeEditor,
       saveGameRefreshInterpret,
       loadTutorial,
+      displayHeapSize,
     }
   },
 }

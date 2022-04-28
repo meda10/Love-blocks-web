@@ -6,6 +6,9 @@
             type="segment"
             @update:value="handleUpdateValue">
       <n-tab-pane name="Login">
+        <div class="w-full mb-2">
+          <n-text v-if="errors[0] !== null" type="error" class="label-text-alt text-justify">{{ errors[0] }}</n-text>
+        </div>
         <n-form :label-width="80" :model="form" size="medium">
           <n-form-item :feedback="form.errors.email"
                        :validation-status="form.errors.email != null ? 'error' : 'success'"
@@ -64,10 +67,10 @@
 </template>
 
 <script>
-import { Link, Head, useForm } from '@inertiajs/inertia-vue3'
+import { Link, Head, useForm, usePage } from '@inertiajs/inertia-vue3'
 import LoginLayout from '@/Layouts/LoginLayout'
 import SocialstreamProviders from '@/Socialstream/Providers'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export default {
   components: {
@@ -82,6 +85,7 @@ export default {
   },
   setup() {
     const title = ref('Login')
+    const errors = computed(() => usePage().props.value.errors)
     const form = useForm({
       email: '',
       password: '',
@@ -117,6 +121,7 @@ export default {
       title,
       form,
       registrationForm,
+      errors,
       handleUpdateValue,
     }
   },

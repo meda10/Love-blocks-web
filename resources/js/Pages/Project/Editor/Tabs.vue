@@ -33,10 +33,10 @@ export default {
 
 <style>
 .tab-item {
-  @apply inline-block px-4 py-3 text-white hover:text-light-green;
+  @apply inline-block px-4 py-3 text-white hover:text-success;
 }
 
 .tab-item-active {
-  @apply inline-block bg-dark-gray px-4 py-3 border-t-2 border-light-green text-light-green font-semibold;
+  @apply inline-block bg-dark-gray px-4 py-3 border-t-2 border-success text-success font-semibold;
 }
 </style>

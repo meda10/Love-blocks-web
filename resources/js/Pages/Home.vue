@@ -5,13 +5,14 @@
     <n-h2>How it works</n-h2>
     <n-h2>Some links</n-h2>
     <a href="">love2d</a>
+    <a target="_blank" href="https://icons8.com/icon/SkbzwdwhI2sy/love-circled">Love Circled</a> icon by <a
+    target="_blank" href="https://icons8.com">Icons8</a>
   </n-card>
 </template>
 
 <script>
 import { Head } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout'
-import { mdiMoonWaningCrescent, mdiWeatherSunny } from '@mdi/js'
 import { ref } from 'vue'
 import useMessaging from '@/messages'
 
@@ -44,13 +45,8 @@ export default {
 
     return {
       theme,
-      mdiWeatherSunny,
-      mdiMoonWaningCrescent,
       changeTheme,
     }
   },
 }
 </script>
-
-<style>
-</style>
