@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], static function () {
 Route::get('/home', static fn() => Inertia::render('Home'))->name('home');
 Route::get('/tutorials', static fn() => Inertia::render('Tutorials/Show'))->name('tutorials');
 Route::get('/host-project', static fn() => Inertia::render('Project/Host'))->name('project.host');
+Route::get('/android/privacy-policy', static fn() => Inertia::render('AndroidPrivacyPolicy'))->name('android.privacy');
 
 Route::get('/download/love/blocks', static function () {
     return Storage::disk('public')->download('download' . DIRECTORY_SEPARATOR . 'loveBlocks' . DIRECTORY_SEPARATOR . 'loveBlocks.apk');

@@ -86,7 +86,6 @@ export default {
   emits: ['goBack', 'loadingFinish'],
   setup(props, { emit }) {
     onMounted(() => {
-      console.log('mounted')
       emit('loadingFinish')
     })
 

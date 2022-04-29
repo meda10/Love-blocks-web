@@ -121,7 +121,6 @@ export default {
     }
 
     const emitHeapSize = () => {
-      console.log('EMIT')
       try {
         emit('heapSize', formatBytes(heapSize.value))
       } catch (e) {
