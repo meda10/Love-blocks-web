@@ -410,11 +410,56 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'graphics_setnewfont' },
-        { kind: 'BLOCK', type: 'graphics_stencil' },
-        { kind: 'BLOCK', type: 'graphics_rectangle' },
-        { kind: 'BLOCK', type: 'graphics_printf' },
-        { kind: 'BLOCK', type: 'graphics_print' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_setnewfont',
+          inputs: {
+            size: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_stencil',
+          inputs: {
+            keepvalues: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_rectangle',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            width: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            height: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            rx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ry: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            segments: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_printf',
+          inputs: {
+            text: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_print',
+          inputs: {
+            text: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            r: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            sx: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            sy: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            ox: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            oy: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            kx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ky: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_present' },
         { kind: 'BLOCK', type: 'graphics_polygon' },
         { kind: 'BLOCK', type: 'graphics_points' },
@@ -425,18 +470,74 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'graphics_draw' },
         { kind: 'BLOCK', type: 'graphics_discard' },
         { kind: 'BLOCK', type: 'graphics_clear' },
-        { kind: 'BLOCK', type: 'graphics_circle' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_circle',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            radius: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_arc' },
-        { kind: 'BLOCK', type: 'graphics_translate' },
-        { kind: 'BLOCK', type: 'graphics_transformpoint' },
-        { kind: 'BLOCK', type: 'graphics_shear' },
-        { kind: 'BLOCK', type: 'graphics_scale' },
-        { kind: 'BLOCK', type: 'graphics_rotate' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_translate',
+          inputs: {
+            dx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            dy: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_transformpoint',
+          inputs: {
+            globalX: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            globalY: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_shear',
+          inputs: {
+            kx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ky: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_scale',
+          inputs: {
+            sx: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            sy: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_rotate',
+          inputs: {
+            angle: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_push' },
         { kind: 'BLOCK', type: 'graphics_pop' },
         { kind: 'BLOCK', type: 'graphics_origin' },
-        { kind: 'BLOCK', type: 'graphics_inversetransformpoint' },
-        { kind: 'BLOCK', type: 'graphics_validateshader' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_inversetransformpoint',
+          inputs: {
+            screenX: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            screenY: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_validateshader',
+          inputs: {
+            code: { shadow: { type: 'text', fields: { TEXT: 'code' } } },
+            gles: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_newimage' },
         { kind: 'BLOCK', type: 'graphics_getwidth' },
         { kind: 'BLOCK', type: 'graphics_getpixelwidth' },
@@ -453,12 +554,39 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'graphics_iswireframe' },
         { kind: 'BLOCK', type: 'graphics_setbackgroundcolor' },
         { kind: 'BLOCK', type: 'graphics_setcolor' },
-        { kind: 'BLOCK', type: 'graphics_setwireframe' },
-        { kind: 'BLOCK', type: 'graphics_setscissor' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_setwireframe',
+          inputs: {
+            enable: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_setscissor',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            width: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            height: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_getpointsize' },
-        { kind: 'BLOCK', type: 'graphics_setpointsize' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_setpointsize',
+          inputs: {
+            size: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_getlinewidth' },
-        { kind: 'BLOCK', type: 'graphics_setlinewidth' },
+        {
+          kind: 'BLOCK',
+          type: 'graphics_setlinewidth',
+          inputs: {
+            width: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'graphics_setlinestyle' },
         { kind: 'BLOCK', type: 'graphics_setlinejoin' },
       ],
@@ -469,8 +597,20 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'keyboard_settextinput' },
-        { kind: 'BLOCK', type: 'keyboard_setkeyrepeat' },
+        {
+          kind: 'BLOCK',
+          type: 'keyboard_settextinput',
+          inputs: {
+            enable: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'keyboard_setkeyrepeat',
+          inputs: {
+            enable: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'keyboard_isscancodedown' },
         { kind: 'BLOCK', type: 'keyboard_isdown' },
         { kind: 'BLOCK', type: 'keyboard_hastextinput' },
@@ -487,8 +627,20 @@ const toolboxOptions = {
       kind: 'CATEGORY',
       contents: [
         { kind: 'BLOCK', type: 'touch_gettouches' },
-        { kind: 'BLOCK', type: 'touch_getpressure' },
-        { kind: 'BLOCK', type: 'touch_getposition' },
+        {
+          kind: 'BLOCK',
+          type: 'touch_getpressure',
+          inputs: {
+            id: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'touch_getposition',
+          inputs: {
+            id: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
       ],
       id: 'catTouch',
       colour: '60',
@@ -500,15 +652,53 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'window_close' },
         { kind: 'BLOCK', type: 'window_getdpiscale' },
         { kind: 'BLOCK', type: 'window_getfullscreen' },
-        { kind: 'BLOCK', type: 'window_getdisplayname' },
-        { kind: 'BLOCK', type: 'window_getdisplayorientation' },
+        {
+          kind: 'BLOCK',
+          type: 'window_getdisplayname',
+          inputs: {
+            displayindex: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'window_getdisplayorientation',
+          inputs: {
+            displayindex: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'window_hasfocus' },
         { kind: 'BLOCK', type: 'window_gettitle' },
         { kind: 'BLOCK', type: 'window_getposition' },
-        { kind: 'BLOCK', type: 'window_settitle' },
-        { kind: 'BLOCK', type: 'window_setposition' },
-        { kind: 'BLOCK', type: 'window_setmode' },
-        { kind: 'BLOCK', type: 'window_setfullscreen' },
+        {
+          kind: 'BLOCK',
+          type: 'window_settitle',
+          inputs: {
+            title: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'window_setposition',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'window_setmode',
+          inputs: {
+            width: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            height: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'window_setfullscreen',
+          inputs: {
+            fullscreen: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'window_restore' },
         { kind: 'BLOCK', type: 'window_minimize' },
         { kind: 'BLOCK', type: 'window_maximize' },
@@ -526,9 +716,27 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'system_vibrate' },
-        { kind: 'BLOCK', type: 'system_setclipboardtext' },
-        { kind: 'BLOCK', type: 'system_openurl' },
+        {
+          kind: 'BLOCK',
+          type: 'system_vibrate',
+          inputs: {
+            seconds: { shadow: { type: 'math_number', fields: { NUM: 5 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'system_setclipboardtext',
+          inputs: {
+            text: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'system_openurl',
+          inputs: {
+            url: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+          },
+        },
         { kind: 'BLOCK', type: 'system_getprocessorcount' },
         { kind: 'BLOCK', type: 'system_getos' },
         { kind: 'BLOCK', type: 'system_getclipboardtext' },
@@ -542,7 +750,13 @@ const toolboxOptions = {
       kind: 'CATEGORY',
       contents: [
         { kind: 'BLOCK', type: 'timer_step' },
-        { kind: 'BLOCK', type: 'timer_sleep' },
+        {
+          kind: 'BLOCK',
+          type: 'timer_sleep',
+          inputs: {
+            s: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'timer_gettime' },
         { kind: 'BLOCK', type: 'timer_getfps' },
         { kind: 'BLOCK', type: 'timer_getdelta' },
@@ -556,11 +770,43 @@ const toolboxOptions = {
       kind: 'CATEGORY',
       contents: [
         { kind: 'BLOCK', type: 'math_triangulate' },
-        { kind: 'BLOCK', type: 'math_setrandomstate' },
-        { kind: 'BLOCK', type: 'math_setrandomseed' },
-        { kind: 'BLOCK', type: 'math_randomnormal' },
-        { kind: 'BLOCK', type: 'math_random' },
-        { kind: 'BLOCK', type: 'math_noise' },
+        {
+          kind: 'BLOCK',
+          type: 'math_setrandomstate',
+          inputs: {
+            state: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'math_setrandomseed',
+          inputs: {
+            seed: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'math_randomnormal',
+          inputs: {
+            stddev: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+            mean: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'math_random',
+          inputs: {
+            min: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            max: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'math_noise',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'math_isconvex' },
         { kind: 'BLOCK', type: 'math_getrandomstate' },
         { kind: 'BLOCK', type: 'math_getrandomseed' },
@@ -573,17 +819,67 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'mouse_sety' },
-        { kind: 'BLOCK', type: 'mouse_setx' },
-        { kind: 'BLOCK', type: 'mouse_setvisible' },
-        { kind: 'BLOCK', type: 'mouse_setrelativemode' },
-        { kind: 'BLOCK', type: 'mouse_setposition' },
-        { kind: 'BLOCK', type: 'mouse_setgrabbed' },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_sety',
+          inputs: {
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_setx',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_setvisible',
+          inputs: {
+            visible: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_setrelativemode',
+          inputs: {
+            enable: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_setposition',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_setgrabbed',
+          inputs: {
+            grab: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'mouse_setcursor' },
-        { kind: 'BLOCK', type: 'mouse_newcursor' },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_newcursor',
+          inputs: {
+            hotx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            hoty: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'mouse_isvisible' },
         { kind: 'BLOCK', type: 'mouse_isgrabbed' },
-        { kind: 'BLOCK', type: 'mouse_isdown' },
+        {
+          kind: 'BLOCK',
+          type: 'mouse_isdown',
+          inputs: {
+            button: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'mouse_gety' },
         { kind: 'BLOCK', type: 'mouse_getx' },
         { kind: 'BLOCK', type: 'mouse_getsystemcursor' },
@@ -598,20 +894,99 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'physics_setmeter' },
-        { kind: 'BLOCK', type: 'physics_newworld' },
-        { kind: 'BLOCK', type: 'physics_newwheeljoint' },
-        { kind: 'BLOCK', type: 'physics_newweldjoint' },
-        { kind: 'BLOCK', type: 'physics_newrectangleshape' },
+        {
+          kind: 'BLOCK',
+          type: 'physics_setmeter',
+          inputs: {
+            scale: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newworld',
+          inputs: {
+            xg: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            yg: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            sleep: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newwheeljoint',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ax: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ay: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            collideConnected: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newweldjoint',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newrectangleshape',
+          inputs: {
+            width: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            height: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'physics_newpolygonshape' },
-        { kind: 'BLOCK', type: 'physics_newmousejoint' },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newmousejoint',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'physics_getdistance' },
         { kind: 'BLOCK', type: 'physics_getmeter' },
-        { kind: 'BLOCK', type: 'physics_newbody' },
-        { kind: 'BLOCK', type: 'physics_newcircleshape' },
-        { kind: 'BLOCK', type: 'physics_newchainshape' },
-        { kind: 'BLOCK', type: 'physics_newedgeshape' },
-        { kind: 'BLOCK', type: 'physics_newfixture' },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newbody',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newcircleshape',
+          inputs: {
+            radius: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newchainshape',
+          inputs: {
+            loop: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newedgeshape',
+          inputs: {
+            x1: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            x2: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            x3: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            x4: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'physics_newfixture',
+          inputs: {
+            density: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
       ],
       id: 'catPhysics',
       colour: '270',
@@ -621,12 +996,51 @@ const toolboxOptions = {
       kind: 'CATEGORY',
       contents: [
         { kind: 'BLOCK', type: 'audio_setdistancemodel' },
-        { kind: 'BLOCK', type: 'audio_setdopplerscale' },
+        {
+          kind: 'BLOCK',
+          type: 'audio_setdopplerscale',
+          inputs: {
+            scale: { shadow: { type: 'math_number', fields: { NUM: 1 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'audio_seteffect' },
-        { kind: 'BLOCK', type: 'audio_setmixwithsystem' },
-        { kind: 'BLOCK', type: 'audio_setorientation' },
-        { kind: 'BLOCK', type: 'audio_setposition' },
-        { kind: 'BLOCK', type: 'audio_setvelocity' },
+        {
+          kind: 'BLOCK',
+          type: 'audio_setmixwithsystem',
+          inputs: {
+            mix: { shadow: { type: 'logic_boolean' } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'audio_setorientation',
+          inputs: {
+            fx: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            fy: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            fz: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            ux: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            uy: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            uz: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'audio_setposition',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            z: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'audio_setvelocity',
+          inputs: {
+            x: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            y: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+            z: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'audio_setvolume' },
         { kind: 'BLOCK', type: 'audio_stop' },
         { kind: 'BLOCK', type: 'audio_pause' },
@@ -640,7 +1054,13 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'audio_getmaxsourceeffects' },
         { kind: 'BLOCK', type: 'audio_getmaxsceneeffects' },
         { kind: 'BLOCK', type: 'audio_getdistancemodel' },
-        { kind: 'BLOCK', type: 'audio_geteffect' },
+        {
+          kind: 'BLOCK',
+          type: 'audio_geteffect',
+          inputs: {
+            name: { shadow: { type: 'text', fields: { TEXT: 'name' } } },
+          },
+        },
         { kind: 'BLOCK', type: 'audio_getdopplerscale' },
         { kind: 'BLOCK', type: 'audio_getactivesourcecount' },
         { kind: 'BLOCK', type: 'audio_getactiveeffects' },
@@ -652,10 +1072,30 @@ const toolboxOptions = {
     {
       kind: 'CATEGORY',
       contents: [
-        { kind: 'BLOCK', type: 'filesystem_append' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_append',
+          inputs: {
+            name: { shadow: { type: 'text', fields: { TEXT: 'name' } } },
+            data: { shadow: { type: 'text', fields: { TEXT: 'data' } } },
+            size: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_aresymlinksenabled' },
-        { kind: 'BLOCK', type: 'filesystem_createdirectory' },
-        { kind: 'BLOCK', type: 'filesystem_getdirectoryitems' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_createdirectory',
+          inputs: {
+            name: { shadow: { type: 'text', fields: { TEXT: 'name' } } },
+          },
+        },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_getdirectoryitems',
+          inputs: {
+            name: { shadow: { type: 'text', fields: { TEXT: 'name' } } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_getidentity' },
         { kind: 'BLOCK', type: 'filesystem_getinfo' },
         { kind: 'BLOCK', type: 'filesystem_getrequirepath' },
@@ -664,19 +1104,58 @@ const toolboxOptions = {
         { kind: 'BLOCK', type: 'filesystem_getsource' },
         { kind: 'BLOCK', type: 'filesystem_getuserdirectory' },
         { kind: 'BLOCK', type: 'filesystem_getworkingdirectory' },
-        { kind: 'BLOCK', type: 'filesystem_init' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_init',
+          inputs: {
+            appname: { shadow: { type: 'text', fields: { TEXT: 'name' } } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_lines' },
         { kind: 'BLOCK', type: 'filesystem_load' },
-        { kind: 'BLOCK', type: 'filesystem_mount' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_mount',
+          inputs: {
+            archive: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+            mountpoint: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+            appendToPath: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_newfile' },
-        { kind: 'BLOCK', type: 'filesystem_read' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_read',
+          inputs: {
+            size: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_remove' },
-        { kind: 'BLOCK', type: 'filesystem_setidentity' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_setidentity',
+          inputs: {
+            appendToPath: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_setrequirepath' },
         { kind: 'BLOCK', type: 'filesystem_setsource' },
-        { kind: 'BLOCK', type: 'filesystem_setsymlinksenabled' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_setsymlinksenabled',
+          inputs: {
+            enable: { shadow: { type: 'logic_boolean' } },
+          },
+        },
         { kind: 'BLOCK', type: 'filesystem_unmount' },
-        { kind: 'BLOCK', type: 'filesystem_write' },
+        {
+          kind: 'BLOCK',
+          type: 'filesystem_write',
+          inputs: {
+            data: { shadow: { type: 'text', fields: { TEXT: 'abc' } } },
+            size: { shadow: { type: 'math_number', fields: { NUM: 0 } } },
+          },
+        },
       ],
       id: 'catFilesystem',
       colour: '140',

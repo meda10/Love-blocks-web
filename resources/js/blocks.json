@@ -3692,14 +3692,14 @@
     },
     {
         "type": "mouse_getsystemcursor",
-        "message0": "get systam cursor %1 ctype %2",
+        "message0": "get system cursor %1 Cursor Type %2",
         "args0": [
             {
                 "type": "input_dummy"
             },
             {
                 "type": "input_value",
-                "name": "ctype"
+                "name": "Cursor Type"
             }
         ],
         "inputsInline": false,
@@ -4821,7 +4821,7 @@
     },
     {
         "type": "filesystem_mount",
-        "message0": "mount zip file or folder %1 archive %2 mountpoint %3 appendToPath %4",
+        "message0": "mount zip file or folder %1 archive %2 mountpoint %3 append to path %4",
         "args0": [
             {
                 "type": "input_dummy"
@@ -4914,7 +4914,7 @@
     },
     {
         "type": "filesystem_setidentity",
-        "message0": "set write directory for game %1 name %2 %3 appendToPath %4",
+        "message0": "set write directory for game %1 name %2 %3 append to path %4",
         "args0": [
             {
                 "type": "input_dummy"
