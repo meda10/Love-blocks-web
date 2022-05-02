@@ -4,7 +4,7 @@
       <h5 class="mb-0 ml-6 font-bold">{{ user != null ? project.name : 'Host project' }}</h5>
     </n-space>
     <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
-      <n-space align="center" justify="center" class="mr-12">
+      <n-space v-if="!(!owner || user.value === null)" align="center" justify="center" class="mr-12">
         <h6 class="mb-0 mr-0 font-bold">Heap size:</h6>
         <h6 class="mb-0 font-bold" :class="heapSize < 300 ? 'text-success' : 'text-error'">
           {{ heapSize }} MB

@@ -107,7 +107,7 @@ export default {
 
     const updateUsage = setInterval(function () {
       try {
-        heapSize.value = ref(performance.memory.usedJSHeapSize)
+        heapSize.value = performance.memory.usedJSHeapSize
         emitHeapSize()
       } catch (e) {
         clearInterval(updateUsage)
@@ -181,7 +181,6 @@ export default {
     }
 
     const runGame = () => {
-      console.log('Run game')
       removeAllEventListeners = loveJS.JSEvents.removeAllEventListeners
       registerOrRemoveHandler = loveJS.JSEvents.registerOrRemoveHandler
       events = loveJS.allEventHandlers
