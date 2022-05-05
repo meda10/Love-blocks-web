@@ -1,7 +1,7 @@
 const mix = require('laravel-mix')
 const Components = require('unplugin-vue-components/webpack')
 const { NaiveUiResolver } = require('unplugin-vue-components/resolvers')
-require('laravel-mix-bundle-analyzer')
+// require('laravel-mix-bundle-analyzer')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

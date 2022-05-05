@@ -32,7 +32,6 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^5.0.0",
         "eslint-plugin-vue": "^7.20.0",
-        "laravel-mix-bundle-analyzer": "^1.0.5",
         "lodash": "^4.17.21",
         "postcss": "^8.4.6",
         "postcss-import": "^14.0.2",

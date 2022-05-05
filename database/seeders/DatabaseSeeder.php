@@ -22,9 +22,6 @@ class DatabaseSeeder extends Seeder
 //            $this->attachUsers($project);
 //        });
 
-        User::create(['name' => 'Administrator', 'email' => 'admin@gmail.com', 'email_verified_at' => now(), 'password' => Hash::make('7777777777')]);
-        User::create(['name' => 'User', 'email' => 'user@gmail.com', 'email_verified_at' => now(), 'password' => Hash::make('7777777777')]);
-
         $this->call(RolePermissionSeeder::class);
         $this->call(TutorialSeeder::class);
     }
