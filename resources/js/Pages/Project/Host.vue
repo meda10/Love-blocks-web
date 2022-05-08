@@ -92,6 +92,9 @@ export default {
     const mainLuaCode = ref('')
     const blocklyProject = { blockly_workspace: null }
 
+    /**
+     * Display dialog thet projects will not be saved
+     */
     const projectNotSaved = () => {
       dialog.warning({
         title: 'Confirm',
@@ -101,20 +104,34 @@ export default {
     }
     projectNotSaved()
 
+    /**
+     * Open tutorial by ID
+     * @param tutorial
+     */
     const loadTutorial = (tutorial) => {
       tutorialRef.value = tutorial
     }
 
+    /**
+     * Switch between Blockly and Monaco editor
+     */
     const switchEditors = () => {
       editorShow.value = !editorShow.value
       btnText.value === 'Code' ? btnText.value = 'Blocks' : btnText.value = 'Code'
     }
 
+    /**
+     * Pass code from Blockly to Monaco
+     * @param code
+     */
     const passCodeToMonaco = (code) => {
       mainLuaCode.value = code
       switchEditors()
     }
 
+    /**
+     * Check if you can change editors
+     */
     const changeEditor = () => {
       if (editMonacoRef.value) showModalRef.value = true
       else {
@@ -132,11 +149,18 @@ export default {
       changeEditorRef.value = !changeEditorRef.value
     }
 
+    /**
+     * Resize Blockly based on editorPaneResizeRef
+     */
     useResizeObserver(editorPaneResizeRef, () => {
       const position = window.innerWidth - editorPaneResizeRef.value.getBoundingClientRect().right
       btnEditor.value.style.right = position + 'px'
     })
 
+    /**
+     * Save Blockly worksapce to variable
+     * @param workspace
+     */
     const saveBlocklyWorkspace = (workspace) => {
       blocklyProject.blockly_workspace = workspace
     }

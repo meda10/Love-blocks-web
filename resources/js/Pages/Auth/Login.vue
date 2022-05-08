@@ -100,17 +100,27 @@ export default {
       terms: false,
     })
 
+    /**
+     * Submit login form
+     */
     const submit = () => {
       form.transform(data => ({ ...data, remember: form.remember ? 'on' : '' }))
         .post(route('login'), { onFinish: () => form.reset('password') })
     }
 
+    /**
+     * Submit registration form
+     */
     const submitReg = () => {
       registrationForm.post(route('register'), {
         onFinish: () => registrationForm.reset('password', 'password_confirmation'),
       })
     }
 
+    /**
+     * Switch tabs
+     * @param value
+     */
     const handleUpdateValue = (value) => {
       title.value = value
     }

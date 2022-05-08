@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class TutorialSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Add tutorials
      *
      * @return void
      * @throws \JsonException

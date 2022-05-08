@@ -41,24 +41,39 @@ export default {
     const editorState = ref({})
     const editorValue = ref(initialEditorValue)
 
+    /**
+     * Watch if code from Monaco should be saved
+     */
     watch(() => props.saveMonaco, () => {
       emit('saveCode', editor.saveViewState(), editorValue.value.main, editorValue.value.conf)
     })
 
+    /**
+     * Make read only
+     */
     const readOnly = () => {
       readOnlyRef.value = true
       editor.updateOptions({ readOnly: readOnlyRef.value })
     }
 
+    /**
+     * Make read and write
+     */
     const readAndWrite = () => {
       readOnlyRef.value = false
       editor.updateOptions({ readOnly: readOnlyRef.value })
     }
 
+    /**
+     * watch if can edit Monaco
+     */
     watch(() => props.editMonaco, () => {
       readAndWrite()
     })
 
+    /**
+     * Load Monaco and start Language server
+     */
     onMounted(() => {
       loader.config({
         paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs' },
@@ -104,6 +119,9 @@ export default {
       }).catch(() => null)
     })
 
+    /**
+     * Switch tabs
+     */
     watch(currentTab, function (current, previous) {
       if (current === 'conf') readAndWrite()
       else if (props.editMonaco && current === 'main') readAndWrite()
@@ -121,6 +139,9 @@ export default {
       }
     })
 
+    /**
+     * Remove Monaco and close connection to language server
+     */
     onUnmounted(() => {
       editor.dispose()
       webSocket.close()

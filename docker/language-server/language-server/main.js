@@ -1,3 +1,9 @@
+/**
+ * @Title:  monaco-lua-example
+ * @Author: arnoson
+ * @Date: 10.3.2022
+ * @Availability: https://github.com/arnoson/monaco-lua-example
+ */
 'use strict'
 import * as rpc from 'vscode-ws-jsonrpc'
 import * as server from 'vscode-ws-jsonrpc/lib/server'

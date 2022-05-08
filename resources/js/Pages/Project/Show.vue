@@ -104,18 +104,34 @@ export default {
     const btnText = ref(props.project.editor === true ? 'Blocks' : 'Code')
     const mainLuaCode = ref(props.main)
 
+    /**
+     * Save project on page leave
+     */
     const pageLeaveSaveProject = () => {
       saveWorkspaceRef.value = !saveWorkspaceRef.value
     }
 
+    /**
+     * Loads tutorial by ID
+     * @param tutorial
+     */
     const loadTutorial = (tutorial) => {
       tutorialRef.value = tutorial
     }
 
+    /**
+     * Display heap size
+     * @param heapSize
+     */
     const displayHeapSize = (heapSize) => {
       heapSizeRef.value = heapSize
     }
 
+    /**
+     * Save blockly workspace
+     * @param workspace
+     * @param code
+     */
     const saveBlocklyWorkspace = (workspace, code) => {
       Inertia.post(route('project.update', { project: props.project }), {
         blockly_workspace: workspace,
@@ -135,16 +151,21 @@ export default {
       })
     }
 
-    const switchEditors = () => {
-      editorShow.value = !editorShow.value
-      btnText.value === 'Code' ? btnText.value = 'Blocks' : btnText.value = 'Code'
-    }
-
+    /**
+     * Pass code from Blockly to Monaco
+     * @param code
+     */
     const passCodeToMonaco = (code) => {
       mainLuaCode.value = code
       switchEditors()
     }
 
+    /**
+     * Save code from Monaco to DB
+     * @param workspace
+     * @param code
+     * @param conf
+     */
     const saveCodeFromMonaco = (workspace, code, conf) => {
       if (conf === '') conf = 'EMPTY'
       if (code === '') code = 'EMPTY'
@@ -167,16 +188,26 @@ export default {
       })
     }
 
+    /**
+     * Save code end refresh game
+     */
     const saveGameRefreshInterpret = () => {
       refreshRef.value = true
       saveWorkspaceRef.value = !saveWorkspaceRef.value
     }
 
+    /**
+     * Save config from Monaco
+     * @param conf
+     */
     const saveConfFromMonaco = (conf) => {
       if (conf === '') conf = 'EMPTY'
       Inertia.post(route('project.config', { project: props.project }), { config: conf })
     }
 
+    /**
+     * Check if you can change editors
+     */
     const changeEditor = () => {
       if (editMonacoRef.value) showModalRef.value = true
       else {
@@ -188,17 +219,34 @@ export default {
       }
     }
 
+    /**
+     * Switch between Blockly and Monaca editor
+     */
+    const switchEditors = () => {
+      editorShow.value = !editorShow.value
+      btnText.value === 'Code' ? btnText.value = 'Blocks' : btnText.value = 'Code'
+    }
+
+    /**
+     * Modal -> switch back to Blockly
+     */
     const onPositiveClick = () => {
       switchEditors()
       editMonacoRef.value = false
       changeEditorRef.value = !changeEditorRef.value
     }
 
+    /**
+     * Change Blockly size based od the editorPaneResizeRef size
+     */
     useResizeObserver(editorPaneResizeRef, () => {
       const position = window.innerWidth - editorPaneResizeRef.value.getBoundingClientRect().right
       btnEditor.value.style.right = position + 'px'
     })
 
+    /**
+     * Turn off game mode before unmount
+     */
     onBeforeUnmount(() => {
       turnOffGameModeRef.value = !turnOffGameModeRef.value
     })

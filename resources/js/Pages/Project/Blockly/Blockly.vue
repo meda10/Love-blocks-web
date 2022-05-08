@@ -32,6 +32,9 @@ export default {
     const blocklyDiv = ref(null)
     const blocklyToolbox = ref(null)
 
+    /**
+     * Blockly options
+     */
     const options = {
       media: '/storage/media/',
       theme: DarkTheme,
@@ -60,22 +63,34 @@ export default {
       },
     }
 
+    /**
+     * Save workspace
+     */
     const saveWorkspace = () => {
       const workspaceState = Blockly.serialization.workspaces.save(workspace)
       const luaCode = luaGenerator.workspaceToCode(workspace)
       emit('saveWorkspace', workspaceState, luaCode)
     }
 
+    /**
+     * Watch if Blockly code should be saved
+     */
     watch(() => props.saveCode, () => {
       saveWorkspace()
       code.value = luaGenerator.workspaceToCode(workspace)
       emit('passCodeToMonaco', code.value)
     })
 
+    /**
+     * Watch if blockly workspace should be saved
+     */
     watch(() => props.saveWorkspace, () => {
       saveWorkspace()
     })
 
+    /**
+     * Resize blockly workspace based on blocklyArea
+     */
     useResizeObserver(blocklyArea, (entries) => {
       const entry = entries[0]
       const { width, height } = entry.contentRect
@@ -86,6 +101,9 @@ export default {
       Blockly.svgResize(workspace)
     })
 
+    /**
+     * Load Blockly and init workspace
+     */
     onMounted(() => {
       if (!options.toolbox) {
         options.toolbox = blocklyToolbox.value

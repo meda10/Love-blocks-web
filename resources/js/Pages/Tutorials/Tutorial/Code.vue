@@ -47,11 +47,17 @@ export default {
     }
     const btnCode = ref(true)
 
+    /**
+     * Switch between code and block representation
+     */
     const switchCode = () => {
       btnCode.value = !btnCode.value
       resizeBlockly()
     }
 
+    /**
+     * Resize blockly
+     */
     const resizeBlockly = () => {
       try {
         if (props.blocks !== null) Blockly.serialization.workspaces.load(props.blocks, workspace)
@@ -63,6 +69,9 @@ export default {
       Blockly.svgResize(workspace)
     }
 
+    /**
+     * Resize Blockly workspace based on blocklyArea
+     */
     useResizeObserver(blocklyArea, (entries) => {
       const entry = entries[0]
       const { width, height } = entry.contentRect
@@ -73,6 +82,9 @@ export default {
       Blockly.svgResize(workspace)
     })
 
+    /**
+     * create Blockly workspace
+     */
     onMounted(() => {
       workspace = Blockly.inject(blocklyDiv.value, options)
       resizeBlockly()

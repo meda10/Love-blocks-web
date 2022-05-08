@@ -72,8 +72,11 @@ export default {
             icon: renderIcon(BookIcon),
           },
           {
-            label: () => h('a', { href: route('apk.download') }, { default: () => 'Love block APK' }),
-            key: 'apk',
+            label: () => h('a', {
+              target: '_blank',
+              href: 'https://play.google.com/store/apps/details?id=blocks.love',
+            }, { default: () => 'Love Block APP' }),
+            key: 'app',
             icon: renderIcon(DownloadIcon),
           },
           {
@@ -101,19 +104,28 @@ export default {
       return () => h(NIcon, null, { default: () => h(icon) })
     }
 
+    /**
+     * Create project modal positive
+     */
     const onPositiveClick = () => {
       Inertia.post(route('project.create'), { name: projectName.value })
       showModalRef.value = false
     }
 
+    /**
+     * Create project modal negative
+     */
     const onNegativeClick = () => {
       showModalRef.value = false
     }
 
+    /**
+     * Create project if user s not signed in
+     */
     const createProjectNotSignedIn = () => {
       dialog.warning({
         title: 'Confirm',
-        content: 'You are not signed in! If you create project your data won\'t be saved',
+        content: 'You are not signed in! If you create project your data won\'t be saved.',
         positiveText: 'Create',
         negativeText: 'Cancel',
         onPositiveClick: () => {
@@ -122,15 +134,24 @@ export default {
       })
     }
 
+    /**
+     * Create project if user is signed in
+     */
     const createProjectSignedIn = () => {
       showModalRef.value = true
       projectName.value = null
     }
 
+    /**
+     * Create project
+     */
     const createProject = () => {
       user.value === null ? createProjectNotSignedIn() : createProjectSignedIn()
     }
 
+    /**
+     * Open tutorials
+     */
     const openTutorials = () => {
       Inertia.get(route('tutorials'))
     }

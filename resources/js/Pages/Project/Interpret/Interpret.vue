@@ -97,6 +97,9 @@ export default {
       heapSizeEstimated = ref(73400320)
     }
 
+    /**
+     * Watch if game mode should be turned off
+     */
     watch(() => props.turnOffGameMode, () => {
       show.value = false
       refText.value = 'Game is not loaded. Press refresh button.'
@@ -105,7 +108,11 @@ export default {
       removeAllEventListeners()
     })
 
-    const updateUsage = setInterval(function () {
+    /**
+     * Update current heap usege every 5 secons
+     * @type {NodeJS.Timer}
+     */
+    const updateUsage = setInterval(() => {
       try {
         heapSize.value = performance.memory.usedJSHeapSize
         emitHeapSize()
@@ -120,6 +127,9 @@ export default {
       return parseFloat((bytes / Math.pow(k, 2)).toFixed(2))
     }
 
+    /**
+     * Emit current heap size -> displayed in top panel
+     */
     const emitHeapSize = () => {
       try {
         emit('heapSize', formatBytes(heapSize.value))
@@ -130,6 +140,9 @@ export default {
     }
     emitHeapSize()
 
+    /**
+     * Watch if game should be refreshed
+     */
     watch(() => props.refreshGame, () => {
       if (props.refreshGame === true) {
         Inertia.reload({
@@ -142,6 +155,9 @@ export default {
       }
     })
 
+    /**
+     * On mounted show/hode spinner and text
+     */
     onMounted(() => {
       if (gamePackage.value === null || typeof gamePackage.value === 'undefined') {
         refText.value = 'Game is not loaded. Press refresh button.'
@@ -154,6 +170,9 @@ export default {
       }
     })
 
+    /**
+     * Clean up before component is removed
+     */
     onBeforeUnmount(() => {
       show.value = false
       refText.value = 'Game is not loaded. Press refresh button.'
@@ -166,6 +185,10 @@ export default {
       }
     })
 
+    /**
+     * Switch game mode
+     * removes or adds event listeners for the game
+     */
     const changeGameMode = () => {
       if (gameMode.value) {
         message.info('Game mode is on. Your keyboard input will be used for the game.')
@@ -180,6 +203,13 @@ export default {
       }
     }
 
+    /**
+     * Run game generated with love.js -> needs gamePackage
+     * @Title: love.js
+     * @Author: Davidobot
+     * @Date: 15.3.2022
+     * @Availability: https://github.com/Davidobot/love.js
+     */
     const runGame = () => {
       removeAllEventListeners = loveJS.JSEvents.removeAllEventListeners
       registerOrRemoveHandler = loveJS.JSEvents.registerOrRemoveHandler
@@ -501,6 +531,9 @@ export default {
       emitHeapSize()
     }
 
+    /**
+     * Stop running game and remove all event listeners
+     */
     const stopGame = () => {
       show.value = false
       refText.value = 'Game is not loaded. Press refresh button.'
@@ -511,10 +544,17 @@ export default {
       cleanup()
     }
 
+    /**
+     * Save workspace then run game
+     * Emits saveAndRefresh -> parent component will do the rest
+     */
     const saveAndRefreshGame = () => {
       emit('saveAndRefresh')
     }
 
+    /**
+     * Try to clean up after game is stopped
+     */
     const cleanup = () => {
       const memory = loveJS.getMemoryArray()
       delete memory[0]

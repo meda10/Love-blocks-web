@@ -5,7 +5,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket'
 
 const createLanguageClient = function (connection) {
   return new MonacoLanguageClient({
-    name: 'Lua Language Client',
+    name: 'Language server client',
     clientOptions: {
       documentSelector: ['lua'],
       middleware: {
@@ -37,9 +37,7 @@ const createLanguageClient = function (connection) {
     },
     connectionProvider: {
       get: (errorHandler, closeHandler) => {
-        return Promise.resolve(
-          createConnection(connection, errorHandler, closeHandler),
-        )
+        return Promise.resolve(createConnection(connection, errorHandler, closeHandler))
       },
     },
   })

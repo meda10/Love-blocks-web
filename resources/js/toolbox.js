@@ -1,4 +1,9 @@
-// https://github.com/google/blockly/issues/4464
+/**
+ * @Title:  How to convert toolbox from xml to json and from json to xml?
+ * @Author: johnnyoshika
+ * @Date: 25.3.2022
+ * @Availability: https://github.com/google/blockly/issues/4464
+ */
 const toolboxOptions = {
   contents: [
     {

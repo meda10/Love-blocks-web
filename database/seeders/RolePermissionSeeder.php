@@ -12,7 +12,7 @@ use Spatie\Permission\PermissionRegistrar;
 class RolePermissionSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Add roles and permissions
      *
      * @return void
      */

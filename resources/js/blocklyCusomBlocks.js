@@ -3,6 +3,9 @@ import Blockly from 'blockly'
 import 'blockly/lua'
 import blocks from '@/blocks.json'
 
+/**
+ *  Add all code generators for custom blocks
+ */
 const registerBlocks = () => {
   Blockly.common.defineBlocksWithJsonArray(blocks)
 

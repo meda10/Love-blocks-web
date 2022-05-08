@@ -143,24 +143,39 @@ export default {
       },
     ]
 
+    /**
+     * Open tutorials
+     */
     const openTutorials = () => {
       Inertia.get(route('tutorials'))
       // showTutorialModalRef.value = true
     }
 
+    /**
+     * Tutorial Modal negative
+     */
     const onNegativeTutorialClick = () => {
       showTutorialModalRef.value = false
     }
 
+    /**
+     * Refresh page
+     */
     const refreshPage = () => {
       location.reload()
     }
 
+    /**
+     * Load tutorial
+     */
     const loadTutorial = (code) => {
       emit('loadTutorial', code)
       showTutorialModalRef.value = false
     }
 
+    /**
+     * Go to project's files
+     */
     const goProjectFiles = () => {
       if (user.value != null) {
         emit('pageLeave')
@@ -176,6 +191,9 @@ export default {
       } else message.error('Please Sign in.')
     }
 
+    /**
+     * Go to user's profile
+     */
     const goProfileShow = () => {
       emit('pageLeave')
       dialog.warning({
@@ -189,6 +207,9 @@ export default {
       })
     }
 
+    /**
+     * Go to user's projects
+     */
     const goProjectUser = () => {
       emit('pageLeave')
       dialog.warning({
@@ -202,6 +223,9 @@ export default {
       })
     }
 
+    /**
+     * Go to home screan
+     */
     const goHome = () => {
       emit('pageLeave')
       dialog.warning({
@@ -237,8 +261,11 @@ export default {
             icon: renderIcon(BookIcon),
           },
           {
-            label: () => h('a', { href: route('apk.download') }, { default: () => 'Love block APK' }),
-            key: 'apk',
+            label: () => h('a', {
+              target: '_blank',
+              href: 'https://play.google.com/store/apps/details?id=blocks.love',
+            }, { default: () => 'Love Block APP' }),
+            key: 'app',
             icon: renderIcon(DownloadIcon),
           },
           {
@@ -257,24 +284,39 @@ export default {
       },
     ]
 
+    /**
+     * Display errors
+     */
     watch(validationErrors, () => {
       if (validationErrors.value.email != null) message.error(validationErrors.value.email)
       if (validationErrors.value.file != null) message.error(validationErrors.value.file)
     })
 
+    /**
+     * Emit thtat project should be saved
+     */
     const saveProject = () => {
       emit('pageLeave')
     }
 
+    /**
+     * Share project Modal positive
+     */
     const onPositiveClick = () => {
       Inertia.post(route('project.share', { project: currentProject.value }), { email: shareEmail.value })
       showShareModalRef.value = false
     }
 
+    /**
+     * Share project Modal negative
+     */
     const onNegativeClick = () => {
       showShareModalRef.value = false
     }
 
+    /**
+     * Share projects
+     */
     const share = () => {
       if (user.value != null) {
         shareEmail.value = null
@@ -287,6 +329,9 @@ export default {
       return () => h(NIcon, null, { default: () => h(icon) })
     }
 
+    /**
+     * Download game to Android
+     */
     const downloadToAndroid = () => {
       if (user.value != null) {
         Inertia.get(route('project.download', { project: props.project.id }), {}, {
