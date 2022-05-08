@@ -1,3 +1,10 @@
+# Love Blocks
+
+Love Blocks is web based code editor for *[LÖVE](https://love2d.org/)* or Lua. You can use block based programing or
+classic text editor. You can find the application here *[https://loveblocks.tk/](https://loveblocks.tk/)*. If you want
+simple way to download your games to Android download
+the *[Love Blocks - Android](https://play.google.com/store/apps/details?id=blocks.love)* from Play Store.
+
 # Installation
 
 ## Define environment variables
@@ -7,11 +14,12 @@ otherwise HTTPS will not work.
 
 - If you want authentication with Google and GitHub you need to add provider information to `.env` file. More
   information *[here](https://github.com/joelbutcher/socialstream)*.
-- If you want to connect to *[Love Blocks Android](https://github.com/meda10/Love-blocks-android)*. First you will need
+- If you want to connect to *[Love Blocks - Android](https://github.com/meda10/Love-blocks-android)*. First you will
+  need
   to set up your Firebase account and create new project. Here you will need to create new web app ande new android app.
   Then download the web app configuration in `.json` and specify the file path in your `.env` file
   under `FIREBASE_CREDENTIALS`. You also need to add `google-services.json` to
-  your *[Love Blocks Android](https://github.com/meda10/Love-blocks-android)* app.
+  your *[Love Blocks - Android](https://github.com/meda10/Love-blocks-android)* app.
 
 ``` bash
 cp .env.example .env
