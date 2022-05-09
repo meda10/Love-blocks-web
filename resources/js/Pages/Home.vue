@@ -73,24 +73,21 @@
     <n-h2>Powered by</n-h2>
     <ul>
       <li>
-        <n-a target="_blank" href="">Monaco code editor</n-a>
+        <n-a target="_blank" href="https://microsoft.github.io/monaco-editor/">Monaco code editor</n-a>
       </li>
       <li>
-        <n-a target="_blank" href="">Blockly</n-a>
+        <n-a target="_blank" href="https://developers.google.com/blockly">Blockly</n-a>
       </li>
       <li>
-        <n-a target="_blank" href="">Lua Language Server</n-a>
+        <n-a target="_blank" href="https://github.com/sumneko/lua-language-server">Lua Language Server</n-a>
       </li>
       <li>
-        <n-a target="_blank" href="">love.js</n-a>
+        <n-a target="_blank" href="https://github.com/Davidobot/love.js">love.js</n-a>
       </li>
       <li>
         <n-a target="_blank" href="https://icons8.com/icon/SkbzwdwhI2sy/love-circled">Love Circled</n-a>
       </li>
     </ul>
-    <!--    <a href="">love2d</a>-->
-    <!--    <a target="_blank" href="https://icons8.com/icon/SkbzwdwhI2sy/love-circled">Love Circled</a> icon by <a-->
-    <!--    target="_blank" href="https://icons8.com">Icons8</a>-->
   </n-card>
 </template>
 

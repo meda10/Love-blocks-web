@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-nowrap flex-row justify-between mb-4">
-    <h1 class="m-0 text-2xl font-bold">Key pressed</h1>
+    <div class="flex-row flex flex-nowrap justify-start">
+      <h1 class="m-0 text-2xl font-bold">Key pressed</h1>
+      <n-tag class="self-center ml-6" type="success" size="small" round>Easy</n-tag>
+    </div>
     <n-button :type="'primary'" class="flex-shrink self-center" size="small" @click="goBack">
       <template #icon>
         <n-icon>
