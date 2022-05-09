@@ -2,9 +2,7 @@ version: '3'
 
 services:
   language-server:
-    build:
-      context: .
-      dockerfile: ./docker/language-server/Dockerfile
+    image: meda10/lua-language-server:1.0
     restart: always
     container_name: language-server
     ports:
