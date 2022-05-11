@@ -19,7 +19,7 @@
         <Blockly v-if="!editorShow" :project="blocklyProject" :save-code="changeEditorRef"
                  :save-workspace="saveWorkspaceRef"
                  @passCodeToMonaco="passCodeToMonaco" @saveWorkspace="saveBlocklyWorkspace" />
-        <editor v-if="editorShow" :config-lua="'config'" :edit-monaco="editMonacoRef" :main-lua="mainLuaCode"
+        <editor v-if="editorShow" :config-lua="''" :edit-monaco="editMonacoRef" :main-lua="mainLuaCode"
                 :project="null" :save-monaco="saveWorkspaceRef" />
       </div>
     </pane>

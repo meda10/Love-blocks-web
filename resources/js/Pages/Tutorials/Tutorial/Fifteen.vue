@@ -39,8 +39,7 @@
   </n-p>
   <n-h3>Drawing pieces</n-h3>
   <n-p>
-    The pieces are drawn as squares. For now, a piece is drawn where the empty space should be. First we set grid
-    size
+    The pieces are drawn as squares. For now, a piece is drawn where the empty space should be. First we set grid size
     <n-text code>gridXCount</n-text>
     and
     <n-text code>gridYCount</n-text>
@@ -48,7 +47,7 @@
     <n-text code>love.graphics.getHeight()</n-text>
     . We need screen height so we can compute the size of one piece
     <n-text code>pieceSize</n-text>
-    this will be diferent on every device, it depends on the screen size. Before drawing we need to loop through the
+    this will be different on every device, it depends on the screen size. Before drawing we need to loop through the
     grid by
     <n-text code>Y</n-text>
     and
@@ -73,8 +72,7 @@
     <n-text code>Y</n-text>
     position minus one (i.e. one
     less than the row number) multiplied by the number of pieces in a row. Now if you put this function as text
-    input
-    to the peint function we made in previous step and pass
+    input to the print function we made in previous step and pass
     <n-text code>X</n-text>
     ,
     <n-text code>Y</n-text>
@@ -115,7 +113,7 @@
     <n-text code>grid</n-text>
 
     , and if a piece is equal to the number of pieces on each axis multiplied together (i.e. it's the empty space).
-    We store empty space postition in
+    We store empty space position in
     <n-text code>emptyX</n-text>
     and
     <n-text code>emptyY</n-text>
@@ -124,7 +122,7 @@
   <n-p>
     Now we will find the coordinates of new empty space by the
     <n-text code>direction</n-text>
-    that was given as function argument. For examle if
+    that was given as function argument. For example if
     <n-text code>direction</n-text>
     is
     <n-text code>down</n-text>
@@ -230,7 +228,7 @@
     we will now if the swipe is on x-axis or y-axis. After that we will just compare the begin and end coordinates
     of that axis and call
     <n-text code>move()</n-text>
-    function we defined erlier. If
+    function we defined earlier. If
     <n-text code>dx == dy</n-text>
     , or in other words simple screen touch. We check if the game si complete, if so we will restart it.
   </n-p>

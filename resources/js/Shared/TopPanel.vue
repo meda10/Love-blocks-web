@@ -6,7 +6,7 @@
     <div class="bg-dark-gray flex flex-row flex-nowrap justify-end">
       <n-space v-if="!(!owner || user.value === null)" align="center" justify="center" class="mr-12">
         <h6 class="mb-0 mr-0 font-bold">Heap size:</h6>
-        <h6 class="mb-0 font-bold" :class="heapSize < 300 ? 'text-success' : 'text-error'">
+        <h6 class="mb-0 font-bold" :class="heapSize < 200 ? 'text-success' : 'text-error'">
           {{ heapSize }} MB
         </h6>
         <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="refreshPage">

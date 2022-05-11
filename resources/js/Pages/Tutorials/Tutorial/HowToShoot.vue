@@ -68,8 +68,7 @@
     <n-text code>dx</n-text>
     and delta Y
     <n-text code>dy</n-text>
-    and multiply by delta
-    time
+    and multiply by delta time
     <n-text code>dt</n-text>
     . If we add this to the old position in bullet array we get the new position of the bullet. We need to do this
     for

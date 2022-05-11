@@ -2,7 +2,8 @@
   <n-card class="min-h-fit">
     <div class="absolute right-0 pr-2 z-20">
       <div class=" flex flex-row flex-nowrap">
-        <n-button :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem" @click="switchCode">
+        <n-button v-show="blocks!==null" :type="'primary'" class="flex-shrink" size="small" style="margin-right: 0.5rem"
+                  @click="switchCode">
           {{ btnCode === false ? 'Code' : 'Blocks' }}
         </n-button>
       </div>
