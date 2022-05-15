@@ -5,9 +5,19 @@ classic text editor. You can find the application here *[https://loveblocks.tk/]
 simple way to download your games to Android download
 the *[Love Blocks - Android](https://play.google.com/store/apps/details?id=blocks.love)* from Play Store.
 
+# How it works
+
+### Docker
+
+Folder `docker` contains all files needed to create docker images
+
+### Maintenance
+
+Script `blockMaintenance.sh` checks if all blocks are working with current version of *[LÖVE](https://love2d.org/)*
+
 # Installation
 
-## Define environment variables
+### Define environment variables
 
 Create `.env` file for Docker configuration. Set `USE_LOCAL_CA=1` or change domain name and SSL certificates,
 otherwise HTTPS will not work.
@@ -25,13 +35,13 @@ otherwise HTTPS will not work.
 cp .env.example .env
 ```
 
-## Create docker containers
+### Create docker containers
 
 ``` bash
 docker-compose up --build -d
 ```
 
-## MySQL configuration
+### MySQL configuration
 
 Open MySQL container
 
@@ -55,7 +65,7 @@ EXIT;
 exit
 ```
 
-## Init laravel app
+### Init laravel app
 
 Install composer dependencies
 
