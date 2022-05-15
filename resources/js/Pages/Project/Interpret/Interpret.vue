@@ -60,7 +60,6 @@ import {
 } from '@vicons/ionicons5'
 import { Inertia } from '@inertiajs/inertia'
 
-// https://github.com/Davidobot/love.js
 export default {
   name: 'Interpret',
   components: {
