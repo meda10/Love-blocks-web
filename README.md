@@ -5,6 +5,14 @@ classic text editor. You can find the application here *[https://loveblocks.tk/]
 simple way to download your games to Android download
 the *[Love Blocks - Android](https://play.google.com/store/apps/details?id=blocks.love)* from Play Store.
 
+### Used Technologies
+ - Laravel
+ - MySQL
+ - VueJS + InertiaJS
+ - Tailwind CSS
+ - Firebase Cloud Messaging (Communication with Android phone)
+ - Docker 
+ 
 # How it works
 
 ### Docker
