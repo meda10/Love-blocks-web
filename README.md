@@ -9,8 +9,8 @@ the *[Love Blocks - Android](https://play.google.com/store/apps/details?id=block
  - Laravel
  - MySQL
  - VueJS + InertiaJS
- - Tailwind CSS
  - Monaco Code Editor + Blockly Code Editor
+ - Tailwind CSS
  - Lua Language Server
  - Firebase Cloud Messaging (Communication with Android phone)
  - Docker 
